@@ -16,11 +16,11 @@ http.listen(port, function() {
 /////////
 // socket.io logic
 /////////
+
 io.on('connection', function(socket) {
 
-
   socket.on('disconnect', function() {
-    io.emit('userExit', allUsers[socket.id])
+    io.emit('userExit', allUsers[socket.id]);
   });
 
   socket.on('postUserUpdate', function(data) {
