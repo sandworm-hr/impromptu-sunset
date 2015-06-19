@@ -1,0 +1,22 @@
+{
+  "name": "impromptu-sunset",
+  "version": "1.0.0",
+  "description": "A tool to help with writer's block",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bahiafayez/impromptu-sunset.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bahiafayez/impromptu-sunset/issues"
+  },
+  "homepage": "https://github.com/bahiafayez/impromptu-sunset#readme",
+  "dependencies": {
+    "express": "^4.12.4"
+  }
+}
