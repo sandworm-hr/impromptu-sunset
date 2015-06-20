@@ -1,0 +1,16 @@
+#main-container {
+  height: 500px;
+}
+
+
+#status-container {
+  height: 70px;
+}
+
+#text-container {
+  height: 430px;
+}
+
+#sidebar-container {
+  height: 500px;
+}
