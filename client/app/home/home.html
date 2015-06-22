@@ -6,11 +6,14 @@
             <h4> {{ timerInput }} </h4>
           </div>
           <div class="col-sm-5">
-            <div class="input-group">
+            <div class="input-group" ng-show='unsubmitted'>
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Go!</button>
               </span>
               <input type="text" class="form-control" ng-model="timerInput" placeholder="How long to write..." ng-enter="startTimer()">
+            </div>
+            <div>
+              <h3 ng-show="!(unsubmitted)"> {{ timer }} </h4>
             </div>
           </div>
 

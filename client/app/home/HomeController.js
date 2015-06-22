@@ -3,6 +3,8 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
   $scope.lastTime = 1;
 
+  $scope.unsubmitted = true;
+
   $scope.timerInput = 15;
 
   $scope.scores = [];
@@ -14,6 +16,8 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
   $scope.minute = 0;
 
   $scope.startTime;
+
+  $scope.timer = 0;
 
   var start;
 
@@ -54,6 +58,18 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
     return array;
   };
 
+  var getTimer = function(elapsed) {
+    var mins = (parseInt($scope.timerInput) - Math.floor(elapsed / 60000) - 1).toString();
+    var seconds = (60 - Math.floor(((elapsed % 60000) / 1000)) - 1).toString();
+    if (seconds.length === 1) seconds = '0' + seconds;
+
+    return mins + ':' + seconds;
+  }
+
+  var checkForEnd = function(elapsed) {
+    return elapsed >= parseInt($scope.timerInput) * 60000;
+  }
+
   $scope.startTimer = function() {
 
     if (angular.isDefined(start)) return;
@@ -61,17 +77,33 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
     var duration = parseInt($scope.timerInput);
 
     if (duration) {
-      console.log('starting the timer');
+
+      $scope.unsubmitted = false;
 
       // $scope.potentialSession = $scope.timerInput * 60 * 10000;
       $scope.startTime = getTime();
       $scope.scores = createScoresArray(duration);
 
-      start = $interval(getScore, 1000, 0);
+      start = $interval(function() {
+        var elapsed = getTime() - $scope.startTime;
+        if (checkForEnd(elapsed)) {
+          $scope.stopTimer();
+        } else {
+          getScore();
+          $scope.timer = getTimer(elapsed);
+        }
+      }, 1000, 0);
 
     } else {
       console.log('invalid time');
     } 
+  };
+
+  $scope.stopTimer = function() {
+    if (angular.isDefined(start)) {
+      $interval.cancel(start);
+      start = undefined;
+    }
   };
 
 }]);
