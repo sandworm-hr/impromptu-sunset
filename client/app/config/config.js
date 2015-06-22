@@ -7,21 +7,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
     .state('index', {
       url: '/index',
-      templateUrl: '/app/partials/partial-index.html'
+      templateUrl: '/app/home/home.html'
     })
 
     .state('signup', {
       url: '/signup',
-      templateUrl: 'app/partials/partial-signup.html'
+      templateUrl: 'app/signup/signup.html'
     })
 
     .state('login', {
       url: '/login',
-      templateUrl: 'app/partials/partial-login.html'
+      templateUrl: 'app/login/login.html'
     })
 
     .state('profile', {
       url: '/profile',
-      templateUrl: 'app/partials/partial-profile.html'
+      templateUrl: 'app/profile/profile.html'
     })
 });
