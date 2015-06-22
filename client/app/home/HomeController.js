@@ -3,6 +3,20 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
   $scope.lastTime = 1;
 
+  $scope.timerInput = 15;
+
+  $scope.scores = [];
+
+  $scope.latestScore = 0;
+
+  $scope.totalScore = 0;
+
+  $scope.minute = 0;
+
+  $scope.startTime;
+
+  var start;
+
   $scope.setTime = function(event){
     $scope.lastTime = event.timeStamp;
   };
@@ -30,40 +44,30 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
     $scope.scores[$scope.minute] += score;
     $scope.latestScore = score;
-
-    console.log(score);
   };
 
-
-  $scope.timerInput = 15;
-
-  $scope.scores = [4, 8, 10, 30];
-
-  $scope.potentialSession = 0;
-
-  $scope.latestScore = 0;
-
-  $scope.totalScore = 0;
-
-  $scope.minute = 3;
-
-  $scope.startTime;
+  var createScoresArray = function(minutes) {
+    var array = [];
+    for (var i = 0; i < minutes; i++) {
+      array.push(0);
+    }
+    return array;
+  };
 
   $scope.startTimer = function() {
-    // $interval.cancel(getScore);
-    $scope.timerInput = parseInt($scope.timerInput);
-    if ($scope.timerInput) {
+
+    if (angular.isDefined(start)) return;
+
+    var duration = parseInt($scope.timerInput);
+
+    if (duration) {
       console.log('starting the timer');
 
-      $scope.potentialSession = $scope.timerInput * 60 * 10000;
+      // $scope.potentialSession = $scope.timerInput * 60 * 10000;
       $scope.startTime = getTime();
+      $scope.scores = createScoresArray(duration);
 
-      $interval(getScore, 1000, 0);
-
-      $scope.scores = [];
-      for (var i = 0; i < $scope.timerInput; i++) {
-        $scope.scores.push(0);
-      };
+      start = $interval(getScore, 1000, 0);
 
     } else {
       console.log('invalid time');
