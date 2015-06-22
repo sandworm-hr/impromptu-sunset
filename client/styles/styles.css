@@ -4,7 +4,7 @@
 
 
 #status-container {
-  height: 70px;
+  height: 150px;
 }
 
 #text-container {
@@ -24,3 +24,8 @@
   height: 400px;
   font-size: 2em;
 }
+
+#debug-list {
+  z-index: 999;
+}
+

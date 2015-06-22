@@ -5,18 +5,29 @@
           <div class="col-sm-1">
             <h4> {{ timerInput }} </h4>
           </div>
-          <div class="col-sm-5 input-group">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button">Go!</button>
-            </span>
-            <input type="text" class="form-control" ng-model="timerInput" placeholder="How long to write...">
+          <div class="col-sm-5">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+              <input type="text" class="form-control" ng-model="timerInput" placeholder="How long to write...">
+            </div>
+          </div>
+
+          <!-- DEBUG AREA -->
+          <div class="col-sm-5">
+              <p class="debug-text">Flows: {{ currentFlows }}</p>
+              <p class="debug-text">Potential Session: {{ currentPotentialSession }}</p>
+              <p class="debug-text">Flow Session: {{ currentFlowSession }}</p>
+              <p class="debug-text">Potential Minute: {{ currentPotentialMinute }}</p>
+              <p class="debug-text">Flow Minute: {{ currentFlowMinute }}</p>
           </div>
         </div>
 
         <div class="col-sm-12" id="text-container">
           <textarea id="text-area" class="col-sm-12 form-control"></textarea>
         </div>
-        
+
       </div>
       <div class="col-sm-3" id="sidebar-container">
   </div>

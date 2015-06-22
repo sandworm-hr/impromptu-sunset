@@ -2,15 +2,15 @@
 app.controller('HomeController', ['$scope', function($scope) {
   $scope.timerInput = 15;
 
-  $scope.currentFlows = [];
+  $scope.currentFlows = [4, 8, 10, 30];
 
-  $scope.currentPotentialMinute;
+  $scope.currentPotentialSession = 100;
 
-  $scope.currentPotentialSession;
+  $scope.currentFlowSession = 70;
 
-  $scope.currentFlowMinute;
+  $scope.currentPotentialMinute = 5;
 
-  $scope.currentFlowSession;
+  $scope.currentFlowMinute = 3;
 
 
 }]);
