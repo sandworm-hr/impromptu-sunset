@@ -12,5 +12,9 @@ app.controller('HomeController', ['$scope', function($scope) {
 
   $scope.currentFlowMinute = 3;
 
+  $scope.startTimer = function() {
+    console.log('starting the timer');
+  };
+
 
 }]);
