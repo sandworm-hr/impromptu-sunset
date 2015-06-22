@@ -1,5 +1,12 @@
 
 app.controller('HomeController', ['$scope', function($scope) {
+
+  $scope.lastTime = 0;
+
+  $scope.setTime = function(event){
+    $scope.lastTime = event.timeStamp;
+  }
+
   $scope.timerInput = 15;
 
   $scope.Flows = [4, 8, 10, 30];

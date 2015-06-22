@@ -16,6 +16,7 @@
 
           <!-- DEBUG AREA -->
           <div class="col-sm-5">
+              <p class="debug-text">Last Time: {{ lastTime }}</p>
               <p class="debug-text">Flows: {{ Flows }}</p>
               <p class="debug-text">Potential Session: {{ PotentialSession }}</p>
               <p class="debug-text">Flow Session: {{ FlowSession }}</p>
@@ -25,7 +26,7 @@
         </div>
 
         <div class="col-sm-12" id="text-container">
-          <textarea id="text-area" class="col-sm-12 form-control"></textarea>
+          <textarea id="text-area" class="col-sm-12 form-control" ng-keyup="setTime($event)"></textarea>
         </div>
 
       </div>
