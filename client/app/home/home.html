@@ -6,26 +6,29 @@
             <h4> {{ timerInput }} </h4>
           </div>
           <div class="col-sm-5">
-            <div class="input-group">
+            <div class="input-group" ng-show='unsubmitted'>
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Go!</button>
               </span>
               <input type="text" class="form-control" ng-model="timerInput" placeholder="How long to write..." ng-enter="startTimer()">
             </div>
+            <div>
+              <h3 ng-show="!(unsubmitted)"> {{ timer }} </h4>
+            </div>
           </div>
 
           <!-- DEBUG AREA -->
           <div class="col-sm-5">
-              <p class="debug-text">Flows: {{ Flows }}</p>
-              <p class="debug-text">Potential Session: {{ PotentialSession }}</p>
-              <p class="debug-text">Flow Session: {{ FlowSession }}</p>
-              <p class="debug-text">Potential Minute: {{ PotentialMinute }}</p>
-              <p class="debug-text">Flow Minute: {{ FlowMinute }}</p>
+              <p class="debug-text">Start Time: {{ startTime }}</p>
+              <p class="debug-text">Scores: {{ scores }}</p>
+              <p class="debug-text">Current Minute: {{ minute }}</p>
+              <p class="debug-text">Total Score: {{ totalScore }}</p>
+              <p class="debug-text">Timer Input: {{ timerInput }}</p>
           </div>
         </div>
 
         <div class="col-sm-12" id="text-container">
-          <textarea id="text-area" class="col-sm-12 form-control"></textarea>
+          <textarea id="text-area" class="col-sm-12 form-control" ng-keyup="setTime($event)"></textarea>
         </div>
 
       </div>
