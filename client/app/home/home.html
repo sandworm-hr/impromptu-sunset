@@ -19,7 +19,7 @@
 
           <!-- DEBUG AREA -->
           <div class="col-sm-5">
-              <p class="debug-text">Start Time: {{ startTime }}</p>
+              <p class="debug-text">Start Time: {{ startTime | date:'shortTime' }}</p>
               <p class="debug-text">Scores: {{ scores }}</p>
               <p class="debug-text">Current Minute: {{ minute }}</p>
               <p class="debug-text">Total Score: {{ totalScore }}</p>
