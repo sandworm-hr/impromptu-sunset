@@ -1,0 +1,31 @@
+#main-container {
+  height: 500px;
+}
+
+
+#status-container {
+  height: 150px;
+}
+
+#text-container {
+  height: 430px;
+}
+
+#sidebar-container {
+  height: 500px;
+  background-color: rgb(173,216,199);
+}
+
+.main-input {
+  height: 400px;
+}
+
+#text-area {
+  height: 400px;
+  font-size: 2em;
+}
+
+#debug-list {
+  z-index: 999;
+}
+

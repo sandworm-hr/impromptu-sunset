@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+ <head>
+   <meta charset="utf-8"/>
+   <title>Impromptu Sunset</title>
+   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+   <link rel="stylesheet" type="text/css" href="styles/styles.css" />
+
+ </head>
+ <body ng-app='app'>
+  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" ui-sref="#">Impromptu Sunset</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a ui-sref="index">Home</a></li>
+        <li><a ui-sref="signup">Signup</a></li>
+        <li><a ui-sref="login">Login</a></li>
+        <li><a ui-sref="profile">Profile</a></li>
+      </ul>
+    </div>
+    </nav>
+  </div>
+
+  <div ui-view>
+  </div>  
+
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="app/index.js"></script>
+  <script src="app/config/config.js"></script>
+  <script src="app/home/HomeController.js"></script>
+ </body>
+</html>
