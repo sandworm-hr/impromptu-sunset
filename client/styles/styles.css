@@ -14,3 +14,11 @@
 #sidebar-container {
   height: 500px;
 }
+
+.main-input {
+  height: 400px;
+}
+
+#text-area {
+  height: 400px;
+}

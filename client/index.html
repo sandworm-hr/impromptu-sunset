@@ -14,7 +14,7 @@
         <a class="navbar-brand" ui-sref="#">Impromptu Sunset</a>
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li><a ui-sref="home">Home</a></li>
+        <li><a ui-sref="index">Home</a></li>
         <li><a ui-sref="signup">Signup</a></li>
         <li><a ui-sref="login">Login</a></li>
         <li><a ui-sref="profile">Profile</a></li>
@@ -22,17 +22,8 @@
     </nav>
   </div>
 
-  <div class="row" id="main-container">
-    <div class="col-sm-9" id="content-container">
-      <div class="col-sm-12" id="status-container">
-      </div>
-      <div class="col-sm-12" id="text-container">
-      </div>
-      <!-- <div ui-view="content"></div> -->
-    </div>
-    <div class="col-sm-3" id="sidebar-container">
-      <!-- <div ui-view="sidebar"></div> -->
-    </div>
+  <div ui-view>
+  </div>  
   </div>
 
   <script src="lib/angular/angular.min.js"></script>
