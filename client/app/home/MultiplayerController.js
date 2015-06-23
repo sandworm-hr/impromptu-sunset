@@ -4,37 +4,39 @@ app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, 
 
   var socket = io.connect('http://localhost');
 
-  $scope.testUsername;
-
-  $scope.testColorIndex;
 
   // stores the users currently logged in for sockets
   $scope.usersCollection = {};
 
+  ////////////////
+  // SOCKETS LOGIC
+  ////////////////
+  
+  // DEBUG data from user input
+  $scope.testUsername;
+  $scope.testColorIndex;
 
+  // uploads user data to server
   $scope.sendUserData = function() {
-    // console.log('trying to send', $scope.testUsername, $scope.testColorIndex)
     socket.emit('postUserUpdate', {username: $scope.testUsername, colorIndex: parseInt($scope.testColorIndex)});
   };
 
-  // when a user update is received
+  // initiates update function when a user has sent their data to the server
   socket.on('getUserUpdate', function(data) {
-    // sends the user to handleUserUpdate
     // NOTE: must use timeout because angular requires time to add the element to the DOM
     $timeout(function() {
       $scope.handleUserUpdate(data);
     }, 1);
   });
 
+  // iniates removal of a user from the userlist, when a user sent their
+  // disconnect signal to the server
   socket.on('userExit', function(user) {
-    // console.log('ready to delete', data.username);
-    // console.log($scope.usersCollection[data.username].username)
-    // delete $scope.usersCollection[data.username].username;
     $scope.handleDeleteUser(user)
   });
 
+  // gets all users currently logged in
   socket.on('allServerUsers', function(data) {
-    console.dir(data);
     for (var key in data) {
       $timeout(function() {
         $scope.handleUserUpdate(data[key]);
@@ -46,28 +48,12 @@ app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, 
   socket.emit('getAllUsers');
 
 
+  // deletes passed in user from the users collection
   $scope.handleDeleteUser = function(user) {
-
-    console.log('about to delete');
-    console.dir(user);
-    var elementId = '#' + user.username + '-user-circle';
-
-    // d3.select(elementId)
-    //       .remove();
-    // debugger;
-    // console.log($scope.usersCollection);
-
     $timeout(function(){
       delete $scope.usersCollection[user.username];
     }, 0);
-
-    // console.log($scope.usersCollection[user.username]);
-
   };
-
-
-
-
 
 
   // takes in an actual score and potential score
@@ -149,7 +135,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, 
     // string to access the user's circle box directly
     var elementId = '#' + user.username + '-user-circle-box';
 
-    // console.log('elementId is', elementId);
     // sets up new circle
     // must be in timeout due to delay in angular for setting up
     // new DOM elements
@@ -160,18 +145,22 @@ app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, 
                             .attr('height', circleBoxWidth)
                             .attr('class', user.username + '-user-circle');
 
-      // console.log(svgContainer);
 
       // adds circle to the new svg
       var circle = svgContainer.append("circle")
                      .attr("cx", circleBoxWidth/2)
                      .attr("cy", circleBoxWidth/2)
-                     .attr("r", circleBoxWidth/2);
+                     .attr("r", circleBoxWidth/2)
+                     .attr('fill', 'rgb(173,216,199)');
+                     
 
       $scope.setColor(user);
     }, 1);
   };
 
+  /////////////
+  // SVG COLOR CIRCLE LOGIC
+  /////////////
 
   // changes color of circle based on passed in user
   // call this when receiving a new event from sockets to update their color
@@ -190,10 +179,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, 
     $timeout(function() {
       var element = d3.select(elementId).selectAll('circle');
 
-      // console.log(element);
-
-
-
       // changes the user's circle color to their passed in color
       element
         .transition().duration(200)
@@ -202,7 +187,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, 
 
     }, 1);
 
-    // console.log($scope.usersCollection);
   };
 
   // DEBUG SECTION
@@ -211,7 +195,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, 
   $scope.handleUserUpdate(user3);
 
   user2.colorIndex = 1;
-  // console.log($scope.usersCollection[1])
 
   $scope.setColor(user2);
 
