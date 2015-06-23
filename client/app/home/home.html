@@ -1,5 +1,5 @@
-<div class="row" id="main-container" ng-controller="HomeController">
-  <div class="col-sm-9" id="content-container">
+<div class="row" id="main-container">
+  <div class="col-sm-9" id="content-container" ng-controller="HomeController">
         
     <div class="col-sm-12" id="status-container">
       <div class="col-sm-1">
@@ -35,5 +35,7 @@
       <textarea id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
     </div>
       <div class="col-sm-3" id="sidebar-container" ng-controller="MultiplayerController">
+      <p>{{message}}</p>
+      <button ng-click="sendUserData()">send user data</button>
       </div>
 </div>
