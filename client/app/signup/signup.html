@@ -1,1 +1,19 @@
-<h3> Hello I am the signup page!</h3>
+<div id='signup' ng-Controller="SignUpController">
+  <h3> Hello I am the signup page!</h3>
+  <form name="signupForm" ng-submit='signupForm.$submitted=true; signup()' novalidate>
+    <input type='text' ng-model='user.username' name='uName' required="" />
+    <div ng-show="signupForm.$submitted || signupForm.uName.$touched">
+      <div ng-show="signupForm.uName.$error.required">Enter a username</div>
+    </div>
+
+    <br />
+    <input type="password" ng-model='user.password' name='uPassword' required="">
+    <div ng-show="signupForm.$submitted || signupForm.uPassword.$touched">
+      <div ng-show="signupForm.uPassword.$error.required">Enter a password</div>
+    </div>
+
+    <br />
+    <button>signup</button>
+  </form>
+  <a ui-sref="login">Already have an account? <strong>Signin</strong> ...</a>
+</div>
