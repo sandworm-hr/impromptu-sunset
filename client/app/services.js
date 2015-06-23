@@ -23,5 +23,33 @@ angular.module('app.services', [])
       return scores;
     };
     return results;
-  });
-  
+  })
+
+  .factory('Users', function ($http) {
+    var login = function(user) {
+      $http({
+        method: 'POST',
+        url: '/api/users/login',
+        data: user
+      })
+      .then(function(response) {
+        console.log(response);
+      });
+    };
+
+    var signUp = function(user) {
+      $http({
+        method: 'POST',
+        url: 'api/users/signup',
+        data: user
+      })
+      .then(function(response) {
+        console.log(response);
+      });
+    };
+
+    return {
+      login: login,
+      signUp: signUp,
+    };
+  })
