@@ -1,8 +1,10 @@
-app.controller('SignUpController', ['$scope', function ($scope) {
-  
-  $scope.signup = function(params) {
-    return;
-  }
+app.controller('SignUpController', ['$scope', 'Users', function ($scope, Users) {
+
+  $scope.user = {};
+
+  $scope.signup = function() {
+    Users.signUp($scope.user)
+  };
 
 }]);
 
