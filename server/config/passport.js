@@ -30,7 +30,7 @@ module.exports.setup = function(app){
         })
         .catch(function(err){
           return done(err);
-        })
+        });
     }
   ));
 
@@ -39,13 +39,12 @@ module.exports.setup = function(app){
   });
 
   passport.deserializeUser(function(user, done) {
-    done(null, user);    
+    done(null, user);
   });
-}
+};
 
 module.exports.authenticate = function(req,res,next){
   return passport.authenticate('local', function (err, user, info) {
-    console.log(info);
     if (err) {
       return next(err);
     }
@@ -53,7 +52,7 @@ module.exports.authenticate = function(req,res,next){
       return res.status(401).send(info);
     }
 
-    req.logIn(user, function(err) {
+    req.login(user, function(err) {
       if (err) return next(err);
       res.status(200).send(user);
       // return res.json({

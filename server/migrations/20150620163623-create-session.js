@@ -8,17 +8,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      duration: {
+      session_time: {
         type: Sequelize.INTEGER
       },
       word_count: {
         type: Sequelize.INTEGER
       },
-      session_data: {
+      scores: {
         type: Sequelize.JSON
       },
       text: {
         type: Sequelize.TEXT
+      },
+      char_count: {
+        type: Sequelize.INTEGER
       },
       UserId: {
         type: Sequelize.INTEGER,
