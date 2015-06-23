@@ -19,6 +19,28 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
   $scope.timer = 0;
 
+  $scope.sessionScore = 0;
+
+  $scope.potentialScoreSoFar = 0;
+
+  $scope.colorIndex;
+
+  // calculates the colorIndex
+  // calculates color based on the quotient between actual and potential
+  // returns a corresponding index between 0 - 10
+  $scope.getRoundedIndex = function(actual, potential) {
+    if (actual > potential) {
+      throw "ERROR: Trying to find quotient when the actual score is higher than potential";
+    }
+
+    var prop = actual / potential;
+
+    console.log(prop);
+    
+    return Math.floor(prop * 10);
+  };
+  
+
   var start;
 
   $scope.setTime = function(event){
@@ -36,6 +58,7 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
   var getScore = function() {
     var score = 10000;
+
     var diff = getTime() - $scope.lastTime;
 
     if (diff > 2000 && diff <= 12000) {
@@ -47,7 +70,12 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
     updateMinute();
 
     $scope.scores[$scope.minute] += score;
+    $scope.sessionScore += score;
     $scope.latestScore = score;
+
+    // updates potential session score so far
+    $scope.potentialScoreSoFar += 10000;
+    $scope.colorIndex = $scope.getRoundedIndex($scope.sessionScore, $scope.potentialScoreSoFar);
   };
 
   var createScoresArray = function(minutes) {
@@ -76,7 +104,7 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
     var duration = parseInt($scope.timerInput);
 
-    if (duration) {
+    if (duration > 0) {
 
       $scope.unsubmitted = false;
 
