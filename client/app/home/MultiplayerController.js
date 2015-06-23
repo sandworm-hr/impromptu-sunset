@@ -54,9 +54,14 @@ app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, 
 
     // d3.select(elementId)
     //       .remove();
+    // debugger;
+    // console.log($scope.usersCollection);
 
-    console.log($scope.usersCollection);
-    delete $scope.usersCollection[user.username];
+    $timeout(function(){
+      delete $scope.usersCollection[user.username];
+    }, 0);
+
+    // console.log($scope.usersCollection[user.username]);
 
   };
 
