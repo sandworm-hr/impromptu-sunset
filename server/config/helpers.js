@@ -1,7 +1,8 @@
 
 module.exports = {
   ensureAuthenticated: function (req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
+    //if (req.isAuthenticated()) { return next(); } // not working for some reason.
+    if(req.session && req.session.passport && req.session.passport.user){ return next(); }
     res.status(401).send("Not Authenticated");
   },
   errorLogger: function (error, req, res, next) {
@@ -17,4 +18,4 @@ module.exports = {
     res.send(500, {error: error.message});
   }
 
-}
+};

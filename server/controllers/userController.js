@@ -21,7 +21,8 @@ module.exports = {
   },
 
   signout: function(req, res, next){
-    req.session.destroy();
+    //req.session.destroy();
+    req.logout();
     res.status(200).send("Successfully Logged Out");
   }
 

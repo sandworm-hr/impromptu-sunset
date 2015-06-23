@@ -1,9 +1,10 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Session = sequelize.define('Session', {
-    duration: DataTypes.INTEGER,
+    session_time: DataTypes.INTEGER,
     word_count: DataTypes.INTEGER,
-    session_data: DataTypes.JSON,
+    scores: DataTypes.JSON,
+    char_count: DataTypes.INTEGER,
     text: DataTypes.TEXT
   }, {
     classMethods: {

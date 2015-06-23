@@ -6,6 +6,7 @@ var helpers = require('./helpers.js');
 module.exports = function(app, express){
   
   var userRouter = express.Router();
+  var sessionRouter = express.Router();
 
   app.use(session({
     secret: 'keep it safe',
@@ -18,14 +19,16 @@ module.exports = function(app, express){
   app.use(express.static(__dirname + '/../../client'));
 
   app.use('/api/users', userRouter);
+  app.use('/api/sessions', sessionRouter);
   app.use(helpers.errorLogger);
   app.use(helpers.errorHandler);
   
   // include the routers
   require('../routes/userRoute.js')(userRouter);
+  require('../routes/sessionRoute.js')(sessionRouter);
 
   
-}
+};
 
 
 
