@@ -25,7 +25,35 @@ angular.module('app.services', [])
     return results;
   })
 
-  .factory('Users', function ($http) {
+  .factory('Session', function(){
+    var session = {};
+    session.create = function (userId, userName) {
+      this.userId = userId;
+      this.username = userName;
+    };
+    session.destroy = function () {
+      this.userId = null;
+      this.username = null;
+    };
+    session.isAuthenticated = function(){
+      return (!!this.userId);
+    };
+
+    return session;
+  })
+
+  .factory('Users', function ($http, Session) {
+    var logout = function() {
+      $http({
+        method: 'GET',
+        url: '/api/users/logout'
+      })
+      .then(function(response) {
+        console.log(response);
+        Session.destroy();
+      });
+    };
+
     var login = function(user) {
       $http({
         method: 'POST',
@@ -34,6 +62,10 @@ angular.module('app.services', [])
       })
       .then(function(response) {
         console.log(response);
+        Session.create(
+          response.data.username, 
+          response.data.id
+        );
       });
     };
 
@@ -45,11 +77,16 @@ angular.module('app.services', [])
       })
       .then(function(response) {
         console.log(response);
+        Session.create(
+          response.data.username, 
+          response.data.id
+        );
       });
     };
 
     return {
       login: login,
       signUp: signUp,
+      logout: logout
     };
   })

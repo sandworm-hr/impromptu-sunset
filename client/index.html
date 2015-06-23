@@ -8,16 +8,17 @@
 
  </head>
  <body ng-app='app'>
-  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+  <nav class="navbar navbar-default navbar-static-top" role="navigation" ng-controller="mainController">
     <div class="container">
       <div class="navbar-header">
         <a class="navbar-brand" ui-sref="#">Impromptu Sunset</a>
       </div>
       <ul class="nav navbar-nav navbar-right">
         <li><a ui-sref="index">Home</a></li>
-        <li><a ui-sref="signup">Signup</a></li>
-        <li><a ui-sref="login">Login</a></li>
-        <li><a ui-sref="profile">Profile</a></li>
+        <li><a ng-hide="isAuthenticated()" ui-sref="signup">Signup</a></li>
+        <li><a ng-hide="isAuthenticated()" ui-sref="login">Login</a></li>
+        <li><a ng-show="isAuthenticated()" ng-click="logout()">Logout</a></li>
+        <li><a ng-show="isAuthenticated()" ui-sref="profile">Profile</a></li>
       </ul>
     </div>
     </nav>
@@ -36,5 +37,6 @@
   <script src="app/results/ResultsController.js"></script>
   <script src="app/login/LoginController.js"></script>
   <script src="app/signup/SignUpController.js"></script>
+  <script src="app/main.js"></script>
  </body>
 </html>
