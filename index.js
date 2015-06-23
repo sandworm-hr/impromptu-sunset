@@ -22,7 +22,8 @@ io.on('connection', function(socket) {
   });
 
   socket.on('postUserUpdate', function(data) {
-    console.log(data);
+    console.log('sending out', data);
+    io.emit('getUserUpdate', data);
   });
 });
 
