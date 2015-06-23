@@ -1,16 +1,15 @@
 <div class="row" id="main-container">
   <div class="col-sm-9" id="content-container" ng-controller="HomeController">
-        
-    <div class="col-sm-12" id="status-container">
-      <div class="col-sm-1">
-        <h4> {{ timerInput }} </h4>
-      </div>
-      <div class="col-sm-5">
-        <div class="input-group" ng-show='unsubmitted'>
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click="startTimer()">Go!</button>
-          </span>
-          <input type="text" class="form-control" ng-model="timerInput" placeholder="How long to write..." ng-enter="startTimer()">
+        <div class="col-sm-12" id="status-container">
+          <div class="col-sm-1">
+            <h4> {{ timerInput }} </h4>
+          </div>
+          <div class="col-sm-5">
+            <div class="input-group" ng-show='unsubmitted'>
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="startTimer()">Go!</button>
+              </span>
+              <input type="text" class="form-control" ng-model="timerInput" placeholder="How long to write..." ng-enter="startTimer()">
         </div>
         <div>
           <h3 ng-show="!(unsubmitted)"> {{ timer }} </h4>
@@ -35,9 +34,21 @@
       <textarea id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
     </div>
       <div class="col-sm-3" id="sidebar-container" ng-controller="MultiplayerController">
-      <p>{{message}}</p>
+        <table class="users-table">
+          <tbody ng-repeat="user in usersCollection">
+            <tr class="user-box" id="{{user.username}}-user-box">
+              <td class="user-circle-box" id="{{user.username}}-user-circle-box">
+              </td>
+              <td class="user-text-box" id="{{user.username}}-user-text-box">
+                <span class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span>
+              </td>
+            </tr>
+          </tbody>
+          </div>
+        </table>
       <button ng-click="sendUserData()">send user data</button>
-      <input ng-model="username" placeholder="username">
-      <input ng-model="colorIndex" placeholder="color index">
+      <input ng-model="testUsername" placeholder="username">
+      <input ng-model="testColorIndex" placeholder="color index">
+      <button ng-click="handleNewUser({username: testUsername, colorIndex: testColorIndex})">bypass</button>
       </div>
 </div>
