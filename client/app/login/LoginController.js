@@ -6,7 +6,4 @@ app.controller('LoginController', ['$scope', 'Users', function ($scope, Users) {
     Users.login($scope.user);
   }
 
-
 }]);
-
-

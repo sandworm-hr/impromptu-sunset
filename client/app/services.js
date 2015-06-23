@@ -1,11 +1,32 @@
 angular.module('app.services', [])
 
-  .factory('Results', function(){
+  .factory('Results', function() {
     var results = {};
-    var duration = 0, text = 'hello world', scores = [0];
-    
+    var duration, text, scores;
+
+    results.getTotalScore = function() {
+      console.log('hi');
+      return _.reduce(scores, function(memo, score) {
+        return memo + score;
+      }, 0);
+    };
+    results.getScoresPerMinute = function() {
+      var result = [];
+      for (var i = 0; i < scores.length; i++) {
+        if (!(i % 60)) result.push(0);
+        result[Math.floor(i / 60)] += scores[i];
+      }
+      return result;
+    };
+    results.getWordCount = function() {
+      return text.split(' ').length;
+    };
+    results.getCharacterCount = function() {
+      return text.length;
+    };
     results.setDuration = function(minutes){
       duration = minutes;
+
     };
     results.setText = function(string) {
       text = string;
@@ -14,6 +35,7 @@ angular.module('app.services', [])
       scores = array;
     };
     results.getDuration = function() {
+      console.log("here");
       return duration;
     };
     results.getText = function() {
@@ -96,3 +118,5 @@ angular.module('app.services', [])
       logout: logout
     };
   })
+
+  .factory()
