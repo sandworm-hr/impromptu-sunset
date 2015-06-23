@@ -1,3 +1,8 @@
+app.factory('Results', function(){
+  var services = {};
+  var duration, text, scores;
+  return 
+});
 
 app.controller('HomeController', ['$scope', '$interval', function($scope, $interval) {
 
@@ -8,6 +13,8 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
   $scope.timerInput = 15;
 
   $scope.scores = [];
+
+  var allScores = [];
 
   $scope.latestScore = 0;
 
@@ -25,6 +32,8 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
   $scope.colorIndex;
 
+  var start;
+
   // calculates the colorIndex
   // calculates color based on the quotient between actual and potential
   // returns a corresponding index between 0 - 10
@@ -35,13 +44,12 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
     var prop = actual / potential;
 
-    console.log(prop);
+    // console.log(prop);
     
     return Math.floor(prop * 10);
   };
   
 
-  var start;
 
   $scope.setTime = function(event){
     $scope.lastTime = event.timeStamp;
@@ -57,13 +65,18 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
   };
 
   var getScore = function() {
+    // How long to wait before score starts to decrease (in ms)
+    var gracePeriod = 1500;
+    // Length of time from end of grace period to score of zero (in ms)
+    var countdown = 8000; 
+       
     var score = 10000;
 
     var diff = getTime() - $scope.lastTime;
 
-    if (diff > 2000 && diff <= 12000) {
-      score -= (diff - 2000);
-    } else if (diff > 12000) {
+    if (diff > gracePeriod && diff <= gracePeriod + countdown) {
+      score -= Math.floor((diff - gracePeriod) * (score / countdown));
+    } else if (diff > gracePeriod + countdown) {
       score = 1;
     }
 
@@ -72,6 +85,9 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
     $scope.scores[$scope.minute] += score;
     $scope.sessionScore += score;
     $scope.latestScore = score;
+
+    allScores.push(score);
+    console.log(score);
 
     // updates potential session score so far
     $scope.potentialScoreSoFar += 10000;

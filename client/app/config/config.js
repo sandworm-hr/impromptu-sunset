@@ -24,6 +24,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
       url: '/profile',
       templateUrl: 'app/profile/profile.html'
     })
+
+    .state('results', {
+      url: '/results',
+      templateUrl: 'app/results/results.html'
+    })
 });
 
 // use ngEnter="action" to trigger starting
