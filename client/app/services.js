@@ -25,22 +25,28 @@ angular.module('app.services', [])
     return results;
   })
 
-  .factory('Session', function(){
+  .factory('Session',['$cookies', '$injector', function ($cookies, $injector) {
+    
+    var user = function(){
+      return($cookies.getObject("user") || {username: "", userId: ""});
+    };
+
     var session = {};
+    session.getUser = function(){
+      return {username: user().username, userId: user().userId};
+    };
     session.create = function (userId, userName) {
-      this.userId = userId;
-      this.username = userName;
+      $cookies.putObject('user', {userId: userId, username: userName});
     };
     session.destroy = function () {
-      this.userId = null;
-      this.username = null;
+      $cookies.remove("user");
     };
     session.isAuthenticated = function(){
-      return (!!this.userId);
+      return (!!user().username);
     };
 
     return session;
-  })
+  }])
 
   .factory('Users', function ($http, Session) {
     var logout = function() {
