@@ -8,7 +8,7 @@
           <div class="col-sm-5">
             <div class="input-group" ng-show='unsubmitted'>
               <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Go!</button>
+                <button class="btn btn-default" type="button" ng-click="startTimer()">Go!</button>
               </span>
               <input type="text" class="form-control" ng-model="timerInput" placeholder="How long to write..." ng-enter="startTimer()">
             </div>
@@ -19,11 +19,17 @@
 
           <!-- DEBUG AREA -->
           <div class="col-sm-5">
-              <p class="debug-text">Start Time: {{ startTime }}</p>
+              <p class="debug-text">Start Time: {{ startTime | date:'shortTime' }}</p>
               <p class="debug-text">Scores: {{ scores }}</p>
               <p class="debug-text">Current Minute: {{ minute }}</p>
               <p class="debug-text">Total Score: {{ totalScore }}</p>
               <p class="debug-text">Timer Input: {{ timerInput }}</p>
+              <p class="debug-text">Session Score: {{ sessionScore }}</p>
+              <p class="debug-text">Potential Score: {{ potentialScoreSoFar }}</p>
+              <p class="debug-text">Color Index: {{ colorIndex }}</p>
+
+
+
           </div>
         </div>
 
