@@ -2,7 +2,7 @@ angular.module('app.services', [])
 
   .factory('Results', function(){
     var results = {};
-    var duration, text, scores;
+    var duration = 0, text = 'hello world', scores = [0];
     
     results.setDuration = function(minutes){
       duration = minutes;

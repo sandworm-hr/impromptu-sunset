@@ -1,7 +1,9 @@
-app.controller('LoginController', ['$scope', '$http', function ($scope, $http) {
+app.controller('LoginController', ['$scope', 'Users', function ($scope, Users) {
 
-  $scope.login = function (params) {
-    return;
+  $scope.user = {};
+
+  $scope.login = function () {
+    Users.login($scope.user);
   }
 
 
