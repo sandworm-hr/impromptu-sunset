@@ -17,7 +17,7 @@
         <li><a ui-sref="index">Home</a></li>
         <li><a ng-hide="isAuthenticated()" ui-sref="signup">Signup</a></li>
         <li><a ng-hide="isAuthenticated()" ui-sref="login">Login</a></li>
-        <li><a ng-show="isAuthenticated()" ng-click="logout()">Logout</a></li>
+        <li><a ng-show="isAuthenticated()" href="#" ng-click="logout()">Logout</a></li>
         <li><a ng-show="isAuthenticated()" ui-sref="profile">Profile</a></li>
       </ul>
     </div>
