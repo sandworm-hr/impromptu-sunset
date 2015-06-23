@@ -8,7 +8,7 @@ module.exports = function(app, express){
   var userRouter = express.Router();
 
   app.use(session({
-    secret: 'a secret',
+    secret: 'keep it safe',
     resave: false,
     saveUninitialized: true
   }));

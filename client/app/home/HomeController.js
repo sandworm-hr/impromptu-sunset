@@ -1,13 +1,40 @@
+app.factory('Results', function(){
+  var services = {};
+  var duration = 0, text = "hello world", scores = [0];
+  
+  services.setDuration = function(minutes){
+    duration = minutes;
+  };
+  services.setText = function(string) {
+    text = string;
+  };
+  services.setScores = function(array) {
+    scores = array;
+  };
+  services.getDuration = function() {
+    return duration;
+  };
+  services.getText = function() {
+    return text;
+  };
+  services.getScores = function() {
+    return scores;
+  };
+  return services;
+});
 
-app.controller('HomeController', ['$scope', '$interval', function($scope, $interval) {
+app.controller('HomeController', ['$scope', '$interval', 'Results', function($scope, $interval, Results) {
 
   $scope.lastTime = 1;
 
   $scope.unsubmitted = true;
+  $scope.gameOver = false;
 
   $scope.timerInput = 15;
 
   $scope.scores = [];
+
+  var allScores = [];
 
   $scope.latestScore = 0;
 
@@ -25,6 +52,8 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
   $scope.colorIndex;
 
+  var start;
+
   // calculates the colorIndex
   // calculates color based on the quotient between actual and potential
   // returns a corresponding index between 0 - 10
@@ -35,13 +64,12 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
     var prop = actual / potential;
 
-    console.log(prop);
+    // console.log(prop);
     
     return Math.floor(prop * 10);
   };
   
 
-  var start;
 
   $scope.setTime = function(event){
     $scope.lastTime = event.timeStamp;
@@ -57,13 +85,18 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
   };
 
   var getScore = function() {
+    // How long to wait before score starts to decrease (in ms)
+    var gracePeriod = 1500;
+    // Length of time from end of grace period to score of zero (in ms)
+    var countdown = 8000; 
+       
     var score = 10000;
 
     var diff = getTime() - $scope.lastTime;
 
-    if (diff > 2000 && diff <= 12000) {
-      score -= (diff - 2000);
-    } else if (diff > 12000) {
+    if (diff > gracePeriod && diff <= gracePeriod + countdown) {
+      score -= Math.floor((diff - gracePeriod) * (score / countdown));
+    } else if (diff > gracePeriod + countdown) {
       score = 1;
     }
 
@@ -72,6 +105,9 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
     $scope.scores[$scope.minute] += score;
     $scope.sessionScore += score;
     $scope.latestScore = score;
+
+    allScores.push(score);
+    console.log(score);
 
     // updates potential session score so far
     $scope.potentialScoreSoFar += 10000;
@@ -102,7 +138,7 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
     if (angular.isDefined(start)) return;
 
-    var duration = parseInt($scope.timerInput);
+    var duration = $scope.timerInput = parseInt($scope.timerInput);
 
     if (duration > 0) {
 
@@ -112,10 +148,14 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
       $scope.startTime = getTime();
       $scope.scores = createScoresArray(duration);
 
+      getScore();
+      $scope.timer = getTimer(getTime() - $scope.startTime);
+
       start = $interval(function() {
         var elapsed = getTime() - $scope.startTime;
         if (checkForEnd(elapsed)) {
           $scope.stopTimer();
+          $scope.showResults();
         } else {
           getScore();
           $scope.timer = getTimer(elapsed);
@@ -132,6 +172,16 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
       $interval.cancel(start);
       start = undefined;
     }
+  };
+
+  $scope.showResults = function() {
+    Results.setDuration($scope.timerInput);
+    console.log(Results.getDuration());
+    Results.setText($scope.textInput);
+    console.log(Results.getText());
+    Results.setScores(allScores);
+    console.log(Results.getScores());
+    $scope.gameOver = true;
   };
 
 }]);

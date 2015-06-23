@@ -1,1 +1,22 @@
-<h3> Hello I am the login page</h3>
+<div id='login' ng-controller="LoginController">
+  <h3> Hello I am the login page</h3>
+  <form name="loginForm" ng-submit='loginForm.$submitted=true; login()' novalidate>
+    <h5>Username:</h5>
+    <input type='text' ng-model='user.username' name="uName" required="" />
+    <div ng-show="loginForm.$submitted || loginForm.uName.$touched">
+      <div ng-show="loginForm.uName.$error.required">Enter your username</div>
+    </div>
+
+    <br />
+    <h5>Password:</h5>
+    <input type="password" ng-model='user.password' name="uPassword" required="" />
+    <div ng-show="loginForm.$submitted || loginForm.uPassword.$touched">
+      <div ng-show="loginForm.uPassword.$error.required">Enter your password</div>
+    </div>
+    
+    <br />
+    <button>Log In</button>
+  </form>
+  <span>{{ error }}</span>
+  <a ui-sref="signup">Don't have an account? <strong>Signup</strong> ...</a>
+</div>
