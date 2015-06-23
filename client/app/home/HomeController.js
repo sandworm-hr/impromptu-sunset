@@ -1,14 +1,34 @@
 app.factory('Results', function(){
   var services = {};
-  var duration, text, scores;
-  return 
+  var duration = 0, text = "hello world", scores = [0];
+  
+  services.setDuration = function(minutes){
+    duration = minutes;
+  };
+  services.setText = function(string) {
+    text = string;
+  };
+  services.setScores = function(array) {
+    scores = array;
+  };
+  services.getDuration = function() {
+    return duration;
+  };
+  services.getText = function() {
+    return text;
+  };
+  services.getScores = function() {
+    return scores;
+  };
+  return services;
 });
 
-app.controller('HomeController', ['$scope', '$interval', function($scope, $interval) {
+app.controller('HomeController', ['$scope', '$interval', 'Results', function($scope, $interval, Results) {
 
   $scope.lastTime = 1;
 
   $scope.unsubmitted = true;
+  $scope.gameOver = false;
 
   $scope.timerInput = 15;
 
@@ -118,7 +138,7 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
 
     if (angular.isDefined(start)) return;
 
-    var duration = parseInt($scope.timerInput);
+    var duration = $scope.timerInput = parseInt($scope.timerInput);
 
     if (duration > 0) {
 
@@ -128,10 +148,14 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
       $scope.startTime = getTime();
       $scope.scores = createScoresArray(duration);
 
+      getScore();
+      $scope.timer = getTimer(getTime() - $scope.startTime);
+
       start = $interval(function() {
         var elapsed = getTime() - $scope.startTime;
         if (checkForEnd(elapsed)) {
           $scope.stopTimer();
+          $scope.showResults();
         } else {
           getScore();
           $scope.timer = getTimer(elapsed);
@@ -148,6 +172,16 @@ app.controller('HomeController', ['$scope', '$interval', function($scope, $inter
       $interval.cancel(start);
       start = undefined;
     }
+  };
+
+  $scope.showResults = function() {
+    Results.setDuration($scope.timerInput);
+    console.log(Results.getDuration());
+    Results.setText($scope.textInput);
+    console.log(Results.getText());
+    Results.setScores(allScores);
+    console.log(Results.getScores());
+    $scope.gameOver = true;
   };
 
 }]);
