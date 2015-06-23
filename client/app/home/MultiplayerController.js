@@ -2,7 +2,7 @@
 app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, $timeout) {
 
 
-  var socket = io.connect('http://localhost');
+  var socket = io.connect('http://localhost:3000');
 
 
   // stores the users currently logged in for sockets
