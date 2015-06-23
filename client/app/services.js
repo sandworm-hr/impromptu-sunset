@@ -25,7 +25,41 @@ angular.module('app.services', [])
     return results;
   })
 
-  .factory('Users', function ($http) {
+  .factory('Session',['$cookies', '$injector', function ($cookies, $injector) {
+    
+    var user = function(){
+      return($cookies.getObject("user") || {username: "", userId: ""});
+    };
+
+    var session = {};
+    session.getUser = function(){
+      return {username: user().username, userId: user().userId};
+    };
+    session.create = function (userId, userName) {
+      $cookies.putObject('user', {userId: userId, username: userName});
+    };
+    session.destroy = function () {
+      $cookies.remove("user");
+    };
+    session.isAuthenticated = function(){
+      return (!!user().username);
+    };
+
+    return session;
+  }])
+
+  .factory('Users', function ($http, Session) {
+    var logout = function() {
+      $http({
+        method: 'GET',
+        url: '/api/users/logout'
+      })
+      .then(function(response) {
+        console.log(response);
+        Session.destroy();
+      });
+    };
+
     var login = function(user) {
       $http({
         method: 'POST',
@@ -34,6 +68,10 @@ angular.module('app.services', [])
       })
       .then(function(response) {
         console.log(response);
+        Session.create(
+          response.data.username, 
+          response.data.id
+        );
       });
     };
 
@@ -45,11 +83,16 @@ angular.module('app.services', [])
       })
       .then(function(response) {
         console.log(response);
+        Session.create(
+          response.data.username, 
+          response.data.id
+        );
       });
     };
 
     return {
       login: login,
       signUp: signUp,
+      logout: logout
     };
   })

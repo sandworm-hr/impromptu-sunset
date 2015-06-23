@@ -9,7 +9,7 @@ module.exports = function (app) {
     passport.authenticate(req,res,next);
   });
   app.post('/signup', userController.signup);
-  app.get('/signout', helpers.ensureAuthenticated, userController.signout);
+  app.get('/logout', helpers.ensureAuthenticated, userController.signout);
   //app.get('/signedin', userController.checkAuth);
 
 };
