@@ -152,6 +152,8 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     // new DOM elements
     $timeout(function() {
       // sets up SVG based on the passed in user
+      d3.select(elementId).html("");
+      
       var svgContainer = d3.select(elementId).append('svg')
                             .attr('width', circleBoxWidth)
                             .attr('height', circleBoxWidth)
