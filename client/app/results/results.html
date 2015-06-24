@@ -1,8 +1,17 @@
 <div ng-controller="ResultsController">
   <h3>Hello world, I am the results page!</h3>
+
+  <div id='graph'>
+    <h4>Graph!</h4>
+  </div>
+
+
+
   <div class="col-sm-5">
-    <button ng-click="sendResultsToServer()">Send Results To Server</button>
-    <p class="debug-text">Duration: {{ duration }}</p>
+    <button ng-click="graphScores();">Scores</button>
+    <button ng-click="graphConsistency();">Consistency</button>
+    <button ng-click="saveResults();">Save Results</button>
+<!--     <p class="debug-text">Duration: {{ duration }}</p>
     <p class="debug-text">Scores: {{ scores }}</p>
     <p class="debug-text">Raw Text: {{ rawText }}</p>
     <p class="debug-text">Minute Scores: {{ minuteScores }}</p>
@@ -12,44 +21,11 @@
     <p class="debug-text">Characters Per Minute: {{ cpm }}</p>
     <p class="debug-text">Total Score: {{ total }}</p>
     <p class="debug-text">Possible Score: {{ possible }}</p>
-    <p class="debug-text">Consistency Percentage: {{ consistency + "%" }}</p>
+    <p class="debug-text">Consistency Percentage: {{ consistency + "%" }}</p> -->
 
   </div>
 
 
-
-  <!-- <div id='graph'> -->
-    <!-- <h4>Code for eventual d3 graph</h4> -->
-  <!-- </div> -->
-  <script>
-    // var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    //   width = 960 - margin.left - margin.right,
-    //   height = 500 - margin.top - margin.bottom;
-
-    // var x = d3.scale.linear()
-    //   .range([0, width]);
-
-    // var y = d3.scale.linear()
-    //   .range([height, 0]);
-
-    // var xAxis = d3.svg.axis()
-    //   .scale(x)
-    //   .orient("bottom");
-
-    // var yAxis = d3.svg.axis()
-    //   .scale(y)
-    //   .orient("left");
-
-    // var line = d3.svg.line()
-    //   .x(function(d) { return x(d.close); })
-    //   .y(function(d) { return y(d.close); });
-
-    // var svg = d3.select("#graph").append("svg")
-    //   .attr("width", width + margin.left + margin.right)
-    //   .attr("height", height + margin.top + margin.bottom)
-    // .append("g")
-    //   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-  </script>
 
 
 </div>
