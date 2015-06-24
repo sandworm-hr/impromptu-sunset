@@ -30,17 +30,25 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', function($sc
 
   var start;
 
+  var latestScores = [];
+
   // calculates the colorIndex
   // calculates color based on the quotient between actual and potential
   // returns a corresponding index between 0 - 10
-  $scope.getRoundedIndex = function(actual, potential) {
-    if (actual > potential) {
-      throw "ERROR: Trying to find quotient when the actual score is higher than potential";
-    }
+  $scope.getRoundedIndex = function(scores, seconds, maxScore) {
+    // if (actual > potential) {
+    //   throw "ERROR: Trying to find quotient when the actual score is higher than potential";
+    // }
+
+    var actual = _.reduce(scores, function(memo, score){
+      return memo + score;
+    }, 0);
+
+    var potential = seconds * maxScore;
 
     var prop = actual / potential;
 
-    // console.log(prop);
+    console.log(prop);
     
     return Math.floor(prop * 10);
   };
@@ -65,6 +73,8 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', function($sc
     var gracePeriod = 1500;
     // Length of time from end of grace period to score of zero (in ms)
     var countdown = 8000; 
+    // Number of scores to average for calculating color index
+    var interval = 30; 
        
     var score = 10000;
 
@@ -87,7 +97,12 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', function($sc
 
     // updates potential session score so far
     $scope.potentialScoreSoFar += 10000;
-    $scope.colorIndex = $scope.getRoundedIndex($scope.sessionScore, $scope.potentialScoreSoFar);
+
+    latestScores.push(score);
+    if (latestScores.length > interval) {
+      latestScores.shift();
+    }
+    $scope.colorIndex = $scope.getRoundedIndex(latestScores, interval, score);
   };
 
   var createScoresArray = function(minutes) {
