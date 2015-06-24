@@ -1,3 +1,4 @@
+require('dotenv').load();
 var app = require('./server/server.js');
 
 var http = require('http').Server(app);
