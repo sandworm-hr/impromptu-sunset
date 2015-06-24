@@ -132,16 +132,28 @@ angular.module('app.services', [])
     };
 
     var login = function(user) {
-      $http({
+      var message;
+
+      return $http({
         method: 'POST',
         url: '/api/users/login',
         data: user
       })
-      .then(function(response) {
+      .success(function(data, status, headers, config) {
+        console.log('data', data);
+        console.log('status', status);
+        console.log('headers', headers);
+        console.log('config', config);
         Session.create(
-          response.data.id,
-          response.data.username
+          data.id,
+          data.username
         );
+      }).error(function(data, status, headers, config) {
+        console.log('data', data);
+        console.log('status', status);
+        console.log('headers', headers);
+        console.log('config', config);
+        message = data.message;
       });
     };
 
@@ -158,6 +170,7 @@ angular.module('app.services', [])
         );
       });
     };
+
 
     return {
       login: login,

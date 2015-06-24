@@ -2,8 +2,10 @@ app.controller('LoginController', ['$scope', 'Users', function ($scope, Users) {
 
   $scope.user = {};
 
+  $scope.message;
+
   $scope.login = function () {
-    Users.login($scope.user);
+    $scope.message = Users.login($scope.user);
   };
 
 }]);
