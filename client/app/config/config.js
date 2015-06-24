@@ -8,7 +8,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
     .state('index', {
       url: '/index',
-      templateUrl: '/app/home/home.html'
+      templateUrl: '/app/home/home.html',
+      authenticate: true
     })
 
     .state('signup', {
@@ -23,7 +24,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
     .state('profile', {
       url: '/profile',
-      templateUrl: 'app/profile/profile.html'
+      templateUrl: 'app/profile/profile.html',
+      authenticate: true
     })
 
     .state('results', {
@@ -32,45 +34,16 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     })
 })
 .run(['$http', '$rootScope','$cookies','$state','Session', function($http, $rootScope, $cookies,$state,Session) {
-
-    var statesThatDontRequireAuth = ['login', 'signup'];
-    var statesThatRequireNoAuth = ['login', 'signup'];
-
-    //check if route requires no auth
-    var stateNoAuth = function(state) {
-        for (var element in statesThatRequireNoAuth) {
-            var input = statesThatRequireNoAuth[element];
-            if (state.substring(0, input.length) == input)
-                return true;
-        }
-        return false;
-    }
-
-    // check if route does not require authentication
-    var routeClean = function(state) {
-        for (var element in statesThatDontRequireAuth) {
-            var input = statesThatDontRequireAuth[element];
-            if (state.substring(0, input.length) == input)
-                return true
-        }
-        return false;
-    }
-
-
     $rootScope.$on('$stateChangeStart', function(ev, to, toParams, from, fromParams) {
-
-        var result= Session.isAuthenticated();
-        
-        if (!routeClean(to.name) && result == false ) // user not logged in trying to access a page that needs authentication.
+        var result= Session.isAuthenticated();        
+        if (to && to.authenticate && result == false ) // user not logged in trying to access a page that needs authentication.
         {
-            console.log("not logged in!!");
             ev.preventDefault();
             $state.go("login");
-        } else if (stateNoAuth(to.name)  && result == true) { //logged in but going to not logged in page
+        } else if (!to.authenticate  && result == true) { //logged in but going to not logged in page
             ev.preventDefault();
             $state.go("index"); 
         } 
-
     });
 }]);
 
