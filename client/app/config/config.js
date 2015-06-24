@@ -9,7 +9,6 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     .state('index', {
       url: '/index',
       templateUrl: '/app/home/home.html',
-      authenticate: true
     })
 
     .state('signup', {
