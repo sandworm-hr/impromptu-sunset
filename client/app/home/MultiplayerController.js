@@ -47,11 +47,11 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     $scope.handleDeleteUser(user)
   });
 
-  // gets all users currently logged in
+  // gets the array of all users currently logged in
   socket.on('allServerUsers', function(data) {
-    for (var key in data) {
+    for (var i = 0; i < data.length; i++) {
       $timeout(function() {
-        $scope.handleUserUpdate(data[key]);
+        $scope.handleUserUpdate(data[i]);
       }, 1)
     }
   });
