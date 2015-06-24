@@ -15,6 +15,7 @@ module.exports = {
   },
 
   newSession: function(req, res, next){
+    console.log("REQUEST BODY ",req.body.word_count);
     var scores = req.body.scores;
     var word_count = req.body.word_count;
     var session_time = req.body.session_time;
@@ -22,7 +23,9 @@ module.exports = {
     var text = req.body.text;
     // create a new session for the authenticated user.
     var userid = req.session.passport.user.id;
+    // console.log("USERRRRRRR", userid);
     db.User.findById(userid).then(function(user){
+      console.log()
       var s = db.Session.build({
         session_time: session_time, 
         word_count: word_count,
@@ -30,6 +33,7 @@ module.exports = {
         text: text,
         char_count: char_count
       });
+      // console.log("SESSION ISSS", s);
       user.addSessions(s).then(function(x){
         res.status(201).send("Session Created");
       }).catch(function(err){

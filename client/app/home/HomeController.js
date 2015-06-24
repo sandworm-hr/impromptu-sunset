@@ -184,4 +184,49 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', function($sc
     $scope.gameOver = true;
   };
 
+  $scope.makeDebugResults = function() {
+
+    var getRandomInt = function (min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    var valuesObj = {};
+
+    valuesObj.session_time = getRandomInt(1, 15);
+    valuesObj.scores = [];
+    valuesObj.text = "Hello I am the raw text";
+    valuesObj.minuteScores = [];
+    valuesObj.wpm = getRandomInt(30, 120);
+    valuesObj.cpm = getRandomInt(40, 200);
+    valuesObj.total = getRandomInt(1000, valuesObj.session_time*600000);
+    valuesObj.possible = valuesObj.session_time * 60 * 10000;
+    valuesObj.consistency = getRandomInt(0, 11) / 10;
+    valuesObj.word_count = valuesObj.wpm * valuesObj.session_time;
+    valuesObj.char_count = valuesObj.cpm * valuesObj.session_time;
+
+    // $scope._results.scores = Results.getScores();
+    // $scope._results.rawText = Results.getText();
+    // $scope._results.minuteScores = Results.getScoresPerMinute();
+    // $scope._results.wordCount = Results.getWordCount();
+    // $scope._results.charCount = Results.getCharacterCount();
+    // $scope._results.wpm = $scope.wordCount / $scope.session_time;
+    // $scope._results.cpm = $scope.charCount / $scope.session_time;
+    // $scope._results.total = Results.getTotalScore();
+    // $scope._results.possible = $scope.session_time * 60 * 10000;
+    // $scope._results.consistency = $scope.total / $scope.possible;
+
+    // generates random scores for each second
+    for (var i = 0; i < valuesObj.session_time*60; i++) {
+      var randomScore = getRandomInt(0, 100000);
+      valuesObj.scores.push(randomScore);
+    }
+    // generates random scores for each minute
+    for (var i = 0; i < valuesObj.session_time; i++) {
+      var randomScore = getRandomInt(0, 60*10000);
+      valuesObj.minuteScores.push(randomScore);
+    }
+
+    Results.postResults(valuesObj);
+  };
+
 }]);
