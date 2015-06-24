@@ -231,8 +231,14 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
       var randomScore = getRandomInt(0, 60*10000);
       valuesObj.minuteScores.push(randomScore);
     }
+    
+    Results.setDuration(valuesObj.session_time);
+    Results.setText(valuesObj.text);
+    Results.setScores(valuesObj.scores);
+    $scope.gameOver = true;
 
-    Results.postResults(valuesObj);
+
+    // Results.postResults(valuesObj);
   };
 
 }]);
