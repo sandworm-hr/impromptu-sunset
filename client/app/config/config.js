@@ -40,7 +40,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
         {
             ev.preventDefault();
             $state.go("login");
-        } else if (!to.authenticate  && result == true) { //logged in but going to not logged in page
+        } else if ((to.name==="login" || to.name==="signup")  && result == true) { //logged in but going to not logged in page
             ev.preventDefault();
             $state.go("index"); 
         } 
