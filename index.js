@@ -35,6 +35,8 @@ io.on('connection', function(socket) {
   socket.on('disconnect', function() {
     // send the client the user object so they know to delete it
     io.emit('userExit', allUsers[socket.id]);
+    // remove the user from the server users collection
+    delete allUsers[socket.id];
   });
 
   // when a user sends an update event
