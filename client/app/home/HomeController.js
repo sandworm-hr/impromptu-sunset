@@ -117,7 +117,8 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
       latestScores.shift();
     }
     $scope.colorIndex = $scope.getRoundedIndex(latestScores, seconds, maxScore);
-    
+
+    // set the shared color index value for the multiplayer controller to pick up
     ColorIndexService.set($scope.colorIndex);
 
   };

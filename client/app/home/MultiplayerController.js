@@ -27,10 +27,10 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
 
-    console.log('trying to send to sockets', username, colorIndex)
     socket.emit('postUserUpdate', {username: username, colorIndex: colorIndex});
   };
 
+  // every second, send the user's username and color index
   $interval($scope.sendUserData, 1000)
 
   // initiates update function when a user has sent their data to the server
