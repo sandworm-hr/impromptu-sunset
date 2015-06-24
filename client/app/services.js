@@ -140,19 +140,22 @@ angular.module('app.services', [])
         data: user
       })
       .success(function(data, status, headers, config) {
-        console.log('data', data);
-        console.log('status', status);
-        console.log('headers', headers);
-        console.log('config', config);
+        // console.log('login was a success');
+        // console.log('data', data);
+        // console.log('status', status);
+        // console.log('headers', headers);
+        // console.log('config', config);
         Session.create(
           data.id,
           data.username
         );
       }).error(function(data, status, headers, config) {
-        console.log('data', data);
-        console.log('status', status);
-        console.log('headers', headers);
-        console.log('config', config);
+        console.log('login was a failure');
+
+        // console.log('data', data);
+        // console.log('status', status);
+        // console.log('headers', headers);
+        // console.log('config', config);
         message = data.message;
       });
     };

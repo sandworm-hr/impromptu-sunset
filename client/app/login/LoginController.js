@@ -4,8 +4,14 @@ app.controller('LoginController', ['$scope', 'Users', function ($scope, Users) {
 
   $scope.message;
 
-  $scope.login = function () {
-    $scope.message = Users.login($scope.user);
+  $scope.processLogin = function () {
+    Users.login($scope.user)
+      .then(function(data) {
+      console.log('login was successful', data);
+      })
+      .catch(function(error) {
+        $scope.message = error.data.message;
+      });
   };
 
 }]);
