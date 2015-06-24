@@ -1,6 +1,16 @@
 
 app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($scope, $timeout, Results) {
 
+    var margin = {top: 20, right: 20, bottom: 30, left: 50},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+    var svg = d3.select("#graph").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("class", "graph")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");    
 
     $scope.duration = Results.getDuration();
     $scope.scores = Results.getScores();
@@ -37,14 +47,43 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
         return result;
     };
 
+    var removeGraph = function() {
+
+      $timeout(function() {
+        console.log('removing graph');
+
+        var graph = d3.select("svg").select(".graph");
+
+        console.log(graph);
+
+        graph.select('g.horizontal')
+          .transition()
+            .duration(1500)
+            .attr("transform", "translate(" + width + "," + height + ")")
+            .style("fill-opacity", 1e-6)
+            .style("stroke-opacity", 1e-6)
+            .remove();
+        
+        graph.select('g.vertical')
+          .transition()
+            .duration(1500)
+            .attr("transform", "translate(0," + height + ")")
+            .style("fill-opacity", 1e-6)
+            .style("stroke-opacity", 1e-6)
+            .remove();
+
+        graph.select('path.line')
+          .transition()
+            .duration(1500)
+            .attr("transform", "translate(" + width + ", 0)")
+            .style("stroke-opacity", 1e-6)
+            .remove();
+      }, 1);
+
+    }
 
 
-
-    var createGraph = function(dataArray) {
-
-        var margin = {top: 20, right: 20, bottom: 30, left: 50},
-          width = 960 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
+    var createGraph = function(dataArray, yLabel) {
 
         var x = d3.scale.linear()
           .range([0, width]);
@@ -71,37 +110,49 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
 
         $timeout(function() {
             console.log('appending svg');
-            var svg = d3.select("#graph").append("svg")
-              .attr("width", width + margin.left + margin.right)
-              .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
           
             svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+                .attr("class", "x axis horizontal")
+                .transition()
+                  .duration(1500)
+                  .attr("transform", "translate(0," + height + ")")
+                  .call(xAxis);
 
             svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis)
-              .append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text("Consistency Score");
+                .transition()
+                  .duration(1500)
+                  .attr("class", "y axis vertical")
+                  .call(yAxis);
+
+            svg.select(".vertical").append("text")
+                .transition()
+                  .duration(1500)
+                  .attr("class", "y label")
+                  .attr("transform", "rotate(-90)")
+                  .attr("y", 6)
+                  .attr("dy", ".71em")
+                  .style("text-anchor", "end")
+                  .text(yLabel);
 
             svg.append("path")
-                .datum(data)
-                .attr("class", "line")
+              .datum(data)
+              .attr("class", "line")
+              .transition()
+                .duration(1500)
+                // .style("stroke-opacity", 1e-6)
+                .style("stroke-opacity", 1)
                 .attr("d", line);
 
         }, 1);
-    }
+    };
+
+    createGraph($scope.scores, "Score");
 
     $scope.graphScores = function() {
-      createGraph($scope.scores);
+      removeGraph();
+      $timeout(function(){
+        createGraph($scope.scores, "Score");
+      }, 2000);
     };
 
 
@@ -113,8 +164,11 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
         data.push((memo/potential) * 100);
         return memo;
       }, 0);
-      console.log(data);
-
+    
+      removeGraph();
+      $timeout(function(){
+        createGraph(data, "Consistency");
+      }, 2000);
     };
 
   // $scope.debugSendValues = function(valuesObj) {
