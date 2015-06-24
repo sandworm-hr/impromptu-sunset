@@ -59,15 +59,15 @@ app.controller('MultiplayerController', ['$scope', '$timeout', function($scope, 
   // takes in an actual score and potential score
   // calculates color based on the quotient between actual and potential
   // returns a corresponding index between 0 - 10
-  var getRoundedIndex = function(actual, potential) {
-    if (actual > potential) {
-      throw "ERROR: Trying to find quotient when the actual score is higher than potential";
-    }
+  // var getRoundedIndex = function(actual, potential) {
+  //   if (actual > potential) {
+  //     throw "ERROR: Trying to find quotient when the actual score is higher than potential";
+  //   }
 
-    var prop = actual / potential;
+  //   var prop = actual / potential;
     
-    return Math.floor(prop * 10) / 10;
-  };
+  //   return Math.floor(prop * 10) / 10;
+  // };
   
   ////////////
   // colors for red <-> yellow <-> green

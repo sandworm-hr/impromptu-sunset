@@ -36,19 +36,28 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', function($sc
   // calculates color based on the quotient between actual and potential
   // returns a corresponding index between 0 - 10
   $scope.getRoundedIndex = function(scores, seconds, maxScore) {
-    // if (actual > potential) {
-    //   throw "ERROR: Trying to find quotient when the actual score is higher than potential";
-    // }
 
-    var actual = _.reduce(scores, function(memo, score){
+    console.log("the scores are: ", scores);
+    console.log("the number of scores is: ", scores.length);
+
+    console.log("the number of seconds is: ", seconds);
+    console.log("the maximum score is: ", maxScore);
+
+    var actual = 0;
+
+    actual += _.reduce(scores, function(memo, score){
       return memo + score;
     }, 0);
 
     var potential = seconds * maxScore;
 
+    if (actual > potential) {
+      console.log("ERROR: Trying to find quotient when the actual score is higher than potential");
+    }
+
     var prop = actual / potential;
 
-    console.log(prop);
+    console.log(Math.floor(prop * 10));
     
     return Math.floor(prop * 10);
   };
@@ -72,14 +81,16 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', function($sc
     // How long to wait before score starts to decrease (in ms)
     var gracePeriod = 1500;
     // Length of time from end of grace period to score of zero (in ms)
-    var countdown = 8000; 
+    var countdown = 4000; 
     // Number of scores to average for calculating color index
-    var interval = 30; 
+    var interval = 10; 
+    // Maximum score per second
+    var maxScore = 10000;
        
-    var score = 10000;
+    var score = maxScore;
 
     var diff = getTime() - $scope.lastTime;
-
+    
     if (diff > gracePeriod && diff <= gracePeriod + countdown) {
       score -= Math.floor((diff - gracePeriod) * (score / countdown));
     } else if (diff > gracePeriod + countdown) {
@@ -93,16 +104,17 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', function($sc
     $scope.latestScore = score;
 
     allScores.push(score);
-    console.log(score);
 
-    // updates potential session score so far
-    $scope.potentialScoreSoFar += 10000;
-
+    
     latestScores.push(score);
+
+    var seconds = latestScores.length <= interval ? latestScores.length : interval;
+
     if (latestScores.length > interval) {
       latestScores.shift();
     }
-    $scope.colorIndex = $scope.getRoundedIndex(latestScores, interval, score);
+    $scope.colorIndex = $scope.getRoundedIndex(latestScores, seconds, maxScore);
+
   };
 
   var createScoresArray = function(minutes) {
