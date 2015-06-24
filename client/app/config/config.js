@@ -33,19 +33,21 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       templateUrl: 'app/results/results.html'
     })
 })
-// .run(['$http', '$rootScope','$cookies','$state','Session', function($http, $rootScope, $cookies,$state,Session) {
-//     $rootScope.$on('$stateChangeStart', function(ev, to, toParams, from, fromParams) {
-//         var result= Session.isAuthenticated();        
-//         if (to && to.authenticate && result == false ) // user not logged in trying to access a page that needs authentication.
-//         {
-//             ev.preventDefault();
-//             $state.go("login");
-//         } else if (!to.authenticate  && result == true) { //logged in but going to not logged in page
-//             ev.preventDefault();
-//             $state.go("index"); 
-//         } 
-//     });
-// }]);
+
+.run(['$http', '$rootScope','$cookies','$state','Session', function($http, $rootScope, $cookies,$state,Session) {
+    $rootScope.$on('$stateChangeStart', function(ev, to, toParams, from, fromParams) {
+        var result= Session.isAuthenticated();        
+        if (to && to.authenticate && result == false ) // user not logged in trying to access a page that needs authentication.
+        {
+            ev.preventDefault();
+            $state.go("login");
+        } else if ((to.name==="login" || to.name==="signup")  && result == true) { //logged in but going to not logged in page
+            ev.preventDefault();
+            $state.go("index"); 
+        } 
+    });
+}]);
+
 
         
 // use ngEnter="action" to trigger starting
