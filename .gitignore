@@ -31,3 +31,5 @@ client/lib
 
 # DS Store
 .DS_Store
+
+.env
