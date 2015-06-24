@@ -1,27 +1,3 @@
-app.factory('Results', function(){
-  var services = {};
-  var duration = 0, text = "hello world", scores = [0];
-  
-  services.setDuration = function(minutes){
-    duration = minutes;
-  };
-  services.setText = function(string) {
-    text = string;
-  };
-  services.setScores = function(array) {
-    scores = array;
-  };
-  services.getDuration = function() {
-    return duration;
-  };
-  services.getText = function() {
-    return text;
-  };
-  services.getScores = function() {
-    return scores;
-  };
-  return services;
-});
 
 app.controller('HomeController', ['$scope', '$interval', 'Results', function($scope, $interval, Results) {
 
@@ -176,11 +152,8 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', function($sc
 
   $scope.showResults = function() {
     Results.setDuration($scope.timerInput);
-    console.log(Results.getDuration());
     Results.setText($scope.textInput);
-    console.log(Results.getText());
     Results.setScores(allScores);
-    console.log(Results.getScores());
     $scope.gameOver = true;
   };
 
