@@ -223,7 +223,7 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
     // generates random scores for each second
     for (var i = 0; i < valuesObj.session_time*60; i++) {
-      var randomScore = getRandomInt(0, 100000);
+      var randomScore = getRandomInt(0, 10000);
       valuesObj.scores.push(randomScore);
     }
     // generates random scores for each minute
