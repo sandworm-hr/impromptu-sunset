@@ -27,4 +27,20 @@ describe("User Model", function(){
       console.log("ERROR ", x);
     });
   });
+
+  it("should not allow the same username", function(done){
+      var a = db.User.build({username: "username2", password: "password"});
+      a.save().then(function(x){
+        var b = db.User.build({username: "username2", password: "password"});
+        b.save().catch(function(x){
+          expect(x.name).toEqual("SequelizeValidationError");
+          done();
+        });
+      }).catch(function(x){
+        console.log("ERROR ", x);
+      });
+    
+  });
+
+
 });

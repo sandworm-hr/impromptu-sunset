@@ -3,6 +3,24 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    env : {
+        options : {
+        //Shared Options Hash
+        },
+        test : {
+          NODE_ENV : 'test',
+        },
+    },
+
+    jasmine_nodejs: {
+      your_target: {
+        // spec files
+        specs: [
+            "spec/server/**",
+        ]
+      }
+    },
+
     nodemon: {
       dev: {
         script: 'index.js'
@@ -23,6 +41,8 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-jasmine-nodejs');
+  grunt.loadNpmTasks('grunt-env');
 
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
@@ -39,7 +59,7 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
-
+  grunt.registerTask('test', ['env:test','jasmine_nodejs']);
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       grunt.task.run([ 'shell:prodServer' ]);
