@@ -1,23 +1,25 @@
 <div id="login-container" class="container" ng-controller="LoginController">
-  <form name="loginForm" ng-submit="processLogin()">
-    <h4> Hello I am the login page</h4>
-    <h4>Username</h4>
-      <input type="text" ng-model="user.username" name="usernameInput" required/>
-      <ng-messages for="loginForm.usernameInput.$error" ng-if="loginForm.usernameInput.$dirty">
-        <ng-message when="required" class="error">
-          Enter a username
-        </ng-message>
-      </ng-messages>
-    <h4>Password</h4>
-      <input type="text" ng-model="user.password" name="passwordInput" required/>
-      <ng-messages for="loginForm.passwordInput.$error" ng-if="loginForm.passwordInput.$dirty">
-        <ng-message when="required" class="error">
-          Enter a password
-        </ng-message>
-      </ng-messages>
-    <button>Login</button>
-  </form>
-  <h3 class="error"> {{ message }} </h2>
+  <div class="col-sm-6 col-sm-offset-4">
+    <form name="loginForm" ng-submit="processLogin()" class="form-signin">
+      <h2 class="form-login-heading">Please sign in</h4>
+      <label for="usernameInput" class="sr-only">Username</label>
+        <input type="text" ng-model="user.username" name="usernameInput" placeholder="Username"required autofocus/>
+        <ng-messages for="loginForm.usernameInput.$error" ng-if="loginForm.usernameInput.$dirty">
+          <ng-message when="required" class="error">
+            Enter a username
+          </ng-message>
+        </ng-messages>
+      <label for="passwordInput" class="sr-only">Password</label>
+        <input type="text" ng-model="user.password" name="passwordInput" placeholder="Password" required/>
+        <ng-messages for="loginForm.passwordInput.$error" ng-if="loginForm.passwordInput.$dirty">
+          <ng-message when="required" class="error">
+            Enter a password
+          </ng-message>
+        </ng-messages>
+      <button>Login</button>
+    </form>
+  <h3 class="error"> {{ message }} </h3>
   <a ui-sref="signup">Don't have an account? <strong>Signup</strong> ...</a>
+  </div>
 </div>
 
