@@ -1,13 +1,15 @@
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
+  $httpProvider.interceptors.push('sessionInjector');
   $urlRouterProvider.otherwise('/index');
 
   $stateProvider
 
     .state('index', {
       url: '/index',
-      templateUrl: '/app/home/home.html'
+      templateUrl: '/app/home/home.html',
+      authenticate: true
     })
 
     .state('signup', {
@@ -22,15 +24,30 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
     .state('profile', {
       url: '/profile',
-      templateUrl: 'app/profile/profile.html'
+      templateUrl: 'app/profile/profile.html',
+      authenticate: true
     })
 
     .state('results', {
       url: '/results',
       templateUrl: 'app/results/results.html'
     })
-});
+})
+.run(['$http', '$rootScope','$cookies','$state','Session', function($http, $rootScope, $cookies,$state,Session) {
+    $rootScope.$on('$stateChangeStart', function(ev, to, toParams, from, fromParams) {
+        var result= Session.isAuthenticated();        
+        if (to && to.authenticate && result == false ) // user not logged in trying to access a page that needs authentication.
+        {
+            ev.preventDefault();
+            $state.go("login");
+        } else if (!to.authenticate  && result == true) { //logged in but going to not logged in page
+            ev.preventDefault();
+            $state.go("index"); 
+        } 
+    });
+}]);
 
+        
 // use ngEnter="action" to trigger starting
 app.directive('ngEnter', function () {
     return function (scope, element, attrs) {
