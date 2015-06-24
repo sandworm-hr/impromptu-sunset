@@ -1,16 +1,18 @@
 angular.module('app.services', [])
 
-  .factory('Results', function() {
+  .factory('Results', ['$http', function($http) {
     var results = {};
     var duration, text, scores;
 
-    results.getTotalScore = function() {
+    var funcs = {};
+
+    funcs.getTotalScore = function() {
       console.log('hi');
       return _.reduce(scores, function(memo, score) {
         return memo + score;
       }, 0);
     };
-    results.getScoresPerMinute = function() {
+    funcs.getScoresPerMinute = function() {
       var result = [];
       for (var i = 0; i < scores.length; i++) {
         if (!(i % 60)) result.push(0);
@@ -18,34 +20,46 @@ angular.module('app.services', [])
       }
       return result;
     };
-    results.getWordCount = function() {
+    funcs.getWordCount = function() {
       return text.split(' ').length;
     };
-    results.getCharacterCount = function() {
+    funcs.getCharacterCount = function() {
       return text.length;
     };
-    results.setDuration = function(minutes){
+    funcs.setDuration = function(minutes){
       duration = minutes;
 
     };
-    results.setText = function(string) {
+    funcs.setText = function(string) {
       text = string;
     };
-    results.setScores = function(array) {
+    funcs.setScores = function(array) {
       scores = array;
     };
-    results.getDuration = function() {
+    funcs.getDuration = function() {
       console.log("here");
       return duration;
     };
-    results.getText = function() {
+    funcs.getText = function() {
       return text;
     };
-    results.getScores = function() {
+    funcs.getScores = function() {
       return scores;
     };
-    return results;
-  })
+
+    // DEBUG FUNCS
+    funcs.postResults = function(valuesObj) {
+      $http({
+        method: 'POST',
+        url: '/api/sessions',
+        data: valuesObj
+      })
+      .then(function(response) {
+        console.log(response);
+      });
+    };
+    return funcs;
+  }])
 
   .factory('Session',['$cookies', '$injector', function ($cookies, $injector) {
     
