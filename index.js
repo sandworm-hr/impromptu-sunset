@@ -1,4 +1,9 @@
-require('dotenv').load();
+if(process.env.NODE_ENV && process.env.NODE_ENV === "production"){
+  console.log(process.env.DATABASE_URL);
+} else {
+  require('dotenv').load();
+}
+
 var app = require('./server/server.js');
 
 var http = require('http').Server(app);
