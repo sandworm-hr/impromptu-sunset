@@ -1,1 +1,25 @@
-<h3> Hello I am the profile page</h3>
+<div class="container" id='profile' ng-controller="ProfileController">
+    <h3> Hello I am the profile page</h3>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <th>Session Time</th>
+          <th>Word Count</th>
+          <th>Character Count</th>
+          <th>Text</th>
+          <th>Scores</th>
+          <th>Created At</th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="session in sessions">
+            <td>{{session.session_time}}</td>
+            <td>{{session.word_count}}</td>
+            <td>{{session.char_count}}</td>
+            <td>{{session.text}}</td>
+            <td>{{session.scores}}</td>
+            <td>{{session.createdAt}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>

@@ -59,9 +59,14 @@ angular.module('app.services', [])
     };
     session.create = function (userId, userName) {
       $cookies.putObject('user', {userId: userId, username: userName});
+      var $state = $injector.get('$state');
+      $state.go('index');
     };
     session.destroy = function () {
       $cookies.remove("user");
+      // also redirect to sign in page
+      var $state = $injector.get('$state');
+      $state.go('login');
     };
     session.isAuthenticated = function(){
       return (!!user().username);
@@ -70,6 +75,37 @@ angular.module('app.services', [])
     return session;
   }])
 
+  .factory('sessionInjector', ['Session','$q', function(Session, $q) {
+    var sessionInjector = {
+      responseError: function(rejection) {
+
+        if (rejection.status == 401) {
+            // remove the cookie if it exists.
+            Session.destroy(); 
+        }
+
+        return $q.reject(rejection);
+      }
+    };
+    return sessionInjector;
+  }])
+
+  .factory('Sessions', function($http){
+    var getSessions = function(callback){
+      $http({
+        method: 'GET',
+        url: '/api/sessions'
+      })
+      .then(function(response) {
+        callback(response.data);
+      });
+    };
+
+    return{
+      getSessions: getSessions
+    };
+  })
+
   .factory('Users', function ($http, Session) {
     var logout = function() {
       $http({
@@ -77,7 +113,6 @@ angular.module('app.services', [])
         url: '/api/users/logout'
       })
       .then(function(response) {
-        console.log(response);
         Session.destroy();
       });
     };
@@ -89,10 +124,9 @@ angular.module('app.services', [])
         data: user
       })
       .then(function(response) {
-        console.log(response);
         Session.create(
-          response.data.username, 
-          response.data.id
+          response.data.id,
+          response.data.username
         );
       });
     };
@@ -104,10 +138,9 @@ angular.module('app.services', [])
         data: user
       })
       .then(function(response) {
-        console.log(response);
         Session.create(
-          response.data.username, 
-          response.data.id
+          response.data.id,
+          response.data.username
         );
       });
     };
@@ -117,6 +150,4 @@ angular.module('app.services', [])
       signUp: signUp,
       logout: logout
     };
-  })
-
-  .factory()
+  });

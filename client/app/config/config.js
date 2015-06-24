@@ -1,6 +1,7 @@
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
+  $httpProvider.interceptors.push('sessionInjector');
   $urlRouterProvider.otherwise('/index');
 
   $stateProvider
