@@ -45,7 +45,7 @@ describe('SignUpController', function() {
     createController();
     $scope.processSignup({username: 'test', password: 'password'});
     $httpBackend.flush();
-    expect($scope.status).toBe('Passed');
+    expect($scope.status).toBe('Signup Completed');
   });
 
   it('should error when providing a username that is already in use', function() {
@@ -54,7 +54,7 @@ describe('SignUpController', function() {
     createController();
     $scope.processSignup({username: 'takenUsername', password: 'password'});
     $httpBackend.flush();
-    expect($scope.status).toBe('Error');
+    expect($scope.status).toBe('Signup Failed');
   });
 
 

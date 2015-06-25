@@ -6,22 +6,21 @@ app.controller('LoginController', ['$scope', 'Users', function ($scope, Users) {
 
   $scope.status;
 
-  // ERROR CODE GUIDE: (use this for testing)
-  // 401 : User and/or Password incorrect
-  // 200 : Login successful
-
-  $scope.processLogin = function () {
-    Users.login($scope.user)
-      .success(function(data, status) {
-        $scope.status = status;
-        console.log($scope.status);
-      })
-      .catch(function(data) {
+  $scope.processLogin= function(user) {
+   Users.login(user)
+     .success(function(data, status) {
+       $scope.status = 'Login Completed';
+     })
+     .catch(function(data) {
+      // FOR TESTING:
+      // in testing there is no data object
+      // if there is a data object, we are not running a test
+      // therefore we need to set the scope message
+      if (data.data) {
         $scope.message = data.data.message;
-        $scope.status = data.status;
-        console.log($scope.status);
-
-      });
-  };
+      }
+      $scope.status = 'Login Failed';
+     });
+  }
 
 }]);

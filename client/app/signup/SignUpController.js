@@ -4,20 +4,15 @@ app.controller('SignUpController', ['$scope', 'Users', function ($scope, Users) 
 
   $scope.message;
 
+  // stores the status of the signup attempt for testing purposes
   $scope.status;
-
-  // ERROR CODE GUIDE: (use this for testing)
-  // 422 : Username already exists
-  // 200 : User created successfully
-
 
   $scope.processSignup = function(user) {
    Users.signUp(user)
      .success(function(data, status) {
-       $scope.status = 'Passed';
+       $scope.status = 'Signup Completed';
      })
      .catch(function(data) {
-      console.log('ERROR handling ', data)
       // FOR TESTING:
       // in testing there is no data object
       // if there is a data object, we are not running a test
@@ -25,7 +20,7 @@ app.controller('SignUpController', ['$scope', 'Users', function ($scope, Users) 
       if (data.data) {
         $scope.message = data.data.message;
       }
-      $scope.status = 'Error';
+      $scope.status = 'Signup Failed';
      });
   }
 }]);
