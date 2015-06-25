@@ -8,30 +8,62 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // stores the users currently logged in for sockets
   $scope.usersCollection = {};
 
+  // stores the current user
+  // NOTE: myUser is the client's user data
+  // this variable is used to always display the client's username
+  // and color at the top of the userlist
+  $scope.myUser = {};
+
+  ////////////////
+  // MY USER LOGIC (client user)
+  ////////////////
+
+  // returns the current myUser and the colorIndex in an object
+  $scope.getMyUserAndColor = function () {
+    var username = Session.getUser().username;
+    var colorIndex = ColorIndexService.get();
+    // if no username is provided (they haven't logged in)
+    if (username === '') {
+      // set a default username of 'you'
+      username = 'you';
+    }
+
+    return {username: username, colorIndex: colorIndex};
+  }
+
+  // updates the new myUser data
+  $scope.updateMyUserAndColor = function() {
+    var currentUser = $scope.getMyUserAndColor();
+    // if the name has changed (by login or logout)
+    if (currentUser.username !== $scope.myUser.username) {
+      // delete the old and new usernames from the users collection
+      delete $scope.usersCollection[$scope.myUser.username];
+      delete $scope.usersCollection[currentUser.username];
+      // set myUser to the user data retrieved from the session
+      $scope.myUser = currentUser;
+      // set a default color index of 10
+      $scope.myUser.colorIndex = 10;
+      // send the new user to get their dom element created
+      $scope.handleUserUpdate($scope.myUser);
+    } // if the username has not changed
+    else {
+      // update the myUser value
+      $scope.myUser = currentUser;
+    }
+  }
+
+
+  // every second, set the current user username and color
+  // and send that data to the socket server
+  $interval(function () {
+    $scope.updateMyUserAndColor();
+    $scope.sendUserData($scope.myUser);
+    $scope.handleUserUpdate($scope.myUser);
+  }, 1000);
+
   ////////////////
   // SOCKETS LOGIC
   ////////////////
-  
-  // DEBUG data from user input
-  $scope.testUsername;
-  $scope.testColorIndex;
-
-  $scope.debugSendCurrentUser = function () {
-    console.log(Session.getUser());
-
-  };
-
-
-  // uploads user data to server
-  $scope.sendUserData = function() {
-    var username = Session.getUser().username;
-    var colorIndex = ColorIndexService.get();
-
-    socket.emit('postUserUpdate', {username: username, colorIndex: colorIndex});
-  };
-
-  // every second, send the user's username and color index
-  $interval($scope.sendUserData, 1000)
 
   // initiates update function when a user has sent their data to the server
   socket.on('getUserUpdate', function(data) {
@@ -67,19 +99,14 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     }, 0);
   };
 
+    // uploads user data to server
+  $scope.sendUserData = function() {
+    var username = Session.getUser().username;
+    var colorIndex = ColorIndexService.get();
 
-  // takes in an actual score and potential score
-  // calculates color based on the quotient between actual and potential
-  // returns a corresponding index between 0 - 10
-  // var getRoundedIndex = function(actual, potential) {
-  //   if (actual > potential) {
-  //     throw "ERROR: Trying to find quotient when the actual score is higher than potential";
-  //   }
+    socket.emit('postUserUpdate', {username: username, colorIndex: colorIndex});
+  };
 
-  //   var prop = actual / potential;
-    
-  //   return Math.floor(prop * 10) / 10;
-  // };
   
   ////////////
   // colors for red <-> yellow <-> green
@@ -135,13 +162,14 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // adds user to usersCollection array and creates their SVG circle
   $scope.handleUserUpdate = function(user) {
 
+
     // if the user already exists
     if ($scope.usersCollection[user.username]) {
       return $scope.setColor(user);
+    } else { // if the user does not already exist
+      // add the user to the user collection
+      $scope.usersCollection[user.username] = user;
     }
-
-    // adds user to users collection
-    $scope.usersCollection[user.username] = user;
 
 
     // string to access the user's circle box directly
@@ -204,6 +232,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   };
 
   // DEBUG SECTION
+  // This sets up a few debug users and tests changing the color
   $scope.handleUserUpdate(user1);
   $scope.handleUserUpdate(user2);
   $scope.handleUserUpdate(user3);
@@ -211,5 +240,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   user2.colorIndex = 1;
 
   $scope.setColor(user2);
+
 
 }]);
