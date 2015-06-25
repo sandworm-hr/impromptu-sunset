@@ -35,16 +35,12 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
   var latestScores = [];
 
+  var lastIndex = 0;
+
   // calculates the colorIndex
   // calculates color based on the quotient between actual and potential
   // returns a corresponding index between 0 - 10
   $scope.getRoundedIndex = function(scores, seconds, maxScore) {
-
-    console.log("the scores are: ", scores);
-    console.log("the number of scores is: ", scores.length);
-
-    console.log("the number of seconds is: ", seconds);
-    console.log("the maximum score is: ", maxScore);
 
     var actual = 0;
 
@@ -58,11 +54,22 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
       console.log("ERROR: Trying to find quotient when the actual score is higher than potential");
     }
 
-    var prop = actual / potential;
+    var prop = Math.floor((actual / potential) * 10);
+
+    if (prop > lastIndex) {
+      lastIndex++;
+      console.log("color index is: ", lastIndex);
+      return lastIndex;
+    } else {
+      console.log("color index is: ", prop);
+      lastIndex = prop;
+      return prop;
+    }
+
+
 
     console.log(Math.floor(prop * 10));
     
-    return Math.floor(prop * 10);
   };
   
 
@@ -82,11 +89,11 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
   var getScore = function() {
     // How long to wait before score starts to decrease (in ms)
-    var gracePeriod = 1500;
+    var gracePeriod = 1000;
     // Length of time from end of grace period to score of zero (in ms)
-    var countdown = 4000; 
+    var countdown = 10000; 
     // Number of scores to average for calculating color index
-    var interval = 10; 
+    var interval = 1; 
     // Maximum score per second
     var maxScore = 10000;
        
