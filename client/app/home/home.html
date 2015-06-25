@@ -39,12 +39,25 @@
   </div>
       <div class="col-sm-3" id="sidebar-container" ng-controller="MultiplayerController">
         <table class="users-table">
-          <tbody ng-repeat="user in usersCollection">
-            <tr class="user-box" id="{{user.username}}-user-box">
-              <td class="user-circle-box" id="{{user.username}}-user-circle-box">
+          <!-- CURRENT USER TABLE BODY -->
+          <tbody class="user-tbody" >
+            <tr class="user-box" id="{{myUser.username}}-user-box">
+              <td class="user-circle-box" id="{{myUser.username}}-user-circle-box">
               </td>
-              <td class="user-text-box" id="{{user.username}}-user-text-box">
-                <span class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span>
+              <td class="user-text-box" id="{{myUser.username}}-user-text-box">
+                <span class="user-text-span" id="{{myUser.username}}-user-text-span">{{myUser.username}}</span>
+              </td>
+            </tr>
+          </tbody>
+          <!-- OTHER USERS TABLE BODY -->
+          <tbody class="multiplayer-users-tbody">
+            <tr class="user-box" 
+              id="{{user.username}}-user-box" 
+              ng-repeat="user in usersCollection" >
+              <td ng-hide="user.username == myUser.username" class="user-circle-box" id="{{user.username}}-user-circle-box">
+              </td>
+              <td ng-hide="user.username == myUser.username" class="user-text-box" id="{{user.username}}-user-text-box">
+                <span ng-hide="user.username == myUser.username" class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span>
               </td>
             </tr>
           </tbody>
