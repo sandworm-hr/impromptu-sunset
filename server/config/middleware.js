@@ -8,16 +8,22 @@ module.exports = function(app, express){
   var userRouter = express.Router();
   var sessionRouter = express.Router();
 
+  // express-session to save our cookie
   app.use(session({
     secret: 'keep it safe',
     resave: false,
     saveUninitialized: true
   }));
 
+  // bodyParser to get data from POST requests
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
+
+  // serve up static files
   app.use(express.static(__dirname + '/../../client'));
 
+  // hand over to the corresponding router
+  // based on the path
   app.use('/api/users', userRouter);
   app.use('/api/sessions', sessionRouter);
   app.use(helpers.errorLogger);

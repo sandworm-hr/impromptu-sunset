@@ -27,6 +27,21 @@ module.exports = function(grunt) {
       }
     },
 
+    docco: {
+      server: {
+        src: ['server/**/*.js'],
+        options: {
+          output: 'docs/server',
+        }
+      },
+      client: {
+        src: ['client/index.html', 'client/app/**/*.html', 'client/app/**/*.js'],
+        options: {
+          output: 'docs/client',
+        }
+      }
+    },
+
     shell: {
       prodServer: {
         command: 'git push heroku master',
@@ -51,6 +66,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jasmine-nodejs');
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-docco');
 
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console

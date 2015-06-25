@@ -1,4 +1,6 @@
-'use strict';
+// The Session model
+// This is auto generated using the sequelize-cli command 
+// 'sequelize model:create'
 module.exports = function(sequelize, DataTypes) {
   var Session = sequelize.define('Session', {
     session_time: DataTypes.INTEGER,

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>SignUpController.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="config.html">
+                config.js
+              </a>
+            
+              
+              <a class="source" href="ColorIndexService.html">
+                ColorIndexService.js
+              </a>
+            
+              
+              <a class="source" href="HomeController.html">
+                HomeController.js
+              </a>
+            
+              
+              <a class="source" href="MultiplayerController.html">
+                MultiplayerController.js
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.js
+              </a>
+            
+              
+              <a class="source" href="LoginController.html">
+                LoginController.js
+              </a>
+            
+              
+              <a class="source" href="main.html">
+                main.js
+              </a>
+            
+              
+              <a class="source" href="ProfileController.html">
+                ProfileController.js
+              </a>
+            
+              
+              <a class="source" href="ResultsController.html">
+                ResultsController.js
+              </a>
+            
+              
+              <a class="source" href="services.html">
+                services.js
+              </a>
+            
+              
+              <a class="source" href="SignUpController.html">
+                SignUpController.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>SignUpController.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.controller(<span class="hljs-string">'SignUpController'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'Users'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$scope, Users</span>) </span>{
+
+  $scope.user = {};
+
+  $scope.message;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>stores the status of the signup attempt for testing purposes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.status;
+
+  $scope.processSignup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">user</span>) </span>{
+   Users.signUp(user)
+     .success(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data, status</span>) </span>{
+       $scope.status = <span class="hljs-string">'Signup Completed'</span>;
+     })
+     .catch(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>FOR TESTING:
+in testing there is no data object
+if there is a data object, we are not running a test
+therefore we need to set the scope message</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (data.data) {
+        $scope.message = data.data.message;
+      }
+      $scope.status = <span class="hljs-string">'Signup Failed'</span>;
+     });
+  }
+}]);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
