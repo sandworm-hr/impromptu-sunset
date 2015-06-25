@@ -144,7 +144,6 @@ angular.module('app.services', [])
         );
       })
       .error(function(data, status) {
-        console.error(data);
       });
     };
 
@@ -160,7 +159,7 @@ angular.module('app.services', [])
           data.username
         );
       }).error(function(data, status) {
-        console.log('data', data, 'staus', status);
+        // console.log('data', data, 'staus', status);
       });
     };
 

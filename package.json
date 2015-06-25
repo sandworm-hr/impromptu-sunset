@@ -31,6 +31,7 @@
     "grunt-jasmine-nodejs": "^1.4.0",
     "grunt-nodemon": "^0.4.0",
     "grunt-shell": "^1.1.2",
+    "karma": "^0.12.37",
     "passport": "^0.2.2",
     "passport-local": "^1.0.0",
     "pg": "^4.4.0",

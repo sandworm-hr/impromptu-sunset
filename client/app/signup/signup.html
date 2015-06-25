@@ -1,6 +1,6 @@
 <div id="signup-container" class="container" ng-controller="SignUpController">
   <div class="col-sm-6 col-sm-offset-4">
-    <form name="signupForm" ng-submit="processSignup()" class="form-signin">
+    <form name="signupForm" ng-submit="processSignup(user)" class="form-signin">
       <h2 class="form-signup-heading">Signup</h2>
       <label for="usernameInput" class="sr-only">Username</label>
         <input type="text" ng-model="user.username" name="usernameInput" placeholder="Username"required autofocus/>       
