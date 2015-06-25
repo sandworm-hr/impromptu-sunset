@@ -7,21 +7,22 @@ module.exports = {
     var username = req.body.username;
     var password = req.body.password;
 
-    // just create user, and if already exists will return a validation error.
+    // Create a new user
     var newuser = db.User.build({username:username, password:password});
     newuser.save().then(function(){
+      // once the user is created, will sign him in aswell
       passport.authenticate('local') (req, res, function() {
         res.send(newuser);
       });
     }).catch(db.Sequelize.ValidationError, function (err) {
-        // respond with validation errors
+        // respond with validation errors - in case the user already exists
         return res.status(422).send(err.errors);
     });
     
   },
 
   signout: function(req, res, next){
-    //req.session.destroy();
+    // destroy session and log user out
     req.logout();
     res.status(200).send("Successfully Logged Out");
   }

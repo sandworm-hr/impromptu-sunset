@@ -1,7 +1,7 @@
 
 module.exports = {
   ensureAuthenticated: function (req, res, next) {
-    //if (req.isAuthenticated()) { return next(); } // not working for some reason.
+    // check if user is authenticated by checking if there's a user saved in session
     if(req.session && req.session.passport && req.session.passport.user){ return next(); }
     res.status(401).send("Not Authenticated");
   },

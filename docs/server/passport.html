@@ -111,26 +111,96 @@
 <span class="hljs-keyword">var</span> LocalStrategy = <span class="hljs-built_in">require</span>(<span class="hljs-string">'passport-local'</span>).Strategy;
 
 
-<span class="hljs-built_in">module</span>.exports.setup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">app</span>)</span>{
-  app.use(passport.initialize());
-  app.use(passport.session());
+<span class="hljs-built_in">module</span>.exports.setup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">app</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>initialize passport and add as middleware</p>
 
-  passport.use(<span class="hljs-keyword">new</span> LocalStrategy(
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.use(passport.initialize());
+  app.use(passport.session());</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>using passport’s local strategy for authentication
+will make it easy later to add other strategies as well.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  passport.use(<span class="hljs-keyword">new</span> LocalStrategy(
     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">username, password, done</span>) </span>{
       db.User.findOne({ where: {username: username} })
         .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">user</span>) </span>{
-          <span class="hljs-keyword">if</span> (!user) {
-            <span class="hljs-keyword">return</span> done(<span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>, { message: <span class="hljs-string">'Incorrect username.'</span> });
+          <span class="hljs-keyword">if</span> (!user) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>if user not found, then invalid username</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">return</span> done(<span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>, { message: <span class="hljs-string">'Incorrect username.'</span> });
           }
           <span class="hljs-keyword">else</span>{
             user.verifyPassword(password, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, output</span>)</span>{
               <span class="hljs-keyword">if</span>(err)
                 done(err);
               <span class="hljs-keyword">else</span>{
-                <span class="hljs-keyword">if</span>(!output){
-                  <span class="hljs-keyword">return</span> done(<span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>, { message: <span class="hljs-string">'Incorrect password.'</span> });  
-                } <span class="hljs-keyword">else</span> {
-                  <span class="hljs-keyword">return</span> done(<span class="hljs-literal">null</span>, user);
+                <span class="hljs-keyword">if</span>(!output){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>if passwords don’t match, then invalid password</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                  <span class="hljs-keyword">return</span> done(<span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>, { message: <span class="hljs-string">'Incorrect password.'</span> });  
+                } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>if correct username and password, then successful login</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                  <span class="hljs-keyword">return</span> done(<span class="hljs-literal">null</span>, user);
                 }
               }
             });
@@ -140,17 +210,49 @@
           <span class="hljs-keyword">return</span> done(err);
         });
     }
-  ));
+  ));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>passport’s methods that deal with serializing
+and deserializing the user when storing and 
+retreiving from cookie</p>
 
-  passport.serializeUser(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">user, done</span>) </span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  passport.serializeUser(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">user, done</span>) </span>{
     done(<span class="hljs-literal">null</span>, user);
   });
 
   passport.deserializeUser(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">user, done</span>) </span>{
     done(<span class="hljs-literal">null</span>, user);
   });
-};
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>uses passport’s authenticate method.
+but uses a custom callback since we don’t want to redirect to 
+a page, this is all handled client side. instead just want
+to send back a json response</p>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
 <span class="hljs-built_in">module</span>.exports.authenticate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">req,res,next</span>)</span>{
   <span class="hljs-keyword">return</span> passport.authenticate(<span class="hljs-string">'local'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, user, info</span>) </span>{
     <span class="hljs-keyword">if</span> (err) {
@@ -162,24 +264,8 @@
 
     req.login(user, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
       <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> next(err);
-      res.status(<span class="hljs-number">200</span>).send(user);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>return res.json({
-    message: ‘user authenticated’,
-});</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    });
+      res.status(<span class="hljs-number">200</span>).send(user);
+    });
   })(req,res,next);
 };</pre></div></div>
             

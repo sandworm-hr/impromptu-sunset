@@ -107,11 +107,39 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> sessionController = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../controllers/sessionController.js'</span>);
-<span class="hljs-keyword">var</span> helpers = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../config/helpers.js'</span>);
+<span class="hljs-keyword">var</span> helpers = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../config/helpers.js'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>This file handles the session routing
+pass control over to sessionController</p>
 
-<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">app</span>) </span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">app</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>user must be logged in to access these methods.
+if not will get a 401 response (check the helper method)</p>
 
-  app.route(<span class="hljs-string">'/'</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  app.route(<span class="hljs-string">'/'</span>)
     .get(helpers.ensureAuthenticated, sessionController.allSessions)
     .post(helpers.ensureAuthenticated,sessionController.newSession);
 

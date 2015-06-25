@@ -1,3 +1,5 @@
+// In case this is run in production, we won't use dotenv
+// heroku handles that for us using its environment variables
 if(process.env.NODE_ENV && process.env.NODE_ENV === "production"){
   console.log(process.env.DATABASE_URL);
 } else {
@@ -12,7 +14,7 @@ var port = process.env.PORT || 3000;
 
 var io = require('socket.io')(http);
 
-
+// server now listening to port 'port'
 http.listen(port, function() {
   console.log("listening to port ", port);
 });

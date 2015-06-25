@@ -124,16 +124,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>just create user, and if already exists will return a validation error.</p>
+              <p>Create a new user</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> newuser = db.User.build({username:username, password:password});
-    newuser.save().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-      passport.authenticate(<span class="hljs-string">'local'</span>) (req, res, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-        res.send(newuser);
-      });
-    }).catch(db.Sequelize.ValidationError, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{</pre></div></div>
+    newuser.save().then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
             
         </li>
         
@@ -144,7 +140,25 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>respond with validation errors</p>
+              <p>once the user is created, will sign him in aswell</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      passport.authenticate(<span class="hljs-string">'local'</span>) (req, res, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        res.send(newuser);
+      });
+    }).catch(db.Sequelize.ValidationError, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>respond with validation errors - in case the user already exists</p>
 
             </div>
             
@@ -158,13 +172,13 @@
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>req.session.destroy();</p>
+              <p>destroy session and log user out</p>
 
             </div>
             

@@ -103,12 +103,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+              <p>This file loads all the tables based on the current environment</p>
+
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-pi">'use strict'</span>;
-
-<span class="hljs-keyword">var</span> fs        = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> fs        = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
 <span class="hljs-keyword">var</span> path      = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
 <span class="hljs-keyword">var</span> Sequelize = <span class="hljs-built_in">require</span>(<span class="hljs-string">'sequelize'</span>);
 <span class="hljs-keyword">var</span> basename  = path.basename(<span class="hljs-built_in">module</span>.filename);
@@ -124,14 +123,28 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>if specifying an environment variable</p>
+              <p>if specifying an environment variable, will use that to connect to sequelize</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">if</span>(config.use_env_variable){
   <span class="hljs-keyword">var</span> sequelize = <span class="hljs-keyword">new</span> Sequelize(process.env[config.use_env_variable], config);
-} <span class="hljs-keyword">else</span>{
-  <span class="hljs-keyword">var</span> sequelize = <span class="hljs-keyword">new</span> Sequelize(config.database, config.username, config.password, config);
+} <span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>otherqise will use the normal parameters</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> sequelize = <span class="hljs-keyword">new</span> Sequelize(config.database, config.username, config.password, config);
 }
 <span class="hljs-keyword">var</span> db        = {};
 
@@ -143,18 +156,46 @@ fs
   .forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">file</span>) </span>{
     <span class="hljs-keyword">var</span> model = sequelize[<span class="hljs-string">'import'</span>](path.join(__dirname, file));
     db[model.name] = model;
-  });
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>runs the associate class method inside each of the
+models, in order to establish the relationships between
+the models.</p>
 
-<span class="hljs-built_in">Object</span>.keys(db).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">modelName</span>) </span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">Object</span>.keys(db).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">modelName</span>) </span>{
   <span class="hljs-keyword">if</span> (<span class="hljs-string">'associate'</span> <span class="hljs-keyword">in</span> db[modelName]) {
     db[modelName].associate(db);
   }
 });
 
 db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+db.Sequelize = Sequelize;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>exporting db, to access and of the models just do this: db.User or db.Session</p>
 
-<span class="hljs-built_in">module</span>.exports = db;</pre></div></div>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.exports = db;</pre></div></div>
             
         </li>
         

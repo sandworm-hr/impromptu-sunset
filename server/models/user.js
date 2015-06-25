@@ -1,11 +1,15 @@
 var bcrypt   = require('bcrypt-nodejs');
 
-'use strict';
+// The User model
+// The skeleton is auto generated using the sequelize-cli command 
+// 'sequelize model:create
+
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
       validate: {
+        // validate uniqueness of username
         isUnique: function(value, next) {
           User.find({
               where: {username: value},
@@ -30,6 +34,9 @@ module.exports = function(sequelize, DataTypes) {
     session_duration: DataTypes.INTEGER
   }, {
     hooks: {
+      // before create hook is run before the instance is saved 
+      // to the table. This allows us to hash the password before
+      // saving it.
       beforeCreate: function(user, options, fn) {
         user.setPassword(user.password, function(){
           fn();
@@ -38,10 +45,12 @@ module.exports = function(sequelize, DataTypes) {
     },
     classMethods: {
       associate: function(models) {
-        User.hasMany(models.Session)
+        // establishing relationship between User and Session
+        User.hasMany(models.Session);
       },
     },
     instanceMethods: {
+      // handles hashing of the password using the bcrypt package.
       setPassword: function(password, done) {
         var user = this;
         return bcrypt.genSalt(10, function(err, salt) {
@@ -57,6 +66,7 @@ module.exports = function(sequelize, DataTypes) {
           });
         });
       },
+      // compares the password entered to the one that is saved.
       verifyPassword: function(password, done) {
         return bcrypt.compare(password, this.password, function(err, res) {
           if(err){
