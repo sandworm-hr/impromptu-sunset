@@ -37,12 +37,20 @@ module.exports = function(grunt) {
         }
       }
     },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        singleRun: true,
+        browsers: ['PhantomJS']
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-jasmine-nodejs');
   grunt.loadNpmTasks('grunt-env');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
@@ -59,7 +67,7 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
-  grunt.registerTask('test', ['env:test','jasmine_nodejs']);
+  grunt.registerTask('test', ['env:test','jasmine_nodejs', 'karma']);
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       grunt.task.run([ 'shell:prodServer' ]);
