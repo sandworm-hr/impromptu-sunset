@@ -18,7 +18,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // MY USER LOGIC (client user)
   ////////////////
 
-  // returns the current myUser and the colorIndex
+  // returns the current myUser and the colorIndex in an object
   $scope.getMyUserAndColor = function () {
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
@@ -27,7 +27,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
       // set a default username of 'you'
       username = 'you';
     }
-
 
     return {username: username, colorIndex: colorIndex};
   }
@@ -166,19 +165,12 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
 
     // if the user already exists
     if ($scope.usersCollection[user.username]) {
-      // debugger;
       return $scope.setColor(user);
-    }
-    // debugger;
-    // var currentUser = $scope.getMyUserAndColor();
-
-    // if (user.username !== currentUser.username) {
-      // adds user to users collection
+    } else { // if the user does not already exist
+      // add the user to the user collection
       $scope.usersCollection[user.username] = user;
+    }
 
-      console.log($scope.usersCollection);
-
-    // } 
 
     // string to access the user's circle box directly
     var elementId = '#' + user.username + '-user-circle-box';
