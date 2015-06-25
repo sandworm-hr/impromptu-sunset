@@ -48,7 +48,7 @@ describe('LoginController', function() {
     expect($scope.status).toBe('Login Completed');
   });
 
-  it('should error when providing a username that is already in use', function() {
+  it('should error when providing an incorrect username or password', function() {
     $httpBackend.expectPOST('/api/users/login').respond(500);
     $httpBackend.expectGET('/app/home/home.html').respond(200);
     createController();
