@@ -72,7 +72,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // initiates update function when a user has sent their data to the server
   $scope.socket.on('getUserUpdate', function(data) {
     // NOTE: must use timeout because angular requires time to add the element to the DOM
-    $timeout(function() {
+    return $timeout(function() {
       $scope.handleUserUpdate(data);
     }, 1);
   });
@@ -98,7 +98,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
 
   // deletes passed in user from the users collection
   $scope.handleDeleteUser = function(user) {
-    $timeout(function(){
+    return $timeout(function(){
       delete $scope.usersCollection[user.username];
     }, 0);
   };
@@ -128,7 +128,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // the color pallette used is here:
   // http://www.colourlovers.com/palette/110225/Vintage_Modern
   ////////////
-  var colors = [
+  $scope.colors = [
     '#8C2318', // .0
     '#A64B29', // .1
     '#BF7439', // .2
@@ -184,7 +184,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     // sets up new circle
     // must be in timeout due to delay in angular for setting up
     // new DOM elements
-    $timeout(function() {
+    return $timeout(function() {
       // sets up SVG based on the passed in user
       d3.select(elementId).html("");
       
@@ -224,14 +224,14 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
 
     // select individual svg circle for the user
 
-    $timeout(function() {
+    return $timeout(function() {
       var element = d3.select(elementId).selectAll('circle');
 
       // changes the user's circle color to their passed in color
       element
         .transition().duration(1000)
           .ease('linear')
-          .attr('fill', colors[user.colorIndex]);
+          .attr('fill', $scope.colors[user.colorIndex]);
 
     }, 1);
 
