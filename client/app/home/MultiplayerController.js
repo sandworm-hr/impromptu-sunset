@@ -1,7 +1,7 @@
 
 app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'ColorIndexService', '$interval', function($scope, $timeout, Session, ColorIndexService, $interval) {
 
-  var socket = io();
+  $scope.socket = io();
 
 
   // stores the users currently logged in for sockets
@@ -22,9 +22,14 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
     // if no username is provided (they haven't logged in)
-    if (username === '') {
+    if (username === '' ||
+        username === undefined) {
       // set a default username of 'you'
       username = 'you';
+    }
+
+    if (colorIndex === undefined) {
+      colorIndex = 10;
     }
 
     return {username: username, colorIndex: colorIndex};
@@ -65,7 +70,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   ////////////////
 
   // initiates update function when a user has sent their data to the server
-  socket.on('getUserUpdate', function(data) {
+  $scope.socket.on('getUserUpdate', function(data) {
     // NOTE: must use timeout because angular requires time to add the element to the DOM
     $timeout(function() {
       $scope.handleUserUpdate(data);
@@ -74,12 +79,12 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
 
   // iniates removal of a user from the userlist, when a user sent their
   // disconnect signal to the server
-  socket.on('userExit', function(user) {
+  $scope.socket.on('userExit', function(user) {
     $scope.handleDeleteUser(user)
   });
 
   // gets the array of all users currently logged in
-  socket.on('allServerUsers', function(data) {
+  $scope.socket.on('allServerUsers', function(data) {
     for (var i = 0; i < data.length; i++) {
       $timeout(function() {
         $scope.handleUserUpdate(data[i]);
@@ -88,7 +93,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   });
 
   // on page load, goes and gets all of the users currently logged in
-  socket.emit('getAllUsers');
+  $scope.socket.emit('getAllUsers');
 
 
   // deletes passed in user from the users collection
@@ -103,7 +108,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
 
-    socket.emit('postUserUpdate', {username: username, colorIndex: colorIndex});
+    $scope.socket.emit('postUserUpdate', {username: username, colorIndex: colorIndex});
   };
 
   
