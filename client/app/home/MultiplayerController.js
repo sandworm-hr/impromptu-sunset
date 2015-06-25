@@ -100,7 +100,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   $scope.handleDeleteUser = function(user) {
     return $timeout(function(){
       delete $scope.usersCollection[user.username];
-    }, 0);
+    }, 1);
   };
 
     // uploads user data to server

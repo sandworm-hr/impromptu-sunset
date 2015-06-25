@@ -10,6 +10,7 @@ describe('Multiplayer Controller', function() {
   var ColorIndexService;
   var Session;
   var $interval;
+  var $timeout;
 
   beforeEach(module('app'));
 
@@ -18,6 +19,8 @@ describe('Multiplayer Controller', function() {
 
     $rootScope = $injector.get('$rootScope');
     $httpBackend = $injector.get('$httpBackend');
+    $timeout = $injector.get('$timeout');
+
     Session = $injector.get('Session');
     ColorIndexService = $injector.get('ColorIndexService');
 
@@ -31,6 +34,8 @@ describe('Multiplayer Controller', function() {
         $scope: $scope,
         Session: Session,
         ColorIndexService: ColorIndexService,
+        $timeout: $timeout,
+        $httpBackend: $httpBackend
       });
     };
   }));
@@ -89,13 +94,15 @@ describe('Multiplayer Controller', function() {
     it('should delete users when they log out', function(done) {
       // note this test doesn't test the socket listener itself
       // the socket listener that listens for 'userExit' calls handleDeleteUser
+      $httpBackend.expectGET('/app/home/home.html').respond(200);
       createController();
       $scope.usersCollection['Cruella'] = {username: 'Cruella', colorIndex: 5};
       $scope.handleDeleteUser({username: 'Cruella', colorIndex: 5});
-      console.log($scope.usersCollection);
+      // must run $timeout.flush() to let the $timeout promises run to completion
+      $timeout.flush();
       expect($scope.usersCollection['Cruella']).not.toBeDefined();
       done();
-    });
+      });
   });
 
 
