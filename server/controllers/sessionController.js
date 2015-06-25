@@ -15,7 +15,6 @@ module.exports = {
   },
 
   newSession: function(req, res, next){
-    console.log("REQUEST BODY ",req.body.word_count);
     var scores = req.body.scores;
     var word_count = req.body.word_count;
     var session_time = req.body.session_time;
