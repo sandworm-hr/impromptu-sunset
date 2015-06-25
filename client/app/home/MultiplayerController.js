@@ -1,7 +1,6 @@
 
 app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'ColorIndexService', '$interval', function($scope, $timeout, Session, ColorIndexService, $interval) {
 
-
   var socket = io();
 
 
@@ -109,16 +108,18 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
 
   
   ////////////
-  // colors for red <-> yellow <-> green
+  // CIRCLE COLOR NOTES
   ////////////
+  // colors for red <-> yellow <-> green
+  //
   // usage:
   // var roundedIndex = getRoundedIndex(actual, potential);
   // user.colorIndex = roundedIndex;
   // setColor(user);
-  ////////////
+  //
   // to generate new color midpoints, use this generator:
   // http://meyerweb.com/eric/tools/color-blend/#:::hex
-  ////////////
+  //
   // the color pallette used is here:
   // http://www.colourlovers.com/palette/110225/Vintage_Modern
   ////////////

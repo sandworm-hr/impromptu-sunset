@@ -126,11 +126,14 @@ app.controller(<span class="hljs-string">'MultiplayerController'</span>, [<span 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>//////////////
-SOCKETS LOGIC
-//////////////</p>
+              <p>stores the current user
+NOTE: myUser is the client’s user data
+this variable is used to always display the client’s username
+and color at the top of the userlist</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.myUser = {};</pre></div></div>
             
         </li>
         
@@ -141,17 +144,11 @@ SOCKETS LOGIC
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>DEBUG data from user input</p>
+              <p>//////////////
+MY USER LOGIC (client user)
+//////////////</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>  $scope.testUsername;
-  $scope.testColorIndex;
-
-  $scope.debugSendCurrentUser = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-built_in">console</span>.log(Session.getUser());
-
-  };</pre></div></div>
             
         </li>
         
@@ -162,16 +159,13 @@ SOCKETS LOGIC
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>uploads user data to server</p>
+              <p>returns the current myUser and the colorIndex in an object</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  $scope.sendUserData = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            <div class="content"><div class='highlight'><pre>  $scope.getMyUserAndColor = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
     <span class="hljs-keyword">var</span> username = Session.getUser().username;
-    <span class="hljs-keyword">var</span> colorIndex = ColorIndexService.get();
-
-    socket.emit(<span class="hljs-string">'postUserUpdate'</span>, {username: username, colorIndex: colorIndex});
-  };</pre></div></div>
+    <span class="hljs-keyword">var</span> colorIndex = ColorIndexService.get();</pre></div></div>
             
         </li>
         
@@ -182,11 +176,11 @@ SOCKETS LOGIC
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>every second, send the user’s username and color index</p>
+              <p>if no username is provided (they haven’t logged in)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  $interval($scope.sendUserData, <span class="hljs-number">1000</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (username === <span class="hljs-string">''</span>) {</pre></div></div>
             
         </li>
         
@@ -197,11 +191,15 @@ SOCKETS LOGIC
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>initiates update function when a user has sent their data to the server</p>
+              <p>set a default username of ‘you’</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  socket.on(<span class="hljs-string">'getUserUpdate'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      username = <span class="hljs-string">'you'</span>;
+    }
+
+    <span class="hljs-keyword">return</span> {username: username, colorIndex: colorIndex};
+  }</pre></div></div>
             
         </li>
         
@@ -211,6 +209,167 @@ SOCKETS LOGIC
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>updates the new myUser data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.updateMyUserAndColor = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> currentUser = $scope.getMyUserAndColor();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>if the name has changed (by login or logout)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (currentUser.username !== $scope.myUser.username) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>delete the old and new usernames from the users collection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">delete</span> $scope.usersCollection[$scope.myUser.username];
+      <span class="hljs-keyword">delete</span> $scope.usersCollection[currentUser.username];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>set myUser to the user data retrieved from the session</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $scope.myUser = currentUser;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>set a default color index of 10</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $scope.myUser.colorIndex = <span class="hljs-number">10</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>send the new user to get their dom element created</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $scope.handleUserUpdate($scope.myUser);
+    } <span class="hljs-comment">// if the username has not changed</span>
+    <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>update the myUser value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $scope.myUser = currentUser;
+    }
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>every second, set the current user username and color
+and send that data to the socket server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  $interval(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    $scope.updateMyUserAndColor();
+    $scope.sendUserData($scope.myUser);
+    $scope.handleUserUpdate($scope.myUser);
+  }, <span class="hljs-number">1000</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>//////////////
+SOCKETS LOGIC
+//////////////</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>initiates update function when a user has sent their data to the server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  socket.on(<span class="hljs-string">'getUserUpdate'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>NOTE: must use timeout because angular requires time to add the element to the DOM</p>
 
@@ -224,11 +383,11 @@ SOCKETS LOGIC
         </li>
         
         
-        <li id="section-9">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>iniates removal of a user from the userlist, when a user sent their
 disconnect signal to the server</p>
@@ -242,11 +401,11 @@ disconnect signal to the server</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>gets the array of all users currently logged in</p>
 
@@ -263,11 +422,11 @@ disconnect signal to the server</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>on page load, goes and gets all of the users currently logged in</p>
 
@@ -278,11 +437,11 @@ disconnect signal to the server</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>deletes passed in user from the users collection</p>
 
@@ -297,57 +456,31 @@ disconnect signal to the server</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>takes in an actual score and potential score
-calculates color based on the quotient between actual and potential
-returns a corresponding index between 0 - 10
-var getRoundedIndex = function(actual, potential) {
-  if (actual &gt; potential) {
-    throw “ERROR: Trying to find quotient when the actual score is higher than potential”;
-  }</p>
+              <p>uploads user data to server</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>  $scope.sendUserData = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> username = Session.getUser().username;
+    <span class="hljs-keyword">var</span> colorIndex = ColorIndexService.get();
+
+    socket.emit(<span class="hljs-string">'postUserUpdate'</span>, {username: username, colorIndex: colorIndex});
+  };</pre></div></div>
             
         </li>
         
         
-        <li id="section-14">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>  var prop = actual / potential;</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>  return Math.floor(prop * 10) / 10;
-};</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>//////////
 colors for red &lt;-&gt; yellow &lt;-&gt; green
@@ -383,11 +516,11 @@ the color pallette used is here:
         </li>
         
         
-        <li id="section-17">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>DEBUG: pre-made users</p>
 
@@ -411,11 +544,11 @@ the color pallette used is here:
         </li>
         
         
-        <li id="section-18">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>determines length and width of circle box
 and the diameter of the circle</p>
@@ -427,11 +560,11 @@ and the diameter of the circle</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>adds user to usersCollection array and creates their SVG circle</p>
 
@@ -442,11 +575,11 @@ and the diameter of the circle</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>if the user already exists</p>
 
@@ -454,31 +587,32 @@ and the diameter of the circle</p>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> ($scope.usersCollection[user.username]) {
       <span class="hljs-keyword">return</span> $scope.setColor(user);
+    } <span class="hljs-keyword">else</span> { <span class="hljs-comment">// if the user does not already exist</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>add the user to the user collection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $scope.usersCollection[user.username] = user;
     }</pre></div></div>
             
         </li>
         
         
-        <li id="section-21">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>adds user to users collection</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    $scope.usersCollection[user.username] = user;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>string to access the user’s circle box directly</p>
 
@@ -489,11 +623,11 @@ and the diameter of the circle</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>sets up new circle
 must be in timeout due to delay in angular for setting up
@@ -506,11 +640,11 @@ new DOM elements</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>sets up SVG based on the passed in user</p>
 
@@ -526,11 +660,11 @@ new DOM elements</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>adds circle to the new svg</p>
 
@@ -550,11 +684,11 @@ new DOM elements</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>///////////
 SVG COLOR CIRCLE LOGIC
@@ -565,11 +699,11 @@ SVG COLOR CIRCLE LOGIC
         </li>
         
         
-        <li id="section-27">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>changes color of circle based on passed in user
 call this when receiving a new event from sockets to update their color</p>
@@ -581,11 +715,11 @@ call this when receiving a new event from sockets to update their color</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>console.log(‘color index is’, user.colorIndex, ‘user is’, user.username)</p>
 
@@ -599,11 +733,11 @@ call this when receiving a new event from sockets to update their color</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>takes passed in username to build DOM ID of their circle box</p>
 
@@ -614,11 +748,11 @@ call this when receiving a new event from sockets to update their color</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>select individual svg circle for the user</p>
 
@@ -631,11 +765,11 @@ call this when receiving a new event from sockets to update their color</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>changes the user’s circle color to their passed in color</p>
 
@@ -653,13 +787,14 @@ call this when receiving a new event from sockets to update their color</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
-              <p>DEBUG SECTION</p>
+              <p>DEBUG SECTION
+This sets up a few debug users and tests changing the color</p>
 
             </div>
             
@@ -670,6 +805,7 @@ call this when receiving a new event from sockets to update their color</p>
   user2.colorIndex = <span class="hljs-number">1</span>;
 
   $scope.setColor(user2);
+
 
 }]);</pre></div></div>
             

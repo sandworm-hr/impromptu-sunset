@@ -24,6 +24,7 @@ module.exports = function(config) {
       'client/lib/underscore/underscore-min.js',
       'client/lib/angular-messages/angular-messages.min.js',
       'client/lib/angular-mocks/angular-mocks.js',
+      'client/lib/socket.io-client/socket.io.js',
 
       // ## app files
       // loads critical app files first
