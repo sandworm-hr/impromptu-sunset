@@ -55,16 +55,16 @@ This repo contains client side and server side testing. To install:
 1. Create the database
   - In the terminal run the following in order:
     - ``` psql ```
-    - ``` create database dev
-    - ``` create database test
+    - ``` create database dev```
+    - ``` create database```
 1. Create the file ```.env``` in the root directory
-  - ```
+  ```
   DATABASE_URL=postgres://YOUR_MAC_USERNAME@localhost:5432/dev
   TEST_DATABASE_URL=postgres://YOUR_MAC_USERNAME@localhost:5432/test
     ```
     - be sure to change ``` YOUR_MAC_USERNAME ``` to your actual Mac username
 1. create ``` server/config/personal_config.json ```
-  - ``` js
+  ``` js
   {
   "development": {
     "username": "YOUR_MAC_USERNAME",
