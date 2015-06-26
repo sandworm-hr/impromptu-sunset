@@ -93,7 +93,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   });
 
   // on page load, goes and gets all of the users currently logged in
-  $scope.socket.emit('getAllUsers');
+  // $scope.socket.emit('getAllUsers');
 
 
   // deletes passed in user from the users collection
@@ -199,7 +199,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // changes color of circle based on passed in user
   // call this when receiving a new event from sockets to update their color
   $scope.setColor = function(user) {
-    // console.log('color index is', user.colorIndex, 'user is', user.username)
 
     if (user.colorIndex === undefined) {
       throw "ERROR: must supply a color index to setColor";
