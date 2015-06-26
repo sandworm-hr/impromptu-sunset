@@ -2,7 +2,7 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
 
   $scope.sessions;
 
-  $scope.margin = {top: 0, right: 50, bottom: 0, left: 50},
+  $scope.margin = {top: 0, right: 50, bottom: 0, left: 70},
   $scope.width = 960 - $scope.margin.left - $scope.margin.right,
   $scope.height = 500 - $scope.margin.top - $scope.margin.bottom;
 
@@ -33,8 +33,7 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
     }
     else{
       $scope.getSessions(function(data){
-        var word_count = _.pluck(data, "word_count");
-        $scope.plot('wordcount',word_count, "Word Count Per Session");
+        $scope.wordcount.loaded();
       }); 
     }
   }};
@@ -46,12 +45,30 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
     }
     else{
       $scope.getSessions(function(data){
-        var char_count = _.pluck(data, "char_count");
-        $scope.plot('charcount', char_count, "Char Count Per Session");  
+        $scope.charcount.loaded();
       }); 
     }
   }};
 
+  $scope.consistency = { loaded : function(){
+    if($scope.sessions){
+      var consistency = _.pluck($scope.sessions, "scores");
+      consistency = _.map(consistency, function(scores){
+        var sum = _.reduce(scores, function(a,b){
+          return a+b;
+        },0);
+        sum = Math.round(sum / scores.length);
+        return sum;
+      });
+      console.log(consistency);
+      $scope.plot('consistency', consistency, "Avg consistency per session");  
+    }
+    else{
+      $scope.getSessions(function(data){
+        $scope.consistency.loaded();
+      }); 
+    }
+  }};
     
 
 
