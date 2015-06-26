@@ -23,19 +23,37 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
     $scope.total = Results.getTotalScore();
     $scope.possible = $scope.duration * 60 * 10000;
     $scope.consistency = $scope.total / $scope.possible;
-  
+
+
+
+    // Retrieves session information from the Results service and sends it to the server
+    // to be stored in the database.
     $scope.sendResultsToServer = function() {
       var resultsObj = {};
 
-      resultsObj.session_time = $scope.duration;
-      resultsObj.char_count = $scope.charCount;
-      resultsObj.text = $scope.rawText;
-      resultsObj.scores = $scope.minuteScores;
-      resultsObj.word_count = $scope.wordCount;
+      resultsObj.session_time = Results.getDuration();
+      resultsObj.char_count = Results.getCharacterCount();
+      resultsObj.text = Results.getText();
+      resultsObj.scores = Results.getScoresPerMinute();
+      resultsObj.word_count = Results.getWordCount();
 
-      Results.postResults(resultsObj);
+      Results.postResults(resultsObj)
+        .success(function(data, status) {
+           $scope.status = 'Saved Session Data';
+        })
+        .catch(function(data) {
+        // FOR TESTING:
+        // in testing there is no data object
+        // if there is a data object, we are not running a test
+        // therefore we need to set the scope message
+        if (data.data) {
+          $scope.message = data.data.message;
+        }
+        $scope.status = 'Save Failed';
+       });
     };
-
+    
+    // Creates an array of tuple objects, where the x axis is the index and the y axis is the value of the input array at i.
     var parseData = function(array) {
         var result = [];
         for (var i = 0; i < array.length; i++) {
@@ -47,6 +65,8 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
         return result;
     };
 
+
+    // Removes axes and path from the main SVG, with transitions.
     var removeGraph = function() {
 
       $timeout(function() {
@@ -67,7 +87,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
         graph.select('g.vertical')
           .transition()
             .duration(1500)
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(" + width + ", 0)")
             .style("fill-opacity", 1e-6)
             .style("stroke-opacity", 1e-6)
             .remove();
@@ -113,15 +133,20 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
           
             svg.append("g")
                 .attr("class", "x axis horizontal")
+                .attr("transform", "translate(" + -width + "," + height + ")");
+              svg.select(".horizontal")  
                 .transition()
                   .duration(1500)
-                  .attr("transform", "translate(0," + height + ")")
+                  .attr("transform", "translate(0, " + height + ")")
                   .call(xAxis);
 
             svg.append("g")
+                .attr("class", "y axis vertical")
+                .attr("transform", "translate(" + -width + ", 0)");
+            svg.select(".vertical")
                 .transition()
                   .duration(1500)
-                  .attr("class", "y axis vertical")
+                  .attr("transform", "translate(0, 0)")
                   .call(yAxis);
 
             svg.select(".vertical").append("text")
@@ -137,22 +162,25 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
             svg.append("path")
               .datum(data)
               .attr("class", "line")
+              .attr("transform", "translate(" + -width + ", 0)")
+              .style("stroke-opacity", 1e-6)
+              .attr("d", line);
+            svg.select(".line")
               .transition()
                 .duration(1500)
-                // .style("stroke-opacity", 1e-6)
+                .attr("transform", "translate(0, 0)")
                 .style("stroke-opacity", 1)
-                .attr("d", line);
 
         }, 1);
     };
 
-    createGraph($scope.scores, "Score");
+    createGraph(Results.getScores(), "Score");
 
     $scope.graphScores = function() {
       removeGraph();
       $timeout(function(){
-        createGraph($scope.scores, "Score");
-      }, 2000);
+        createGraph(Results.getScores(), "Score");
+      }, 1600);
     };
 
 
@@ -168,7 +196,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
       removeGraph();
       $timeout(function(){
         createGraph(data, "Consistency");
-      }, 2000);
+      }, 1600);
     };
 
   // $scope.debugSendValues = function(valuesObj) {
