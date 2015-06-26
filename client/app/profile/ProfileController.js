@@ -2,7 +2,7 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
 
   $scope.sessions;
 
-  $scope.margin = {top: 0, right: 50, bottom: 0, left: 70},
+  $scope.margin = {top: 10, right: 50, bottom: 0, left: 70},
   $scope.width = 960 - $scope.margin.left - $scope.margin.right,
   $scope.height = 500 - $scope.margin.top - $scope.margin.bottom;
 
@@ -54,11 +54,18 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
     if($scope.sessions){
       var consistency = _.pluck($scope.sessions, "scores");
       consistency = _.map(consistency, function(scores){
-        var sum = _.reduce(scores, function(a,b){
-          return a+b;
+        var percent = 0;
+        var total_percent=0;
+        _.each(scores, function(element,index){
+          //var s = a+b;
+          var potential = (index + 1) * 10000 * 60; //potential score per minute
+          percent = (element/ potential) * 100 
+          total_percent += percent
+          console.log(percent);
+          //return s
         },0);
-        sum = Math.round(sum / scores.length);
-        return sum;
+        var sum = Math.round(total_percent / scores.length);
+        return percent;
       });
       console.log(consistency);
       $scope.plot('consistency', consistency, "Avg consistency per session");  

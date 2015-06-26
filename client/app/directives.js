@@ -31,7 +31,7 @@ angular.module('app.directives', [])
             .range([0, width-margin.left - 10]);
 
           var y = d3.scale.linear()
-            .range([height-30, 0]);
+            .range([height-40, 0]);
 
           var xAxis = d3.svg.axis()
             .scale(x)
@@ -56,7 +56,7 @@ angular.module('app.directives', [])
                   .attr("class", "x axis horizontal")
                   .transition()
                     .duration(1500)
-                    .attr("transform", "translate(0," + (height-20) + ")")
+                    .attr("transform", "translate(0," + (height-30) + ")")
                     .call(xAxis);
 
               svg.append("g")
