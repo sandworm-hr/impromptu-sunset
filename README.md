@@ -53,28 +53,41 @@ This repo contains client side and server side testing. To install:
 1. Install sequelize-cli
   - ```npm install -g sequelize-cli```
 1. Create the database
-  - In the terminal:
+  - In the terminal run the following in order:
     - ``` psql ```
     - ``` create database dev
     - ``` create database test
-1. Setup ``` server/config/config.json ```
-  - ```js
-    {
-    "development": {
-      "dialect": "postgres",
-      "use_env_variable": "DATABASE_URL"
-    },
-    "test": {
-      "dialect": "postgres",
-      "use_env_variable": "TEST_DATABASE_URL",
-      "logging": false
-    },
-    "production": {
-      "dialect": "postgres",
-      "use_env_variable": "DATABASE_URL"
-    } 
+1. Create the file ```.env``` in the root directory
+  - ```
+  DATABASE_URL=postgres://YOUR_MAC_USERNAME@localhost:5432/dev
+  TEST_DATABASE_URL=postgres://YOUR_MAC_USERNAME@localhost:5432/test
     ```
+    - be sure to change ``` YOUR_MAC_USERNAME ``` to your actual Mac username
+1. create ``` server/config/personal_config.json ```
+  - ``` js
+  {
+  "development": {
+    "username": "YOUR_MAC_USERNAME",
+    "password": null,
+    "database": "dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "YOUR_MAC_USERNAME",
+    "password": null,
+    "database": "test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
 }
+```
+  - be sure to change ``` YOUR_MAC_USERNAME ``` to your actual Mac username
+1. from inside the ```/server``` folder run this in terminal
+  - ```sequelize db:migrate --config config/personal_config.json```
+
+
+
 
 ### Roadmap
 
