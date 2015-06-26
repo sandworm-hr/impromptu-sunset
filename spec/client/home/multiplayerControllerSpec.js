@@ -46,18 +46,32 @@ describe('Multiplayer Controller', function() {
     expect($scope.usersCollection).toBeDefined();
   }); 
 
-  describe('socket io present', function() {
+  describe('socket io', function() {
     it('should emit a user update properly', function() {
       createController();
       spyOn($scope.socket, 'emit');
       $scope.socket.emit();
       expect($scope.socket.emit).toHaveBeenCalled();
     });
+
+    it('should delete users when they log out', function(done) {
+      // note this test doesn't test the socket listener itself
+      // the socket listener that listens for 'userExit' calls handleDeleteUser
+      $httpBackend.expectGET('/app/home/home.html').respond(200);
+      createController();
+      $scope.usersCollection['Cruella'] = {username: 'Cruella', colorIndex: 5};
+      $scope.handleDeleteUser({username: 'Cruella', colorIndex: 5});
+      // NOTE: must run $timeout.flush() to let the $timeout promises run to completion
+      $timeout.flush();
+      expect($scope.usersCollection['Cruella']).not.toBeDefined();
+      done();
+      });
   })
 
   describe('setting and updating myUser', function() {
     it('should create a default username and colorIndex', function() {
       createController();
+
       var user = $scope.getMyUserAndColor();
       var expectedUser = {username: 'you', colorIndex: 10};
 
@@ -68,6 +82,7 @@ describe('Multiplayer Controller', function() {
       createController();
       var newUserData = {username: 'spiderdog', colorIndex: 8};
       $scope.myUser = {username: 'flipper', colorIndex: 4};
+      expect($scope.myUser).not.toEqual(newUserData);
       spyOn($scope, 'getMyUserAndColor').and.returnValue(newUserData);
       $scope.updateMyUserAndColor();
       expect($scope.myUser).toEqual(newUserData);
@@ -91,23 +106,34 @@ describe('Multiplayer Controller', function() {
       expect($scope.handleUserUpdate).toHaveBeenCalled();
     });
 
-    it('should delete users when they log out', function(done) {
-      // note this test doesn't test the socket listener itself
-      // the socket listener that listens for 'userExit' calls handleDeleteUser
+  });
+
+  describe('user list functions', function() {
+    it('should have an array of 11 colors for setting the circle colors', function() {
+      createController();
+      expect($scope.colors.length).toBe(11);
+    });
+
+    it('should add new users to the user list', function() {
       $httpBackend.expectGET('/app/home/home.html').respond(200);
       createController();
-      $scope.usersCollection['Cruella'] = {username: 'Cruella', colorIndex: 5};
-      $scope.handleDeleteUser({username: 'Cruella', colorIndex: 5});
-      // must run $timeout.flush() to let the $timeout promises run to completion
+      var newUser = {username: 'JackSparrow', colorIndex: 7};
+      expect($scope.usersCollection['JackSparrow']).not.toBeDefined();
+      $scope.handleUserUpdate(newUser);
       $timeout.flush();
-      expect($scope.usersCollection['Cruella']).not.toBeDefined();
-      done();
-      });
+      expect($scope.usersCollection['JackSparrow']).toBe(newUser);
+    });
+
+    it('should add new users to the DOM', function() {
+      $httpBackend.expectGET('/app/home/home.html').respond(200);
+      createController();
+      var newUser = {username: 'JackSparrow', colorIndex: 7};
+      expect($scope.usersCollection['JackSparrow']).not.toBeDefined();
+      $scope.handleUserUpdate(newUser);
+      $timeout.flush();
+      expect($scope.usersCollection['JackSparrow']).toBe(newUser);
+    });
   });
 
 
-  it('should have an array of 11 colors for setting the circle colors', function() {
-    createController();
-    expect($scope.colors.length).toBe(11);
-  })
 });
