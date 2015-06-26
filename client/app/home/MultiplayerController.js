@@ -38,7 +38,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // updates the new myUser data
   $scope.updateMyUserAndColor = function() {
     var currentUser = $scope.getMyUserAndColor();
-    console.log('new color index is', currentUser.colorIndex);
     // if the name has changed (by login or logout)
     if (currentUser.username !== $scope.myUser.username) {
       // delete the old and new usernames from the users collection
@@ -200,7 +199,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // changes color of circle based on passed in user
   // call this when receiving a new event from sockets to update their color
   $scope.setColor = function(user) {
-    // console.log('color index is', user.colorIndex, 'user is', user.username)
 
     if (user.colorIndex === undefined) {
       throw "ERROR: must supply a color index to setColor";
