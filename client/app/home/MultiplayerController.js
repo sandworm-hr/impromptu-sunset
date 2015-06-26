@@ -140,20 +140,6 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   
 
   // DEBUG: pre-made users
-  var user1 = {
-      username: 'jd',
-      colorIndex: 4
-    };
-
-  var user2 = {
-      username: 'bahia',
-      colorIndex: 8
-    };
-
-  var user3 = {
-      username: 'peter',
-      colorIndex: 6
-    };
 
   // determines length and width of circle box
   // and the diameter of the circle
@@ -232,14 +218,31 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   };
 
   // DEBUG SECTION
+
   // This sets up a few debug users and tests changing the color
-  $scope.handleUserUpdate(user1);
-  $scope.handleUserUpdate(user2);
-  $scope.handleUserUpdate(user3);
 
-  user2.colorIndex = 1;
+  // var user1 = {
+  //     username: 'jd',
+  //     colorIndex: 4
+  //   };
 
-  $scope.setColor(user2);
+  // var user2 = {
+  //     username: 'bahia',
+  //     colorIndex: 8
+  //   };
 
+  // var user3 = {
+  //     username: 'peter',
+  //     colorIndex: 6
+  //   };
+    
+  // $scope.handleUserUpdate(user1);
+  // $scope.handleUserUpdate(user2);
+  // $scope.handleUserUpdate(user3);
+
+
+  // user2.colorIndex = 1;
+
+  // $scope.setColor(user2);
 
 }]);

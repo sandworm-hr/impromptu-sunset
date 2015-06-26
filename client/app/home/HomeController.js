@@ -1,30 +1,30 @@
 
-app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexService', function($scope, $interval, Results, ColorIndexService) {
+app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', function($scope, $interval, Results, ColorIndexService, Time, Score) {
 
-  $scope.lastTime = 1;
+  // $scope.lastTime = 1;
 
   $scope.unsubmitted = true;
   $scope.gameOver = false;
 
-  $scope.timerInput = 15;
+  // $scope.timerInput = 15;
 
-  $scope.scores = [];
+  // $scope.scores = [];
 
-  var allScores = [];
+  // var allScores = [];
 
   $scope.latestScore = 0;
 
-  $scope.totalScore = 0;
+  // $scope.totalScore = 0;
 
-  $scope.minute = 0;
+  // $scope.minute = 0;
 
-  $scope.startTime;
+  // $scope.startTime;
 
-  $scope.timer = 0;
+  // $scope.timer = 0;
 
-  $scope.sessionScore = 0;
+  // $scope.sessionScore = 0;
 
-  $scope.potentialScoreSoFar = 0;
+  // $scope.potentialScoreSoFar = 0;
 
   $scope.colorIndex;
 
@@ -33,148 +33,38 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
   var start;
 
-  var latestScores = [];
-
-  var lastIndex = 0;
-
-  // calculates the colorIndex
-  // calculates color based on the quotient between actual and potential
-  // returns a corresponding index between 0 - 10
-  $scope.getRoundedIndex = function(scores, seconds, maxScore) {
-
-    var actual = 0;
-
-    actual += _.reduce(scores, function(memo, score){
-      return memo + score;
-    }, 0);
-
-    var potential = seconds * maxScore;
-
-    if (actual > potential) {
-      console.log("ERROR: Trying to find quotient when the actual score is higher than potential");
-    }
-
-    var prop = Math.floor((actual / potential) * 10);
-
-    if (prop > lastIndex) {
-      lastIndex++;
-      console.log("color index is: ", lastIndex);
-      return lastIndex;
-    } else {
-      console.log("color index is: ", prop);
-      lastIndex = prop;
-      return prop;
-    }
-
-
-
-    console.log(Math.floor(prop * 10));
-    
-  };
-  
-
-
   $scope.setTime = function(event){
-    $scope.lastTime = event.timeStamp;
+    Time.setTime(event.timeStamp);
   };
-
-  var getTime = function() {
-    var date = new Date();
-    return date.getTime();
-  };
-
-  var updateMinute = function() {
-    $scope.minute = Math.floor((getTime() - $scope.startTime) / 60000);
-  };
-
-  var getScore = function() {
-    // How long to wait before score starts to decrease (in ms)
-    var gracePeriod = 1000;
-    // Length of time from end of grace period to score of zero (in ms)
-    var countdown = 10000; 
-    // Number of scores to average for calculating color index
-    var interval = 1; 
-    // Maximum score per second
-    var maxScore = 10000;
-       
-    var score = maxScore;
-
-    var diff = getTime() - $scope.lastTime;
-    
-    if (diff > gracePeriod && diff <= gracePeriod + countdown) {
-      score -= Math.floor((diff - gracePeriod) * (score / countdown));
-    } else if (diff > gracePeriod + countdown) {
-      score = 1;
-    }
-
-    updateMinute();
-
-    $scope.scores[$scope.minute] += score;
-    $scope.sessionScore += score;
-    $scope.latestScore = score;
-
-    allScores.push(score);
-
-    
-    latestScores.push(score);
-
-    var seconds = latestScores.length <= interval ? latestScores.length : interval;
-
-    if (latestScores.length > interval) {
-      latestScores.shift();
-    }
-    $scope.colorIndex = $scope.getRoundedIndex(latestScores, seconds, maxScore);
-
-    // set the shared color index value for the multiplayer controller to pick up
-    ColorIndexService.set($scope.colorIndex);
-
-  };
-
-  var createScoresArray = function(minutes) {
-    var array = [];
-    for (var i = 0; i < minutes; i++) {
-      array.push(0);
-    }
-    return array;
-  };
-
-  var getTimer = function(elapsed) {
-    var mins = (parseInt($scope.timerInput) - Math.floor(elapsed / 60000) - 1).toString();
-    var seconds = (60 - Math.floor(((elapsed % 60000) / 1000)) - 1).toString();
-    if (seconds.length === 1) seconds = '0' + seconds;
-
-    return mins + ':' + seconds;
-  }
-
-  var checkForEnd = function(elapsed) {
-    return elapsed >= parseInt($scope.timerInput) * 60000;
-  }
 
   $scope.startTimer = function() {
 
     if (angular.isDefined(start)) return;
 
-    var duration = $scope.timerInput = parseInt($scope.timerInput);
+    var duration = parseInt($scope.timerInput);
+    Time.setMinuteCount(duration);
 
     if (duration > 0) {
 
       $scope.unsubmitted = false;
 
-      // $scope.potentialSession = $scope.timerInput * 60 * 10000;
-      $scope.startTime = getTime();
-      $scope.scores = createScoresArray(duration);
+      Time.setStartTime();
+      // $scope.scores = createScoresArray(duration);
 
-      getScore();
-      $scope.timer = getTimer(getTime() - $scope.startTime);
+      Score.getScore(Time.getTime(), Time.getLastKeyPress());
+      $scope.timer = Time.getTimer();
 
       start = $interval(function() {
-        var elapsed = getTime() - $scope.startTime;
-        if (checkForEnd(elapsed)) {
+        if (Time.checkForEnd()) {
           $scope.stopTimer();
-          $scope.showResults();
+          setResults(duration);
         } else {
-          getScore();
-          $scope.timer = getTimer(elapsed);
+          var currentScore = Score.getScore(Time.getTime(), Time.getLastKeyPress());
+          $scope.score = currentScore;
+          $scope.timer = Time.getTimer();
+          var colorIndex = ColorIndexService.getRoundedIndex(currentScore, Score.getMaxScore());
+          $scope.colorIndex = colorIndex;
+          ColorIndexService.set(colorIndex);
         }
       }, 1000, 0);
 
@@ -190,10 +80,10 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     }
   };
 
-  $scope.showResults = function() {
-    Results.setDuration($scope.timerInput);
+  var setResults = function(duration) {
+    Results.setDuration(duration);
     Results.setText($scope.textInput);
-    Results.setScores(allScores);
+    Results.setScores(Score.getScores());
     $scope.gameOver = true;
   };
 
@@ -243,7 +133,6 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     Results.setText(valuesObj.text);
     Results.setScores(valuesObj.scores);
     $scope.gameOver = true;
-
 
     // Results.postResults(valuesObj);
   };

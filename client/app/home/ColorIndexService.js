@@ -1,4 +1,5 @@
-app.service('ColorIndexService', function() {
+angular.module('app.services')
+  .service('ColorIndexService', function() {
 
   var currentColorIndex;
 
@@ -8,6 +9,11 @@ app.service('ColorIndexService', function() {
     },
     set: function(value) {
       currentColorIndex = value;
+    },
+    getRoundedIndex : function(score, maxScore) {
+      return Math.floor((score / maxScore) * 10);
     }
   }
+
+    
 });
