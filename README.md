@@ -36,13 +36,11 @@
 
 ### Installing Dependencies
 
-From within the root directory:
-
 ```
 npm install
 ```
 
-npm install should install bower dependencies automatically.
+NPM should install bower dependencies automatically.
 
 
 ### Server Environment Setup
