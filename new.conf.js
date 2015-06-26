@@ -29,7 +29,6 @@ module.exports = function(config) {
       // ## app files
       // loads critical app files first
       'client/app/*.js',
-      'client/app/config/config.js',
       // loads all other app files
       'client/app/**/*.js', 
 
@@ -73,11 +72,11 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: false,
   })
 }

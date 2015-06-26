@@ -1,8 +1,7 @@
 
 app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'ColorIndexService', '$interval', function($scope, $timeout, Session, ColorIndexService, $interval) {
 
-
-  var socket = io();
+  $scope.socket = io();
 
 
   // stores the users currently logged in for sockets
@@ -23,9 +22,14 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
     // if no username is provided (they haven't logged in)
-    if (username === '') {
+    if (username === '' ||
+        username === undefined) {
       // set a default username of 'you'
       username = 'you';
+    }
+
+    if (colorIndex === undefined) {
+      colorIndex = 10;
     }
 
     return {username: username, colorIndex: colorIndex};
@@ -66,21 +70,21 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   ////////////////
 
   // initiates update function when a user has sent their data to the server
-  socket.on('getUserUpdate', function(data) {
+  $scope.socket.on('getUserUpdate', function(data) {
     // NOTE: must use timeout because angular requires time to add the element to the DOM
-    $timeout(function() {
+    return $timeout(function() {
       $scope.handleUserUpdate(data);
     }, 1);
   });
 
   // iniates removal of a user from the userlist, when a user sent their
   // disconnect signal to the server
-  socket.on('userExit', function(user) {
+  $scope.socket.on('userExit', function(user) {
     $scope.handleDeleteUser(user)
   });
 
   // gets the array of all users currently logged in
-  socket.on('allServerUsers', function(data) {
+  $scope.socket.on('allServerUsers', function(data) {
     for (var i = 0; i < data.length; i++) {
       $timeout(function() {
         $scope.handleUserUpdate(data[i]);
@@ -89,14 +93,14 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   });
 
   // on page load, goes and gets all of the users currently logged in
-  socket.emit('getAllUsers');
+  $scope.socket.emit('getAllUsers');
 
 
   // deletes passed in user from the users collection
   $scope.handleDeleteUser = function(user) {
-    $timeout(function(){
+    return $timeout(function(){
       delete $scope.usersCollection[user.username];
-    }, 0);
+    }, 1);
   };
 
     // uploads user data to server
@@ -104,25 +108,27 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
 
-    socket.emit('postUserUpdate', {username: username, colorIndex: colorIndex});
+    $scope.socket.emit('postUserUpdate', {username: username, colorIndex: colorIndex});
   };
 
   
   ////////////
-  // colors for red <-> yellow <-> green
+  // CIRCLE COLOR NOTES
   ////////////
+  // colors for red <-> yellow <-> green
+  //
   // usage:
   // var roundedIndex = getRoundedIndex(actual, potential);
   // user.colorIndex = roundedIndex;
   // setColor(user);
-  ////////////
+  //
   // to generate new color midpoints, use this generator:
   // http://meyerweb.com/eric/tools/color-blend/#:::hex
-  ////////////
+  //
   // the color pallette used is here:
   // http://www.colourlovers.com/palette/110225/Vintage_Modern
   ////////////
-  var colors = [
+  $scope.colors = [
     '#8C2318', // .0
     '#A64B29', // .1
     '#BF7439', // .2
@@ -178,7 +184,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     // sets up new circle
     // must be in timeout due to delay in angular for setting up
     // new DOM elements
-    $timeout(function() {
+    return $timeout(function() {
       // sets up SVG based on the passed in user
       d3.select(elementId).html("");
       
@@ -218,14 +224,14 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
 
     // select individual svg circle for the user
 
-    $timeout(function() {
+    return $timeout(function() {
       var element = d3.select(elementId).selectAll('circle');
 
       // changes the user's circle color to their passed in color
       element
         .transition().duration(1000)
           .ease('linear')
-          .attr('fill', colors[user.colorIndex]);
+          .attr('fill', $scope.colors[user.colorIndex]);
 
     }, 1);
 

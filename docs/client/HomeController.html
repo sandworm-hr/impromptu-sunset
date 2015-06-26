@@ -143,7 +143,9 @@ app.controller(<span class="hljs-string">'HomeController'</span>, [<span class="
 
   <span class="hljs-keyword">var</span> start;
 
-  <span class="hljs-keyword">var</span> latestScores = [];</pre></div></div>
+  <span class="hljs-keyword">var</span> latestScores = [];
+
+  <span class="hljs-keyword">var</span> lastIndex = <span class="hljs-number">0</span>;</pre></div></div>
             
         </li>
         
@@ -162,12 +164,6 @@ returns a corresponding index between 0 - 10</p>
             
             <div class="content"><div class='highlight'><pre>  $scope.getRoundedIndex = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">scores, seconds, maxScore</span>) </span>{
 
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"the scores are: "</span>, scores);
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"the number of scores is: "</span>, scores.length);
-
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"the number of seconds is: "</span>, seconds);
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"the maximum score is: "</span>, maxScore);
-
     <span class="hljs-keyword">var</span> actual = <span class="hljs-number">0</span>;
 
     actual += _.reduce(scores, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">memo, score</span>)</span>{
@@ -180,11 +176,22 @@ returns a corresponding index between 0 - 10</p>
       <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"ERROR: Trying to find quotient when the actual score is higher than potential"</span>);
     }
 
-    <span class="hljs-keyword">var</span> prop = actual / potential;
+    <span class="hljs-keyword">var</span> prop = <span class="hljs-built_in">Math</span>.floor((actual / potential) * <span class="hljs-number">10</span>);
+
+    <span class="hljs-keyword">if</span> (prop &gt; lastIndex) {
+      lastIndex++;
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"color index is: "</span>, lastIndex);
+      <span class="hljs-keyword">return</span> lastIndex;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"color index is: "</span>, prop);
+      lastIndex = prop;
+      <span class="hljs-keyword">return</span> prop;
+    }
+
+
 
     <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Math</span>.floor(prop * <span class="hljs-number">10</span>));
     
-    <span class="hljs-keyword">return</span> <span class="hljs-built_in">Math</span>.floor(prop * <span class="hljs-number">10</span>);
   };
   
 
@@ -217,7 +224,7 @@ returns a corresponding index between 0 - 10</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> gracePeriod = <span class="hljs-number">1500</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> gracePeriod = <span class="hljs-number">1000</span>;</pre></div></div>
             
         </li>
         
@@ -232,7 +239,7 @@ returns a corresponding index between 0 - 10</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> countdown = <span class="hljs-number">4000</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> countdown = <span class="hljs-number">10000</span>;</pre></div></div>
             
         </li>
         
@@ -247,7 +254,7 @@ returns a corresponding index between 0 - 10</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> interval = <span class="hljs-number">10</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> interval = <span class="hljs-number">1</span>;</pre></div></div>
             
         </li>
         
