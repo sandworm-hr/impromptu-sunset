@@ -30,7 +30,6 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
     // to be stored in the database.
     $scope.sendResultsToServer = function() {
       var resultsObj = {};
-
       resultsObj.session_time = Results.getDuration();
       resultsObj.char_count = Results.getCharacterCount();
       resultsObj.text = Results.getText();

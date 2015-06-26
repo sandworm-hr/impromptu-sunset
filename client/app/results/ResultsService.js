@@ -26,9 +26,17 @@ angular.module('app.services')
       
     };
     funcs.getWordCount = function() {
+      // if there are no text (if the user goes directly to the results page)
+      if (!text) {
+        return null;
+      }
       return text.split(' ').length;
     };
     funcs.getCharacterCount = function() {
+      // if there are no text (if the user goes directly to the results page)
+      if (!text) {
+        return null;
+      }
       return text.length;
     };
     funcs.setDuration = function(minutes){
