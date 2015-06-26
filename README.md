@@ -58,22 +58,22 @@ This repo contains client side and server side testing. To install:
     - ``` create database dev
     - ``` create database test
 1. Setup ``` server/config/config.json ```
-```js
-{
-"development": {
-  "dialect": "postgres",
-  "use_env_variable": "DATABASE_URL"
-},
-"test": {
-  "dialect": "postgres",
-  "use_env_variable": "TEST_DATABASE_URL",
-  "logging": false
-},
-"production": {
-  "dialect": "postgres",
-  "use_env_variable": "DATABASE_URL"
-} 
-```
+  - ```js
+    {
+    "development": {
+      "dialect": "postgres",
+      "use_env_variable": "DATABASE_URL"
+    },
+    "test": {
+      "dialect": "postgres",
+      "use_env_variable": "TEST_DATABASE_URL",
+      "logging": false
+    },
+    "production": {
+      "dialect": "postgres",
+      "use_env_variable": "DATABASE_URL"
+    } 
+    ```
 }
 
 ### Roadmap
