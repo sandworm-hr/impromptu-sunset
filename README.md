@@ -1,6 +1,8 @@
-# Impromptu Sunset (name pending)
+# WordFlow
 
 > Pithy project description
+
+WordFlow is a text editor with accountability. Instead of just telling writers how many words they've written, it measures the consistency of their typing, and generates a score based on their output. It encourages writers to keep writing by sharing their consistency with other users in real-time, and it helps build good habits by analyzing and keeping track of day-to-day writing output.
 
 ## Team
 
@@ -24,6 +26,7 @@
 
 > Some usage instructions
 
+
 ## Requirements
 
 - Node 0.10.x
@@ -46,7 +49,7 @@ NPM should install bower dependencies automatically.
 ### Server Environment Setup
 
 #### Description
-Follow these instructions to get Postgres up and running for a the dev and test environment.
+Follow these instructions to get Postgres up and running for the development and testing environments.
 
 #### Install Postgres
 - Install the Postgres app from [http://postgresapp.com/](http://postgresapp.com/)
