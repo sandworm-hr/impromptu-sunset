@@ -20,13 +20,14 @@ module.exports = function(grunt) {
         ]
       }
     },
-
+    // grunt nodemon to run local server
     nodemon: {
       dev: {
         script: 'index.js'
       }
     },
 
+    // docco for documenting our code from our comments.
     docco: {
       server: {
         src: ['server/**/*.js'],
@@ -83,7 +84,9 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
+  // test task runs server side and client side tests
   grunt.registerTask('test', ['env:test','jasmine_nodejs', 'karma']);
+  // upload task. --prod to deploy to heroku 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       grunt.task.run([ 'shell:prodServer' ]);
@@ -92,6 +95,7 @@ module.exports = function(grunt) {
     }
   });
 
+  // grunt deploy --prod to push to heroku
   grunt.registerTask('deploy', [
     'upload'
   ]);
