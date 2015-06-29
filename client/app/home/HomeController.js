@@ -1,32 +1,23 @@
 
 app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', function($scope, $interval, Results, ColorIndexService, Time, Score) {
 
-  // $scope.lastTime = 1;
 
   $scope.unsubmitted = true;
   $scope.gameOver = false;
 
-  // $scope.timerInput = 15;
-
-  // $scope.scores = [];
-
-  // var allScores = [];
-
-  $scope.latestScore = 0;
-
-  // $scope.totalScore = 0;
-
-  // $scope.minute = 0;
-
-  // $scope.startTime;
-
-  // $scope.timer = 0;
-
-  // $scope.sessionScore = 0;
-
-  // $scope.potentialScoreSoFar = 0;
 
   $scope.colorIndex;
+  $scope.latestScore = 0;
+  // $scope.lastTime = 1;
+  // $scope.timerInput = 15;
+  // $scope.scores = [];
+  // $scope.totalScore = 0;
+  // $scope.minute = 0;
+  // $scope.startTime;
+  // $scope.timer = 0;
+  // $scope.sessionScore = 0;
+  // $scope.potentialScoreSoFar = 0;
+
 
   // start the app with a perfect colorIndex
   ColorIndexService.set(10);
@@ -69,7 +60,7 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
       }, 1000, 0);
 
     } else {
-      console.log('invalid time');
+      $scope.timerInput = 'please enter a number of minutes';
     } 
   };
 
