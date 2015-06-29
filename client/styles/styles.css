@@ -42,7 +42,9 @@ input.set-timer-components {
 
 #sidebar-container {
   height: 500px;
-  background-color: rgb(173,216,199);
+/*  background-color: blue;
+  border-radius: 10px;
+  border: 2px solid black;*/
 }
 
 
