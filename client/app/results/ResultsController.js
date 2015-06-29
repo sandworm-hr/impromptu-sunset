@@ -1,12 +1,11 @@
 
-app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($scope, $timeout, Results) {
+app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','Session', function($scope, $timeout, Results, $state, Session) {
 
     $scope.margin = {top: 10, right: 20, bottom: 30, left: 70},
     $scope.width = 960 - $scope.margin.left - $scope.margin.right,
     $scope.height = 400 - $scope.margin.top - $scope.margin.bottom;
 
     $scope.duration = Results.getDuration();
-    $scope.scores = Results.getScores();
     $scope.rawText = Results.getText();
     $scope.minuteScores = Results.getScoresPerMinute();
     $scope.wordCount = Results.getWordCount();
@@ -17,6 +16,15 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
     $scope.possible = $scope.duration * 60 * 10000;
     $scope.consistency = $scope.total / $scope.possible;
 
+    $scope.control = { loaded : function(){
+      $scope.scores = Results.getScores();
+      // redirect to index page if no scores!
+      if(!$scope.scores)
+        $state.go('index');
+      else{
+        $scope.plot($scope.scores, "Score");
+      }
+    }};
 
     // Retrieves session information from the Results service and sends it to the server
     // to be stored in the database.
@@ -43,6 +51,11 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
         $scope.status = 'Save Failed';
        });
     };
+
+    // if authenticated save to db right away.
+    if(Session.isAuthenticated()){
+      $scope.sendResultsToServer();
+    }
     
     // Creates an array of tuple objects, where the x axis is the index and the y axis is the value of the input array at i.
     var parseData = function(array) {
@@ -55,10 +68,6 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
         }
         return result;
     };
-
-    $scope.control = { loaded : function(){
-      $scope.plot($scope.scores, "Score");
-    }};
 
     $scope.plot = function(data, type){
       data = parseData(data);
