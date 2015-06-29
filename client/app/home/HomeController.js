@@ -76,6 +76,7 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     Results.setText($scope.textInput);
     Results.setScores(Score.getScores());
     $scope.gameOver = true;
+    Score.reset();
   };
 
   $scope.makeDebugResults = function() {
