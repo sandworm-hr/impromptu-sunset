@@ -226,28 +226,27 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
 
   // This sets up a few debug users and tests changing the color
 
-  // var user1 = {
-  //     username: 'jd',
-  //     colorIndex: 4
-  //   };
+  var user1 = {
+      username: 'jd',
+      colorIndex: 4
+    };
 
-  // var user2 = {
-  //     username: 'bahia',
-  //     colorIndex: 8
-  //   };
+  var user2 = {
+      username: 'bahia',
+      colorIndex: 8
+    };
 
-  // var user3 = {
-  //     username: 'peter',
-  //     colorIndex: 6
-  //   };
+  var user3 = {
+      username: 'peter',
+      colorIndex: 6
+    };
     
-  // $scope.handleUserUpdate(user1);
-  // $scope.handleUserUpdate(user2);
-  // $scope.handleUserUpdate(user3);
+  $scope.handleUserUpdate(user1);
+  $scope.handleUserUpdate(user2);
+  $scope.handleUserUpdate(user3);
 
+  user2.colorIndex = 1;
 
-  // user2.colorIndex = 1;
-
-  // $scope.setColor(user2);
+  $scope.setColor(user2);
 
 }]);

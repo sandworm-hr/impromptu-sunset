@@ -9,34 +9,38 @@ angular.module('app.services')
     var countdown = 10000; 
     // Maximum score per second
     var maxScore = 10000;
-    // Start score at maximum
+    // Score for this second
     var currentScore = maxScore;
     // maximum score increase per second
     var base = 1000;
-
+    // holds raw scores for each second
     var scores = [];
 
+
+    // Calculates one score, based on how long it's been since the user typed.
     services.getScore = function(currentTime, lastKeyPress) {
          
       var score = 0;
 
+      // number of milliseconds since last key press
       var diff = currentTime - lastKeyPress;
 
+      // either add or subtract points from currentScore
       if (diff < gracePeriod) {
         score = base;
       } else {
         score = -base;
       }
-
       currentScore += score;
 
+      // enforce minimum and maximum score
       if (currentScore > maxScore) currentScore = maxScore;
       if (currentScore < 0) currentScore = 0;
 
+      // add score to the array of scores
       scores.push(currentScore);
 
-      console.log(currentScore);
-
+      // return score for use in controller
       return currentScore;
 
     };
