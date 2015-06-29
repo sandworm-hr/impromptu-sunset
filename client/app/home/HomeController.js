@@ -10,36 +10,43 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
   var start;
 
+
+  // pulls timeStamp from the keyUp event and stores it in the Time service
   $scope.setTime = function(event){
     Time.setTime(event.timeStamp);
   };
 
+  // initializes and runs the timer and score calculator
   $scope.startTimer = function() {
-
+    
+    // prevents simultaneous sessions
     if (angular.isDefined(start)) return;
 
+    // stores length of session in Time service
     var duration = parseInt($scope.timerInput);
     Time.setMinuteCount(duration);
 
+    // only works if duration is a positive number
     if (duration > 0) {
 
       $scope.unsubmitted = false;
 
       Time.setStartTime();
 
+      // Starts the timer and begins scoring immediately
       Score.getScore(Time.getTime(), Time.getLastKeyPress());
       $scope.timer = Time.getTimer();
 
+      // Generates one score and one color index every second until the session times out,
+      // and then destroys the session and saves the data.
       start = $interval(function() {
         if (Time.checkForEnd()) {
           $scope.stopTimer();
           setResults(duration);
         } else {
           var currentScore = Score.getScore(Time.getTime(), Time.getLastKeyPress());
-          $scope.score = currentScore;
           $scope.timer = Time.getTimer();
           var colorIndex = ColorIndexService.getRoundedIndex(currentScore, Score.getMaxScore());
-          $scope.colorIndex = colorIndex;
           ColorIndexService.set(colorIndex);
         }
       }, 1000, 0);
