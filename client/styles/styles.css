@@ -1,7 +1,21 @@
+.navbar-default .navbar-brand {
+  font-family: 'Lobster', cursive;
+  font-size: 2.5em;
+  color: rgb(2,93,140);
+}
+
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: rgb(2,93,140);
+
+}
+
 #main-container {
   height: 500px;
 }
 
+body {
+  font-family: 'Cabin', serif;
+}
 
 #status-container {
   /*height: 250px;*/
@@ -47,15 +61,29 @@ input.set-timer-components {
   height: 80vh;
 }
 
+.go-button-box {
+  margin-top: 30px;
+  padding-right: 30px;
+}
+.users-table {
+  border-collapse: collapse;
+}
+
 .user-tbody {
-  margin-bottom: 20px;
+   border-bottom: 20px solid transparent;
 }
 .main-input {
   height: 400px;
 }
+.user-text-span {
+  font-size: 1.2em;
+}
+.my-user-text-span {
+  font-size: 1.5em;
+}
 
 #text-area {
-  height: 400px;
+  height: 70vh;
   font-size: 2em;
 }
 
