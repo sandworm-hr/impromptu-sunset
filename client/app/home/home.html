@@ -1,21 +1,24 @@
 <div class="row" id="main-container" ng-controller="HomeController">
   <div class="col-sm-9" id="content-container">
     <!-- <div class="row"> -->
-      <div class="row container" id="status-container">
-          <div class="col-sm-5 set-timer-box col-md-offset-2">
-            <div class="set-timer-box" ng-show="unsubmitted">
-              <h2 class="set-timer-components">Write for  </h2>
-                <input class="set-timer-components" classtype="text" ng-model="timerInput" ng-enter="startTimer()">
-              <h2 class="set-timer-components">  minutes</h2>
+      <div class="row" id="status-container">
+          <div class="col-sm-6 set-timer-box col-md-offset-3">
+            <div class="set-timer-box">
+              <!-- this text is hidden after submitting to maintain timer placement -->
+              <h2 class="set-timer-components" ng-class="!(unsubmitted) ? 'invisible' : 'visible'">Write for  </h2>
+              <!-- TIMER, appears after submitting and replacing the input field -->
+              <h1 class="countdown-box set-timer-components timer-text" ng-show="!(unsubmitted)"> {{ timer }} </h1>
+              <!-- INPUT FIELD, disappears after submitting -->
+              <input ng-show="unsubmitted" class="set-timer-components" classtype="text" ng-model="timerInput" ng-enter="startTimer()">
+              <!-- this text is hidden after submitting to maintain timer placement -->
+              <h2 class="set-timer-components" ng-class="!(unsubmitted) ? 'invisible' : 'visible'">  minutes</h2>
             </div>
-            <div class="countdown-box text-center" ng-show="!(unsubmitted)">
-              <h1> {{ timer }} </h1>
-            </div>
+            
           </div>
-          <div class="col-sm-3 go-button-box">
-            <button class="btn btn-default col-sm-4" type="button" ng-click="startTimer()">Go!</button>
-            <button ng-show="gameOver" class="btn btn-default" type="button" ui-sref="results">See Results!</button>
-            <button class="btn btn-default"  type="button" ng-click="makeDebugResults()">Debug Generate Results</button>
+          <div class="col-sm-2 go-button-box">
+            <button class="btn btn-default" type="button" ng-click="startTimer()">Go!</button>
+            <button ng-show="gameOver" class="btn btn-default pull-right" type="button" ui-sref="results">See Results!</button>
+            <button class="btn btn-default pull-right"  type="button pull-right" ng-click="makeDebugResults()">Debug</button>
           </div>
           <!-- <div class="col-sm-1 timer-box"> -->
             <!-- <h3 ng-show="!(unsubmitted)"> {{ timer }} </h3> -->

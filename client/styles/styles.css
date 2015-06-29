@@ -27,8 +27,13 @@ input.set-timer-components {
   /*visibility: hidden;*/
 }
 
-.dummy-class {
+.timer-text {
+  font-size: 3em;
+  margin-top: 20px;
+}
 
+.visible {
+  visibility: visible;
 }
 
 .invisible {
