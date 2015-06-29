@@ -45,7 +45,7 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
       }, 1000, 0);
 
     } else {
-      $scope.timerInput = 'please enter a number of minutes';
+      $scope.timerInput = '';
     } 
   };
 

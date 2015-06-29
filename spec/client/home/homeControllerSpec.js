@@ -81,7 +81,7 @@ describe('Home Controller', function() {
       createController();
       $scope.timerInput = "cheddar";
       $scope.startTimer();
-      expect($scope.timerInput).toBe('please enter a number of minutes');
+      expect($scope.timerInput).toBe('');
     });
   });
 
