@@ -58,14 +58,14 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
         var total_percent=0;
         _.each(scores, function(element,index){
           //var s = a+b;
-          var potential = (index + 1) * 10000 * 60; //potential score per minute
+          var potential = (1) * 10000 * 60; //potential score per minute
           percent = (element/ potential) * 100 
           total_percent += percent
           console.log(percent);
           //return s
-        },0);
+        });
         var sum = Math.round(total_percent / scores.length);
-        return percent;
+        return sum;
       });
       console.log(consistency);
       $scope.plot('consistency', consistency, "Avg consistency per session");  
