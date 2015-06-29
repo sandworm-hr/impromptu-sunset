@@ -53,6 +53,10 @@ angular.module('app.services')
       return scores;
     };
 
+    services.reset = function() {
+      scores = [];
+    };
+
     return services;
 
   });
