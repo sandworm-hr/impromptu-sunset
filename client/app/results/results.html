@@ -1,39 +1,17 @@
 <div ng-controller="ResultsController">
-  <h3>Hello world, I am the results page!</h3>
-
-  
-  <div id='graph' class="container">
+  <div class="container">
     <div class="row">
-      <h4>Results</h4>
+      <div class="col-md-4 col-md-offset-4 results_buttons">
+        <h3>Results</h3>
+        <button ng-click="graphScores();" class="btn btn-default">Scores</button>
+        <button ng-click="graphConsistency();"  class="btn btn-default">Consistency</button>
+        <button ng-click="sendResultsToServer()"  class="btn btn-default">Save Results</button>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-12">
         <d3 style="display:block;margin:20px" margin="margin" height="height" control="control"></d3>
       </div>
     </div>
   </div>
-
-
-
-
-
-  <div class="col-sm-5">
-    <button ng-click="graphScores();">Scores</button>
-    <button ng-click="graphConsistency();">Consistency</button>
-    <button ng-click="sendResultsToServer()">Save Results</button>
-<!--     <p class="debug-text">Duration: {{ duration }}</p>
-    <p class="debug-text">Scores: {{ scores }}</p>
-    <p class="debug-text">Raw Text: {{ rawText }}</p>
-    <p class="debug-text">Minute Scores: {{ minuteScores }}</p>
-    <p class="debug-text">Word Count: {{ wordCount }}</p>
-    <p class="debug-text">Character Count: {{ charCount }}</p>
-    <p class="debug-text">Words Per Minute: {{ wpm }}</p>
-    <p class="debug-text">Characters Per Minute: {{ cpm }}</p>
-    <p class="debug-text">Total Score: {{ total }}</p>
-    <p class="debug-text">Possible Score: {{ possible }}</p>
-    <p class="debug-text">Consistency Percentage: {{ consistency + "%" }}</p> -->
-
-  </div>
-
-
-
-
 </div>
