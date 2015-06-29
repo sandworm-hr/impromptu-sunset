@@ -1,20 +1,18 @@
 app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Sessions) {
 
-  $scope.sessions;
-
-  $scope.margin = {top: 10, right: 50, bottom: 0, left: 70},
-  $scope.width = 960 - $scope.margin.left - $scope.margin.right,
+  $scope.margin = {top: 10, right: 50, bottom: 0, left: 70};
+  $scope.width = 960 - $scope.margin.left - $scope.margin.right;
   $scope.height = 500 - $scope.margin.top - $scope.margin.bottom;
 
-
+  // Calls the Session factory to get the sessions of that user.
   $scope.getSessions = function (callback) {
     Sessions.getSessions(function(data){
       $scope.sessions = data;
-      callback(data)
+      callback(data);
     });
   };
 
-
+  // parse data before plotting it on d3
   var parseData = function(array) {
       var result = [];
       for (var i = 0; i < array.length; i++) {
@@ -26,6 +24,9 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
       return result;
   };
 
+  // Word count chart.
+  // When the d3 directive for that chart loads, the loaded method will be called
+  // if the sessions are not yet populated, we will get them, otherwise plot.
   $scope.wordcount = { loaded : function(){
     if($scope.sessions){
       var word_count = _.pluck($scope.sessions, "word_count");
@@ -38,6 +39,9 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
     }
   }};
 
+  // Character count chart.
+  // When the d3 directive for that chart loads, the loaded method will be called
+  // if the sessions are not yet populated, we will get them, otherwise plot.
   $scope.charcount = { loaded : function(){
     if($scope.sessions){
       var char_count = _.pluck($scope.sessions, "char_count");
@@ -50,24 +54,20 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
     }
   }};
 
+  // Consistency chart.
+  // When the d3 directive for that chart loads, the loaded method will be called
+  // if the sessions are not yet populated, we will get them, otherwise plot.
   $scope.consistency = { loaded : function(){
     if($scope.sessions){
+      var potential = (1) * 10000 * 60; //potential score per minute
       var consistency = _.pluck($scope.sessions, "scores");
       consistency = _.map(consistency, function(scores){
-        var percent = 0;
-        var total_percent=0;
-        _.each(scores, function(element,index){
-          //var s = a+b;
-          var potential = (1) * 10000 * 60; //potential score per minute
-          percent = (element/ potential) * 100 
-          total_percent += percent
-          console.log(percent);
-          //return s
-        });
+        var total_percent = _.reduce(scores, function(memo, element, index){
+          return memo + (element/potential * 100);
+        },0);
         var sum = Math.round(total_percent / scores.length);
         return sum;
       });
-      console.log(consistency);
       $scope.plot('consistency', consistency, "Avg consistency per session");  
     }
     else{
@@ -78,19 +78,13 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
   }};
     
 
-
+  // parses data then plots the graph by calling the d3 createGraph method for that chart.
+  // control is what connects us to the directive. we pass in in the view. so each chart has its
+  // own control object. This enables us to call a method in the directive.
   $scope.plot = function(control, data, type){
     data = parseData(data);
     $scope[control].createGraph(data, type);
-  }
-
-  
-  // $scope.graphScores = function() {
-  //   $scope.control.removeGraph();
-  //   $timeout(function(){
-  //     $scope.plot($scope.scores, "Score");
-  //   }, 2000);
-  // };
+  };
 
 
 }]);
