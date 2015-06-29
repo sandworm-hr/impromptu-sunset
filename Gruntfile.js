@@ -44,12 +44,47 @@ module.exports = function(grunt) {
     },
 
     shell: {
+      // push code to heroku
       prodServer: {
         command: 'git push heroku master',
         options: {
           stdout: true,
           stderr: true,
           failOnError: true
+        }
+      },
+      // run migrations on heroku
+      "heroku-migrate": {
+        command: 'heroku run sequelize db:migrate --env production -m --app impromptu-sunset',
+        options: {
+          stdout: true,
+          stderr: true,
+          failOnError: true
+        }
+      },
+      // run local migrations
+      "local-migrate": {
+        command: ['cd server','sequelize db:migrate --config config/personal_config.json'].join('&&'),
+        options: {
+          stdout: true,
+          stderr: true,
+          failOnError: true
+        }
+      },
+      "test-migrate": {
+        command: ['cd server','sequelize db:migrate --config config/personal_config.json --env test'].join('&&'),
+        options: {
+          stdout: true,
+          stderr: true,
+          failOnError: true
+        }
+      },
+      "db-create":{
+        command: ['psql postgres -c "CREATE DATABASE dev"','psql postgres -c "CREATE DATABASE test"'].join('&&'),
+        options: {
+          stdout: true,
+          stderr: true,
+          failOnError: false
         }
       }
     },
@@ -59,8 +94,45 @@ module.exports = function(grunt) {
         singleRun: true,
         browsers: ['PhantomJS']
       }
+    },
+    
+    "file-creator": {
+      "env": {
+        "./.env": function(fs, fd, done) {
+          var user = grunt.option('user');
+          fs.writeSync(fd, 'DATABASE_URL=postgres://'+user+'@localhost:5432/dev\n');
+          fs.writeSync(fd, 'TEST_DATABASE_URL=postgres://'+user+'@localhost:5432/test\n');
+          done();
+        }
+      },
+      "personal_config": {
+        "server/config/personal_config.json": function(fs, fd, done) {
+          var user = grunt.option('user');
+          var json = {
+            "development": {
+              "username": user,
+              "password": null,
+              "database": "dev",
+              "host": "127.0.0.1",
+              "dialect": "postgres"
+            },
+            "test": {
+              "username": user,
+              "password": null,
+              "database": "test",
+              "host": "127.0.0.1",
+              "dialect": "postgres"
+            }
+          };
+          fs.writeSync(fd, JSON.stringify(json, null, 2));
+          done();
+        }
+      }
     }
+
   });
+
+  
 
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
@@ -68,6 +140,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-docco');
+  grunt.loadNpmTasks('grunt-file-creator');
 
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
@@ -95,9 +168,33 @@ module.exports = function(grunt) {
     }
   });
 
+  // run grunt migrate to run local migrations
+  // run grunt migrate --prod to run heroku migrations
+  grunt.registerTask('migrate', function(n) {
+    if(grunt.option('prod')) {
+      grunt.task.run([ 'shell:heroku-migrate' ]);
+    } else {
+      grunt.task.run([ 'shell:local-migrate' ]);
+    }
+  });
+
   // grunt deploy --prod to push to heroku
   grunt.registerTask('deploy', [
     'upload'
+  ]);
+
+  // run for initial setup
+  // grunt --user bahiaelsharkawy (your username on mac/linux)
+  grunt.registerTask('setup', [
+    'shell:db-create',
+    'file-creator',
+    'shell:local-migrate',
+    'shell:test-migrate'
+  ]);
+
+  // run to setup heroku by running migrations
+  grunt.registerTask('heroku-setup', [
+    'shell:heroku-migrate'
   ]);
 
 
