@@ -10,5 +10,9 @@ app.controller('mainController', ['$scope', 'Users','Session', function ($scope,
     return Session.isAuthenticated();
   };
 
+  $scope.user = function(){
+    return Session.getUser();
+  };
+
 
 }]);

@@ -3,7 +3,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results', function($
 
     $scope.margin = {top: 10, right: 20, bottom: 30, left: 70},
     $scope.width = 960 - $scope.margin.left - $scope.margin.right,
-    $scope.height = 500 - $scope.margin.top - $scope.margin.bottom;
+    $scope.height = 400 - $scope.margin.top - $scope.margin.bottom;
 
     $scope.duration = Results.getDuration();
     $scope.scores = Results.getScores();
