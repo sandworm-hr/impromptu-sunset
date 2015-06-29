@@ -149,7 +149,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
 
   // determines length and width of circle box
   // and the diameter of the circle
-  var circleBoxWidth = 20;
+  var circleBoxWidth = 40;
 
   // adds user to usersCollection array and creates their SVG circle
   $scope.handleUserUpdate = function(user) {
