@@ -1,42 +1,42 @@
 <div class="row" id="main-container" ng-controller="HomeController">
   <div class="col-sm-9" id="content-container">
+    <!-- <div class="row"> -->
+      <div class="row container" id="status-container">
+          <div class="col-sm-5 set-timer-box col-md-offset-2" ng-show='unsubmitted'>
+            <h2 class="set-timer-components" ng-hide="">Write for  </h3>
+              <input class="set-timer-components" classtype="text" ng-style="{width: 100 + 'px'" ng-model="timerInput" ng-enter="startTimer()">
+            <h2 class="set-timer-components">  minutes</h3>
+          </div>
+          <div class="col-sm-3 go-button-box">
+            <button class="btn btn-default col-sm-4" type="button" ng-click="startTimer()">Go!</button>
+            <button ng-show="gameOver" class="btn btn-default" type="button" ui-sref="results">See Results!</button>
+            <button class="btn btn-default"  type="button" ng-click="makeDebugResults()">Debug Generate Results</button>
+          </div>
+          <div class="col-sm-1 timer-box">
+            <h3 ng-show="!(unsubmitted)"> {{ timer }} </h3>
+          </div>
+      </div>
+          
         
-    <div class="col-sm-12" id="status-container">
-      <div class="col-sm-1">
-        <h4> {{ timerInput }} </h4>
-      </div>
-      <div class="col-sm-5">
-        <div class="input-group" ng-show='unsubmitted'>
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click="startTimer()">Go!</button>
-          </span>
-          <input type="text" class="form-control" ng-model="timerInput" placeholder="How long to write..." ng-enter="startTimer()">
-        </div>
-        <div>
-          <h3 ng-show="!(unsubmitted)"> {{ timer }} </h4>
-        </div>
-      </div>
-      <button ng-show="gameOver" class="btn btn-default" type="button" ui-sref="results">See Results!</button>
-      <button class="btn btn-default"  type="button" ng-click="makeDebugResults()">Debug Generate Results</button>
 
-      <!-- DEBUG AREA -->
-      <div class="col-sm-5">
-        <!-- <p class="debug-text">Start Time: {{ startTime | date:'shortTime' }}</p> -->
-        <!-- <p class="debug-text">Scores: {{ scores }}</p> -->
-        <p class="debug-text">Current Minute: {{ minute }}</p>
-        <!-- <p class="debug-text">Total Score: {{ totalScore }}</p> -->
-        <!-- <p class="debug-text">Timer Input: {{ timerInput }}</p> -->
-        <!-- <p class="debug-text">Session Score: {{ sessionScore }}</p> -->
-        <p class="debug-text">Score: {{ score }}</p>
-        <p class="debug-text">Color Index: {{ colorIndex }}</p>
+        <!-- DEBUG AREA -->
+        <div class="col-sm-5">
+          <!-- <p class="debug-text">Start Time: {{ startTime | date:'shortTime' }}</p> -->
+          <!-- <p class="debug-text">Scores: {{ scores }}</p> -->
+          <p class="debug-text">Current Minute: {{ minute }}</p>
+          <!-- <p class="debug-text">Total Score: {{ totalScore }}</p> -->
+          <!-- <p class="debug-text">Timer Input: {{ timerInput }}</p> -->
+          <!-- <p class="debug-text">Session Score: {{ sessionScore }}</p> -->
+          <p class="debug-text">Score: {{ score }}</p>
+          <p class="debug-text">Color Index: {{ colorIndex }}</p>
+        </div>
+
+      <div class="col-sm-12" id="text-container">
+        <textarea id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
       </div>
     </div>
 
-    <div class="col-sm-12" id="text-container">
-      <textarea id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
-    </div>
 
-  </div>
       <div class="col-sm-3" id="sidebar-container" ng-controller="MultiplayerController">
         <table class="users-table">
           <!-- CURRENT USER TABLE BODY -->

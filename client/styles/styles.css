@@ -4,17 +4,34 @@
 
 
 #status-container {
-  height: 250px;
+  /*height: 250px;*/
 }
 
 #text-container {
   height: 430px;
 }
 
+.set-timer-components {
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 35px;
+  margin-bottom: 0px;
+}
+
+input.set-timer-components {
+  margin-top: 3px;
+  width: 50px;
+  height: 60px;
+  font-size: 5em;
+  /*visibility: hidden;*/
+}
+
 #sidebar-container {
   height: 500px;
   background-color: rgb(173,216,199);
 }
+
 
 .main-input {
   height: 400px;
