@@ -5,20 +5,6 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
   $scope.unsubmitted = true;
   $scope.gameOver = false;
 
-
-  $scope.colorIndex;
-  $scope.latestScore = 0;
-  // $scope.lastTime = 1;
-  // $scope.timerInput = 15;
-  // $scope.scores = [];
-  // $scope.totalScore = 0;
-  // $scope.minute = 0;
-  // $scope.startTime;
-  // $scope.timer = 0;
-  // $scope.sessionScore = 0;
-  // $scope.potentialScoreSoFar = 0;
-
-
   // start the app with a perfect colorIndex
   ColorIndexService.set(10);
 
@@ -40,7 +26,6 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
       $scope.unsubmitted = false;
 
       Time.setStartTime();
-      // $scope.scores = createScoresArray(duration);
 
       Score.getScore(Time.getTime(), Time.getLastKeyPress());
       $scope.timer = Time.getTimer();
@@ -64,6 +49,7 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     } 
   };
 
+  // Stops and resets the timeout interval to end the session
   $scope.stopTimer = function() {
     if (angular.isDefined(start)) {
       $interval.cancel(start);
@@ -71,6 +57,7 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     }
   };
 
+  // Stores session data in the Results service
   var setResults = function(duration) {
     Results.setDuration(duration);
     Results.setText($scope.textInput);
@@ -79,6 +66,8 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     Score.reset();
   };
 
+
+  // For debugging purposes only. Generates a set of results to pass to the results page and/or server.
   $scope.makeDebugResults = function() {
 
     var getRandomInt = function (min, max) {
@@ -99,17 +88,6 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     valuesObj.word_count = valuesObj.wpm * valuesObj.session_time;
     valuesObj.char_count = valuesObj.cpm * valuesObj.session_time;
 
-    // $scope._results.scores = Results.getScores();
-    // $scope._results.rawText = Results.getText();
-    // $scope._results.minuteScores = Results.getScoresPerMinute();
-    // $scope._results.wordCount = Results.getWordCount();
-    // $scope._results.charCount = Results.getCharacterCount();
-    // $scope._results.wpm = $scope.wordCount / $scope.session_time;
-    // $scope._results.cpm = $scope.charCount / $scope.session_time;
-    // $scope._results.total = Results.getTotalScore();
-    // $scope._results.possible = $scope.session_time * 60 * 10000;
-    // $scope._results.consistency = $scope.total / $scope.possible;
-
     // generates random scores for each second
     for (var i = 0; i < valuesObj.session_time*60; i++) {
       var randomScore = getRandomInt(0, 10000);
@@ -121,11 +99,13 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
       valuesObj.minuteScores.push(randomScore);
     }
     
+    // Store generated results in the Results service for use on the Results page
     Results.setDuration(valuesObj.session_time);
     Results.setText(valuesObj.text);
     Results.setScores(valuesObj.scores);
     $scope.gameOver = true;
 
+    // Uncomment to send generated results directly to the server
     // Results.postResults(valuesObj);
   };
 
