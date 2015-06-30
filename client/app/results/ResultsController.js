@@ -78,7 +78,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
       $scope.control.removeGraph();
       $timeout(function(){
         $scope.plot(Results.getScores(), "Score");
-      }, 1010);
+      }, 1020);
     };
 
 
@@ -94,7 +94,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
       $scope.control.removeGraph();
       $timeout(function(){
         $scope.plot(data, "Consistency");
-      }, 1010);
+      }, 1020);
     };
 
   // $scope.debugSendValues = function(valuesObj) {

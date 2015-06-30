@@ -22,6 +22,9 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     // prevents simultaneous sessions
     if (angular.isDefined(start)) return;
 
+    // Delete any scores currently stored in the Score service.
+    Score.reset();
+
     // stores length of session in Time service
     var duration = parseInt($scope.timerInput);
     Time.setMinuteCount(duration);
@@ -70,7 +73,7 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     Results.setText($scope.textInput);
     Results.setScores(Score.getScores());
     $scope.gameOver = true;
-    Score.reset();
+    // Score.reset();
   };
 
 
