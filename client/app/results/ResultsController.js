@@ -10,11 +10,11 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
     $scope.minuteScores = Results.getScoresPerMinute();
     $scope.wordCount = Results.getWordCount();
     $scope.charCount = Results.getCharacterCount();
-    $scope.wpm = $scope.wordCount / $scope.duration;
+    $scope.wpm = Math.floor(($scope.wordCount / $scope.duration) * 1000) / 1000;
     $scope.cpm = $scope.charCount / $scope.duration;
     $scope.total = Results.getTotalScore();
     $scope.possible = $scope.duration * 60 * 10000;
-    $scope.consistency = $scope.total / $scope.possible;
+    $scope.consistency = Math.floor(($scope.total / $scope.possible) * 1000) / 10;
 
     $scope.control = { loaded : function(){
       $scope.scores = Results.getScores();
@@ -78,7 +78,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
       $scope.control.removeGraph();
       $timeout(function(){
         $scope.plot(Results.getScores(), "Score");
-      }, 1600);
+      }, 1010);
     };
 
 
@@ -94,7 +94,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
       $scope.control.removeGraph();
       $timeout(function(){
         $scope.plot(data, "Consistency");
-      }, 1600);
+      }, 1010);
     };
 
   // $scope.debugSendValues = function(valuesObj) {

@@ -19,6 +19,9 @@ angular.module('app.directives', [])
        var height = scope.height;
        var margin = scope.margin;
        
+       // length of transitions in milliseconds
+       var duration = 1000;
+       
        // create the svg for the chart
     var svg = d3.select(element[0]).append("svg")
       .attr("width", width)
@@ -29,6 +32,7 @@ angular.module('app.directives', [])
 
 
       scope.internalControl.createGraph = function(data, yLabel) {
+
           // x goes all the way but subtracting the margin and a constant offset for more space.
           var x = d3.scale.linear()
             .range([0, width-margin.left - 10]);
@@ -56,21 +60,26 @@ angular.module('app.directives', [])
               // appending the xAxis to the svg
               svg.append("g")
                   .attr("class", "x axis horizontal")
+                  .attr("transform", "translate(" + -width + "," + (height-30) + ")")
+                  .call(xAxis);
+              svg.select(".horizontal")
                   .transition()
-                    .duration(1500)
+                    .duration(duration)
                     .attr("transform", "translate(0," + (height-30) + ")")
-                    .call(xAxis);
               // appending the yAxis to the svg
               svg.append("g")
+                  .attr("class", "y axis vertical")
+                  .attr("transform", "translate(" + -width + ", 0)")
+                  .call(yAxis);
+              svg.select(".vertical")
                   .transition()
-                    .duration(1500)
-                    .attr("class", "y axis vertical")
-                    .call(yAxis);
+                    .duration(duration)
+                    .attr("transform", "translate(0, 0)");
               // appending the yLabel to the svg
               svg.append("text")
+                  .attr("class", "y label")
                   .transition()
-                    .duration(1500)
-                    .attr("class", "y label")
+                    .duration(duration)
                     .attr("transform", "rotate(-90)")
                     .attr("y", - margin.left)
                     .attr("x", -50)
@@ -81,12 +90,14 @@ angular.module('app.directives', [])
               svg.append("path")
                 .datum(data)
                 .attr("class", "line")
+                .attr("d", line)
+                .attr("transform", "translate(" + -width + ", 0)")
+                .style("stroke-opacity", 1e-6);
+              svg.select(".line")
                 .transition()
-                  .duration(1500)
-                  // .style("stroke-opacity", 1e-6)
-                  .style("stroke-opacity", 1)
-                  .attr("d", line);
-
+                  .duration(duration)
+                  .attr("transform", "translate(0, 0)")
+                  .style("stroke-opacity", 1);
           }, 1);
       };
 
@@ -99,19 +110,19 @@ angular.module('app.directives', [])
           // animate removal of xAxis
           graph.select('g.horizontal')
             .transition()
-              .duration(1500)
-              .attr("transform", "translate(" + width + "," + height + ")")
-              .style("fill-opacity", 1e-6)
-              .style("stroke-opacity", 1e-6)
+              .duration(duration)
+              .attr("transform", "translate(" + (width + 30) + "," + height + ")")
+              // .style("fill-opacity", 1e-6)
+              // .style("stroke-opacity", 1e-6)
               .remove();
           
           // animate removal of yAxis
           graph.select('g.vertical')
             .transition()
-              .duration(1500)
-              .attr("transform", "translate(0," + height + ")")
-              .style("fill-opacity", 1e-6)
-              .style("stroke-opacity", 1e-6)
+              .duration(duration)
+              .attr("transform", "translate(" + (width + 30) + ", 0)")
+              // .style("fill-opacity", 1e-6)
+              // .style("stroke-opacity", 1e-6)
               .remove();
 
           // remove yaxis label
@@ -120,9 +131,9 @@ angular.module('app.directives', [])
           // animate removal of the line/path
           graph.select('path.line')
             .transition()
-              .duration(1500)
-              .attr("transform", "translate(" + width + ", 0)")
-              .style("stroke-opacity", 1e-6)
+              .duration(duration)
+              .attr("transform", "translate(" + (width + 30) + ", 0)")
+              // .style("stroke-opacity", 1e-6)
               .remove();
         }, 1);
 
