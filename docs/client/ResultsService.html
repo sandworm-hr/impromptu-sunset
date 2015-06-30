@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>ResultsService.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="config.html">
+                config.js
+              </a>
+            
+              
+              <a class="source" href="directives.html">
+                directives.js
+              </a>
+            
+              
+              <a class="source" href="ColorIndexService.html">
+                ColorIndexService.js
+              </a>
+            
+              
+              <a class="source" href="HomeController.html">
+                HomeController.js
+              </a>
+            
+              
+              <a class="source" href="MultiplayerController.html">
+                MultiplayerController.js
+              </a>
+            
+              
+              <a class="source" href="ScoreService.html">
+                ScoreService.js
+              </a>
+            
+              
+              <a class="source" href="TimeService.html">
+                TimeService.js
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.js
+              </a>
+            
+              
+              <a class="source" href="LoginController.html">
+                LoginController.js
+              </a>
+            
+              
+              <a class="source" href="main.html">
+                main.js
+              </a>
+            
+              
+              <a class="source" href="ProfileController.html">
+                ProfileController.js
+              </a>
+            
+              
+              <a class="source" href="ResultsController.html">
+                ResultsController.js
+              </a>
+            
+              
+              <a class="source" href="ResultsService.html">
+                ResultsService.js
+              </a>
+            
+              
+              <a class="source" href="services.html">
+                services.js
+              </a>
+            
+              
+              <a class="source" href="SignUpController.html">
+                SignUpController.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>ResultsService.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>angular.module(<span class="hljs-string">'app.services'</span>)
+
+  .factory(<span class="hljs-string">'Results'</span>, [<span class="hljs-string">'$http'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">$http</span>) </span>{
+    <span class="hljs-keyword">var</span> results = {};
+    <span class="hljs-keyword">var</span> duration, text, scores;
+
+    <span class="hljs-keyword">var</span> funcs = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Returns a sum of every score from the session</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.getTotalScore = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">return</span> _.reduce(scores, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">memo, score</span>) </span>{
+        <span class="hljs-keyword">return</span> memo + score;
+      }, <span class="hljs-number">0</span>);
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Calculates the agregate score for each minute of play, and returns an array</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.getScoresPerMinute = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">var</span> result = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>if there are no scores (if the user goes directly to the results page)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (!scores) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; scores.length; i++) {
+          <span class="hljs-keyword">if</span> (!(i % <span class="hljs-number">60</span>)) result.push(<span class="hljs-number">0</span>);
+          result[<span class="hljs-built_in">Math</span>.floor(i / <span class="hljs-number">60</span>)] += scores[i];
+        }
+        <span class="hljs-keyword">return</span> result;
+      }
+      
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>returns the number of words in the text, based on spaces</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.getWordCount = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>if there are no text (if the user goes directly to the results page)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (!text) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+      }
+      <span class="hljs-keyword">return</span> text.split(<span class="hljs-string">' '</span>).length;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>returns character count</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.getCharacterCount = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>if there are no text (if the user goes directly to the results page)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (!text) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+      }
+      <span class="hljs-keyword">return</span> text.length;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Stores minutes (an integer) in the factory </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.setDuration = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">minutes</span>)</span>{
+      duration = minutes;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Stores the full text from the text box in the factory </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.setText = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">string</span>) </span>{
+      text = string;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Stores an array of the scores for each second of play</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.setScores = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">array</span>) </span>{
+      scores = array;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Provides length of the session, in minutes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.getDuration = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">return</span> duration;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Provides full text of the last session</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.getText = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">return</span> text;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Provides the array of raw scores</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.getScores = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">return</span> scores;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>DEBUG FUNCS
+Sends the results (formatted in the results controller) to the server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    funcs.postResults = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">valuesObj</span>) </span>{
+      <span class="hljs-keyword">return</span> $http({
+        method: <span class="hljs-string">'POST'</span>,
+        url: <span class="hljs-string">'/api/sessions'</span>,
+        data: valuesObj
+      })
+      .success(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>) </span>{
+        <span class="hljs-built_in">console</span>.log(response);
+      });
+    };
+    <span class="hljs-keyword">return</span> funcs;
+  }]);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

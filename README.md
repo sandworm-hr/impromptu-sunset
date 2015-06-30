@@ -1,7 +1,5 @@
 # WordFlow
 
-> Pithy project description
-
 WordFlow is a text editor with accountability. Instead of just telling writers how many words they've written, it measures the consistency of their typing, and generates a score based on their output. It encourages writers to keep writing by sharing their consistency with other users in real-time, and it helps build good habits by analyzing and keeping track of day-to-day writing output.
 
 ## Team
@@ -12,28 +10,14 @@ WordFlow is a text editor with accountability. Instead of just telling writers h
 
 ## Table of Contents
 
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
     1. [Server Environment Setup](#server-environment-setup)
     1. [Client Environment Setup](#client-environment-setup)
     1. [Tasks](#tasks)
 1. [Team](#team)
-1. [Contributing](#contributing)
-
-## Usage
-
-> Some usage instructions
 
 
-## Requirements
-
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
 
 ## Development
 
@@ -59,43 +43,17 @@ Follow these instructions to get Postgres up and running for the development and
 #### Install Sequelize-CLI
 - ```npm install -g sequelize-cli```
 
-#### Create the Postgres Database
-- In the terminal run the following in order:
-  - ```psql```
-  - ```create database dev```
-  - ```create database test```
-- Create the file ```.env``` in the root directory with these contents:
-```
-  DATABASE_URL=postgres://YOUR_MAC_USERNAME@localhost:5432/dev
-  TEST_DATABASE_URL=postgres://YOUR_MAC_USERNAME@localhost:5432/test
-```
-- be sure to change ```YOUR_MAC_USERNAME``` in ```.env``` to your actual Mac username
-  - if you don't know your username, type ```echo $USER``` into the terminal
+## Initial Setup
 
-#### Create Personal Config   
-- create ``` server/config/personal_config.json ```
-``` js
-{
-"development": {
-  "username": "YOUR_MAC_USERNAME",
-  "password": null,
-  "database": "dev",
-  "host": "127.0.0.1",
-  "dialect": "postgres"
-},
-"test": {
-  "username": "YOUR_MAC_USERNAME",
-  "password": null,
-  "database": "test",
-  "host": "127.0.0.1",
-  "dialect": "postgres"
-}
+- Clone the repo
+- cd impromptu-sunset
+- npm install
+- grunt setup —user ```YOUR_MAC_USERNAME```
+- grunt nodemon
 
-```
-  - be sure to change ```YOUR_MAC_USERNAME``` in ```server/config/personal_config.json```to your actual Mac username
-  - from inside the ```/server``` folder run this in terminal
-    - ```sequelize db:migrate --config config/personal_config.json```
 
+- be sure to change ```YOUR_MAC_USERNAME``` to your actual Mac username
+ 
 ### Client Environment Setup
 
 #### Description
@@ -113,13 +71,18 @@ Follow these instructions if you want Karma to re-run the tests automatically on
 
 To run the tests after installing, simply type ```grunt test``` into the command line from the root directly.
 
+### Updating Database migrations
 
+Check sequelize-cli for information on how to create migrations. 
 
-### Roadmap
+### Deploying to Heroku
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+- grunt deploy --prod  (push to heroku)
 
+- grunt heroku-setup  (runs migrations on heroku)
 
-## Contributing
+## Code Documentation
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+[Documented Client Code here](docs/client/index.html)
+[Documented Server Code here](docs/server/index.html)
+
