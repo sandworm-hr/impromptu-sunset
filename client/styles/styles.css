@@ -98,6 +98,34 @@ input.set-timer-components {
   z-index: 999;
 }
 
+.results-info {
+  font-size: 5em;
+  font-style: bold;
+  color: rgb(2,93,140);
+}
+
+.single-result {
+  float: left;
+  width: 300px;
+  height: 150px;
+  padding: 5px;
+}
+
+.results-data {
+  width: 1000px;
+  height: 160px;
+  padding: 20px;
+}
+
+.results-title {
+  margin: 20px;
+  font-style: bold;
+}
+
+.raw-text {
+  margin: 20px;
+}
+
 #graph{
   margin: 20px;
 }
@@ -121,7 +149,7 @@ input.set-timer-components {
 
 .line {
   fill: none;
-  stroke: steelblue;
+  stroke: rgb(2,93,140);
   stroke-width: 1.5px;
 }
 

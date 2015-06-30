@@ -68,7 +68,7 @@ io.on('connection', function(socket) {
     }
     // if the username matches the socket id in the active users collection
     if (allUsernames[data.username] === socket.id) {
-      console.log('username matches the socket', allUsernames[data.username], data.username);  
+      // console.log('username matches the socket', allUsernames[data.username], data.username);  
       // add the user to the server's allSocketIDs collection
       allSocketIDs[socket.id] = data;
       // emit the update to all users
