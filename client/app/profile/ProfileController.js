@@ -62,7 +62,7 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
       var potential = (1) * 10000 * 60; //potential score per minute
       var consistency = _.pluck($scope.sessions, "scores");
       consistency = _.filter(consistency, function(item){
-        return !!item;
+        return item !== null && item.length > 0;
       })
       consistency = _.map(consistency, function(scores){
         var total_percent = _.reduce(scores, function(memo, element, index){
