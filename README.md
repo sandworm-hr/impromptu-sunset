@@ -81,3 +81,8 @@ Check sequelize-cli for information on how to create migrations.
 
 - grunt heroku-setup  (runs migrations on heroku)
 
+## Code Documentation
+
+[Documented Client Code here](docs/client/index.html)
+[Documented Server Code here](docs/server/index.html)
+
