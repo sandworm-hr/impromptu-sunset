@@ -1,4 +1,4 @@
-app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Sessions) {
+app.controller('ProfileController', ['$scope', 'Sessions', '$stateParams', function ($scope, Sessions, $stateParams) {
 
   $scope.margin = {top: 10, right: 50, bottom: 0, left: 70};
   $scope.width = 960 - $scope.margin.left - $scope.margin.right;
@@ -6,10 +6,17 @@ app.controller('ProfileController', ['$scope', 'Sessions', function ($scope, Ses
 
   // Calls the Session factory to get the sessions of that user.
   $scope.getSessions = function (callback) {
-    Sessions.getSessions(function(data){
-      $scope.sessions = data;
-      callback(data);
-    });
+    if ($stateParams.username) {
+      Sessions.getSessions(function(data){
+        $scope.sessions = data;
+        callback(data);
+      }, $stateParams.username);
+    } else {
+      Sessions.getSessions(function(data){
+        $scope.sessions = data;
+        callback(data);
+      });
+    }
   };
 
   // parse data before plotting it on d3

@@ -2,7 +2,6 @@
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
   $httpProvider.interceptors.push('sessionInjector');
-  $urlRouterProvider.otherwise('/index');
 
   $stateProvider
 
@@ -22,7 +21,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     })
 
     .state('profile', {
-      url: '/profile',
+      url: '/profile/:username',
       templateUrl: 'app/profile/profile.html',
       authenticate: true
     })
@@ -30,7 +29,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
     .state('results', {
       url: '/results',
       templateUrl: 'app/results/results.html'
-    })
+    });
+  $urlRouterProvider.otherwise('/index');
 })
 
 .run(['$http', '$rootScope','$cookies','$state','Session', function($http, $rootScope, $cookies,$state,Session) {
