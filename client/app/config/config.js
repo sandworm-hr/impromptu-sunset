@@ -6,7 +6,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   $stateProvider
 
     .state('index', {
-      url: '/index/',
+      url: '/index',
       templateUrl: '/app/home/home.html',
     })
 
