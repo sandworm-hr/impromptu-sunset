@@ -7,10 +7,9 @@ module.exports = {
   allSessions: function(req, res, next){
     // the authenticated user id is retrieved from the
     // request session
-    var username = req.url.slice(2);
+    var username = req.url.slice(10);
     if (username) {
       db.User.findOne({where : {username: username}}).then(function(user){
-        console.log(user);
         user.getSessions().then(function(x){
           // return all user sessions
           res.status(201).send(x);
@@ -31,6 +30,16 @@ module.exports = {
         });
       });
     }
+  },
+
+  sessionById: function(req, res, next) {
+    console.log(req.url);
+
+    var id = +req.url.slice(4);
+    db.Session.findOne({where: {id: id}}).then(function(session) {
+      res.status(201).send(session);
+    });
+
   },
 
   // newSession creates a new session for the 

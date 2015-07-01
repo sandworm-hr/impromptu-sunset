@@ -55,9 +55,20 @@ angular.module('app.services', [])
   // The Sessions factory handles api requests to /sessions on the server
   .factory('Sessions', function($http){
     var getSessions = function(callback, username){
+      console.log(username);
       $http({
         method: 'GET',
-        url: username === undefined ? '/api/sessions' : '/api/sessions?' + username
+        url: username === undefined ? '/api/sessions/username' : '/api/sessions/username?' + username
+      })
+      .then(function(response) {
+        callback(response.data);
+      });
+    };
+
+    var getSessionById = function(callback, id) {
+      $http({
+        method: 'GET',
+        url: '/api/sessions/id?' + id
       })
       .then(function(response) {
         callback(response.data);
@@ -65,7 +76,8 @@ angular.module('app.services', [])
     };
 
     return{
-      getSessions: getSessions
+      getSessions: getSessions,
+      getSessionById: getSessionById
     };
   })
   // The Users factory handles api requests to /users on the server
