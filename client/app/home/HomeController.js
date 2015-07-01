@@ -75,6 +75,13 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     } 
   };
 
+  $scope.cancelSession = function() {
+    var duration = parseInt($scope.timerInput);
+    $scope.stopTimer();
+    $scope.done = true;
+    setResults(duration);
+  };
+
   // Stops and resets the timeout interval to end the session
   $scope.stopTimer = function() {
     if (angular.isDefined(start)) {
