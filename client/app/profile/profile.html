@@ -1,49 +1,39 @@
+
+
+
 <div class="container" id='profile' ng-controller="ProfileController">
     <div class="row">
-      <div class="col-md-4 col-md-offset-4 results_buttons">
-          <h3>Your Profile Page</h3>
-      </div>
-    </div>
-    <!--Table for debugging purposes.-->
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <th>Session Time</th>
-          <th>Word Count</th>
-          <th>Character Count</th>
-          <th>Text</th>
-          <th>Scores</th>
-          <th>Created At</th>
-        </thead>
-        <tbody>
-          <tr ng-repeat="session in sessions" ui-sref="retrieve({id:'{{session.id}}'})">
-            <td>{{session.session_time}}</td>
-            <td>{{session.word_count}}</td>
-            <td>{{session.char_count}}</td>
-            <td>{{session.text}}</td>
-            <td>{{session.scores}}</td>
-            <td>{{session.createdAt}}</td>
-          </tr>
-        </tbody>
-      </table>
+<!--       <div class="col-md-4 col-md-offset-4 results_buttons">
+          <h3>My Profile Page</h3>
+      </div> -->
     </div>
 
-     <div id='graph' class="container">
-      <div class="row">
-        <h4>Word/Char Count per minute!</h4>
-        <div class="col-md-6">
-          <d3 style="display:block;margin:20px" margin="margin" height="height" control="wordcount"></d3>
+    <div class="row">
+      <div class="col-md-10 writing-summary container">
+        <div class="row text-center">
+          <h3>My Writing</h3>
         </div>
-        <div class="col-md-6">
-          <d3 style="display:block;margin:20px" margin="margin" height="height" control="charcount"></d3>
+        <div class="row">
+          <div class="summary-header col-md-2">Title</div>
+          <div class="summary-header col-md-5">Text</div>
+          <div class="summary-header col-md-1 col-md-offset-1">Topic</div>
+          <div class="summary-header col-md-1">Privacy</div>
+          <div class="summary-header col-md-2">Date</div>
+        </div>
+        <div ng-repeat="session in sessions" ui-sref="retrieve({id:'{{session.id}}'})" class="session-summary row">
+          <div class="text-name col-md-2">{{session.name}}</div>
+          <div class="text-head col-md-5">{{session.text.slice(0,100) + '...'}}</div>
+          <div class="text-type col-md-1 col-md-offset-1">{{session.type}}</div>
+          <div class="text-visibility col-md-1">{{session.visibility}}</div>
+          <div class="created-at col-md-2">{{session.createdAt.slice(0,10)}}</div>
         </div>
       </div>
-      <div class="row">
-        <h4>Avg consistency per session!</h4>
-        <div class="col-md-12">
-          <d3 style="display:block;margin:20px" margin="margin" height="height" control="consistency"></d3>
+      <div class="col-md-2 profile-info">
+        <div class="username-sidebar">{{user.username}}</div>
+        <span class="session-count-wrapper"><span class="session-count">{{sessions.length}}</span> sessions so far!</span>
+        <div class="stats-button-wrapper">
+          <button type="button" class="btn btn-info" ui-sref="stats">My Stats</button>
         </div>
       </div>
-    </div>
-
+  </div>
 </div>

@@ -31,6 +31,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       authenticate: true
     })
 
+    .state('stats', {
+      url: '/stats',
+      templateUrl: 'app/stats/stats.html',
+      authenticate: true
+    })
+
     .state('results', {
       url: '/results',
       templateUrl: 'app/results/results.html'
