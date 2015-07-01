@@ -4,6 +4,7 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
   $scope.unsubmitted = true;
   $scope.gameOver = false;
+  $scope.done = false;
 
   // start the app with a perfect colorIndex
   ColorIndexService.set(10);
@@ -56,6 +57,7 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
       start = $interval(function() {
         if (Time.checkForEnd()) {
           $scope.stopTimer();
+          $scope.done = true;
           setResults(duration);
         } else {
           var currentScore = Score.getScore(Time.getTime(), Time.getLastKeyPress());
