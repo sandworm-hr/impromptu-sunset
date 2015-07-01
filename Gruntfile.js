@@ -64,7 +64,7 @@ module.exports = function(grunt) {
       },
       // run local migrations
       "local-migrate": {
-        command: ['cd server','sequelize db:migrate --config config/personal_config.json'].join('&&'),
+        command: ['cd server','sequelize db:migrate --config config/personal_config.json --env development'].join('&&'),
         options: {
           stdout: true,
           stderr: true,
