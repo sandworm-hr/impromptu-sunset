@@ -89,6 +89,7 @@ input.set-timer-components {
   font-size: 1.5em;
 }
 
+
 #text-area {
   height: 70vh;
   font-size: 2em;
@@ -157,3 +158,55 @@ input.set-timer-components {
   color: #f99;
 }
 
+.summary-header {
+  font-size: 16px;
+  color: gray;
+  font-style: oblique;
+}
+
+.session-summary {
+  margin-bottom: 8px;
+  background-color: rgba(2, 93, 140, 0.28);
+  border-radius: 6px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+.session-summary:hover {
+  background-color: rgba(2, 93, 140, 0.38);
+}
+
+.text-name {
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(45, 45, 195);
+  font-style: italic;
+}
+
+.text-head {
+  color: rgb(115, 112, 112);
+  margin-top: 2px;
+  font-family:serif;
+  font-size: medium;
+}
+
+.username-sidebar {
+  font-size: 24px;
+  font-weight: bold;
+  color: rgb(101, 20, 157);
+}
+
+.session-count-wrapper {
+  margin-top:10px;
+  font-size:medium;
+}
+
+.session-count {
+  font-size: 30px;
+  color: blue;
+}
+
+.stats-button-wrapper {
+  margin-top:10px;
+}
