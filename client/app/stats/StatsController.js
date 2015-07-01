@@ -1,10 +1,10 @@
-app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$stateParams', function ($scope, Session, Sessions, $stateParams) {
+app.controller('StatsController', ['$scope', 'Session', 'Sessions', '$stateParams', function ($scope, Session, Sessions, $stateParams) {
 
-  // $scope.margin = {top: 10, right: 50, bottom: 0, left: 70};
-  // $scope.width = 960 - $scope.margin.left - $scope.margin.right;
-  // $scope.height = 500 - $scope.margin.top - $scope.margin.bottom;
+  $scope.margin = {top: 10, right: 50, bottom: 0, left: 70};
+  $scope.width = 960 - $scope.margin.left - $scope.margin.right;
+  $scope.height = 500 - $scope.margin.top - $scope.margin.bottom;
 
-  // Calls the Session factory to get the sessions of that user.
+  //Calls the Session factory to get the sessions of that user.
   $scope.getSessions = function (callback) {
     if ($stateParams.username) {
       Sessions.getSessions(function(data){

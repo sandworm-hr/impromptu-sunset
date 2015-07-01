@@ -1,26 +1,8 @@
 
-
-
-<div class="container" id='profile' ng-controller="ProfileController">
+<div class="container" id='stats' ng-controller="StatsController">
     <div class="row">
       <div class="col-md-4 col-md-offset-4 results_buttons">
-          <h3>My Profile Page</h3>
-      </div>
-    </div>
-    <div class="col-md-7 col-offset-2 writing-summary container">
-      <div ng-repeat="session in sessions" ui-sref="retrieve({id:'{{session.id}}'})" class="session-summary row">
-        <div class="text-name col-md-2">{{session.name}}</div>
-        <div class="text-head col-md-5">{{session.text.slice(0,40)}}</div>
-        <div class="text-type col-md-1">{{session.type}}</div>
-        <div class="text-visibility col-md-1">{{session.visibility}}</div>
-        <div class="created-at col-md-3">{{session.createdAt.slice(0,10)}}</div>
-      </div>
-    </div>
-    <div class="col-md-2 col-offset-1 profile-info">
-      <div class="username-sidebar">{{user.username}}</div>
-      <div class="session-count">{{sessions.length}} sessions total</div>
-      <div class="stats-button-wrapper">
-        <button ui-sref="stats">My Stats</button>
+          <h3>My Stats</h3>
       </div>
     </div>
     <!--Table for debugging purposes.-->
@@ -47,7 +29,7 @@
       </table>
     </div> -->
 
-<!--      <div id='graph' class="container">
+     <div id='graph' class="container">
       <div class="row">
         <h4>Word/Char Count per minute!</h4>
         <div class="col-md-6">
@@ -63,6 +45,6 @@
           <d3 style="display:block;margin:20px" margin="margin" height="height" control="consistency"></d3>
         </div>
       </div>
-    </div> -->
+    </div>
 
 </div>
