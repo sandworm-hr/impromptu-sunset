@@ -19,6 +19,7 @@ module.exports = {
       });
     } else {
       var userid = req.session.passport.user.id;
+      console.log(userid);
       // using sequelize retrieve that user from
       // the userid
       db.User.findById(userid).then(function(user){
