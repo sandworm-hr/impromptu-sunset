@@ -20,12 +20,14 @@ angular.module('app.services')
       var date = new Date();
       return date.getTime();
     };
+
+    ///////////
+    //LOGIC FOR MINUTE COUNTDOWN
+    ///////////
     
     // Stores the length of the current session in minutes, based on user input
-    // services.setMinuteCount = function(timerInput) {
-    services.setSecondCount = function(timerInput) {
-      // totalMinutes = timerInput;
-      totalSeconds = timerInput;
+    services.setMinuteCount = function(timerInput) {
+      totalMinutes = timerInput;
     };
 
     // Stores the start time of the session
@@ -36,21 +38,38 @@ angular.module('app.services')
     // Generates a visualization of the timer as a string. Counts down to zero.
     services.getTimer = function() {
       elapsed = this.getTime() - startTime;
-      // console.log(elapsed);
-      // var mins = (totalMinutes - Math.floor(elapsed / 60000) - 1).toString();
-      // var seconds = (60 - Math.floor(((elapsed % 60000) / 1000)) - 1).toString();
-      var seconds = (totalSeconds - Math.floor(elapsed / 1000) - 1).toString();
-      // console.log(seconds);
+      var mins = (totalMinutes - Math.floor(elapsed / 60000) - 1).toString();
+      var seconds = (60 - Math.floor(((elapsed % 60000) / 1000)) - 1).toString();
       if (seconds.length === 1) seconds = '0' + seconds;
 
-      // return mins + ':' + seconds;
-      return seconds;
+      return mins + ':' + seconds;
     };
+
 
     // Checks whether the session is over.
     services.checkForEnd = function() {
       elapsed = this.getTime() - startTime;
-      // return elapsed >= totalMinutes * 60000;
+      return elapsed >= totalMinutes * 60000;
+    };
+
+    ///////////
+    //LOGIC FOR SECOND COUNTDOWN - COMMENT AFTER TESTING!
+    ///////////
+
+    services.setSecondCount = function(timerInput) {
+      totalSeconds = timerInput;
+    };
+
+    services.getTimerSeconds = function() {
+      elapsed = this.getTime() - startTime;
+      var seconds = (totalSeconds - Math.floor(elapsed / 1000) - 1).toString();
+      if (seconds.length === 1) seconds = '0' + seconds;
+      return seconds;
+    };
+
+    // Checks whether the session is over.
+    services.checkForEndSeconds = function() {
+      elapsed = this.getTime() - startTime;
       return elapsed >= totalSeconds * 1000;
     };
 
