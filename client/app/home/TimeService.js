@@ -22,8 +22,10 @@ angular.module('app.services')
     };
     
     // Stores the length of the current session in minutes, based on user input
-    services.setMinuteCount = function(timerInput) {
-      totalMinutes = timerInput;
+    // services.setMinuteCount = function(timerInput) {
+    services.setSecondCount = function(timerInput) {
+      // totalMinutes = timerInput;
+      totalSeconds = timerInput;
     };
 
     // Stores the start time of the session
@@ -34,17 +36,22 @@ angular.module('app.services')
     // Generates a visualization of the timer as a string. Counts down to zero.
     services.getTimer = function() {
       elapsed = this.getTime() - startTime;
-      var mins = (totalMinutes - Math.floor(elapsed / 60000) - 1).toString();
-      var seconds = (60 - Math.floor(((elapsed % 60000) / 1000)) - 1).toString();
+      // console.log(elapsed);
+      // var mins = (totalMinutes - Math.floor(elapsed / 60000) - 1).toString();
+      // var seconds = (60 - Math.floor(((elapsed % 60000) / 1000)) - 1).toString();
+      var seconds = (totalSeconds - Math.floor(elapsed / 1000) - 1).toString();
+      // console.log(seconds);
       if (seconds.length === 1) seconds = '0' + seconds;
 
-      return mins + ':' + seconds;
+      // return mins + ':' + seconds;
+      return seconds;
     };
 
     // Checks whether the session is over.
     services.checkForEnd = function() {
       elapsed = this.getTime() - startTime;
-      return elapsed >= totalMinutes * 60000;
+      // return elapsed >= totalMinutes * 60000;
+      return elapsed >= totalSeconds * 1000;
     };
 
     return services;

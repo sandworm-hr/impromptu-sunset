@@ -18,7 +18,6 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     }, id);
   };
 
-  console.log($stateParams.id);
   if ($stateParams.id) {
     $scope.getSession($stateParams.id);
   }
@@ -39,7 +38,8 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
     // stores length of session in Time service
     var duration = parseInt($scope.timerInput);
-    Time.setMinuteCount(duration);
+    // Time.setMinuteCount(duration);
+    Time.setSecondCount(duration);
 
     // only works if duration is a positive number
     if (duration > 0) {
