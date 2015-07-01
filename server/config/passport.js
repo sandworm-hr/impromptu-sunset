@@ -16,7 +16,7 @@ module.exports.setup = function(app){
         .then(function(user) {
           if (!user) {
             // if user not found, then invalid username
-            return done(null, false, { message: 'Incorrect username.' });
+            return done(null, false, { message: "Username Doesn't Exist." });
           }
           else{
             user.verifyPassword(password, function(err, output){
@@ -25,7 +25,7 @@ module.exports.setup = function(app){
               else{
                 if(!output){
                   // if passwords don't match, then invalid password
-                  return done(null, false, { message: 'Incorrect password.' });  
+                  return done(null, false, { message: 'Invalid Password.' });  
                 } else {
                   // if correct username and password, then successful login
                   return done(null, user);
