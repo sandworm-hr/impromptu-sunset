@@ -12,6 +12,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
+        Session.belongsTo(models.User);
         // associations can be defined here
       }
     }

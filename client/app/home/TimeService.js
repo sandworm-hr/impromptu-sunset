@@ -20,6 +20,10 @@ angular.module('app.services')
       var date = new Date();
       return date.getTime();
     };
+
+    ///////////
+    //LOGIC FOR MINUTE COUNTDOWN
+    ///////////
     
     // Stores the length of the current session in minutes, based on user input
     services.setMinuteCount = function(timerInput) {
@@ -41,10 +45,32 @@ angular.module('app.services')
       return mins + ':' + seconds;
     };
 
+
     // Checks whether the session is over.
     services.checkForEnd = function() {
       elapsed = this.getTime() - startTime;
       return elapsed >= totalMinutes * 60000;
+    };
+
+    ///////////
+    //LOGIC FOR SECOND COUNTDOWN - COMMENT AFTER TESTING!
+    ///////////
+
+    services.setSecondCount = function(timerInput) {
+      totalSeconds = timerInput;
+    };
+
+    services.getTimerSeconds = function() {
+      elapsed = this.getTime() - startTime;
+      var seconds = (totalSeconds - Math.floor(elapsed / 1000) - 1).toString();
+      if (seconds.length === 1) seconds = '0' + seconds;
+      return seconds;
+    };
+
+    // Checks whether the session is over.
+    services.checkForEndSeconds = function() {
+      elapsed = this.getTime() - startTime;
+      return elapsed >= totalSeconds * 1000;
     };
 
     return services;

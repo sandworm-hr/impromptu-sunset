@@ -18,7 +18,6 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
     }, id);
   };
 
-  console.log($stateParams.id);
   if ($stateParams.id) {
     $scope.getSession($stateParams.id);
   }
@@ -39,7 +38,8 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
     // stores length of session in Time service
     var duration = parseInt($scope.timerInput);
-    Time.setMinuteCount(duration);
+    // Time.setMinuteCount(duration);  //******Uncomment to use minutes!
+    Time.setSecondCount(duration);
 
     // only works if duration is a positive number
     if (duration > 0) {
@@ -50,18 +50,21 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
       // Starts the timer and begins scoring immediately
       Score.getScore(Time.getTime(), Time.getLastKeyPress());
-      $scope.timer = Time.getTimer();
+      // $scope.timer = Time.getTimer(); //******Uncomment to use minutes!
+      $scope.timer = Time.getTimerSeconds();
 
       // Generates one score and one color index every second until the session times out,
       // and then destroys the session and saves the data.
       start = $interval(function() {
-        if (Time.checkForEnd()) {
+        // if (Time.checkForEnd()) { //******Uncomment to use minutes!
+        if (Time.checkForEndSeconds()) { // this is used for testing to countdown inseconds
           $scope.stopTimer();
           $scope.done = true;
           setResults(duration);
         } else {
           var currentScore = Score.getScore(Time.getTime(), Time.getLastKeyPress());
-          $scope.timer = Time.getTimer();
+          // $scope.timer = Time.getTimer(); //******Uncomment to use minutes!
+          $scope.timer = Time.getTimerSeconds();
           var colorIndex = ColorIndexService.getRoundedIndex(currentScore, Score.getMaxScore());
           ColorIndexService.set(colorIndex);
         }
