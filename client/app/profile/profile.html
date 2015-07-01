@@ -16,7 +16,7 @@
           <th>Created At</th>
         </thead>
         <tbody>
-          <tr ng-repeat="session in sessions">
+          <tr ng-repeat="session in sessions" ui-sref="retrieve({id:'{{session.id}}'})">
             <td>{{session.session_time}}</td>
             <td>{{session.word_count}}</td>
             <td>{{session.char_count}}</td>

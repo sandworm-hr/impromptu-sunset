@@ -1,5 +1,5 @@
 
-app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', function($scope, $interval, Results, ColorIndexService, Time, Score) {
+app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', '$stateParams', 'Sessions', function($scope, $interval, Results, ColorIndexService, Time, Score, $stateParams, Sessions) {
 
 
   $scope.unsubmitted = true;
@@ -10,6 +10,17 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
   var start;
 
+  $scope.getSession = function (id) {
+    Sessions.getSessionById(function(data){
+      console.log(data);
+      $scope.textInput = data.text;
+    }, id);
+  };
+
+  console.log($stateParams.id);
+  if ($stateParams.id) {
+    $scope.getSession($stateParams.id);
+  }
 
   // pulls timeStamp from the keyUp event and stores it in the Time service
   $scope.setTime = function(event){
