@@ -43,7 +43,7 @@
           <!-- </div> -->
 
         <div class="col-sm-12" id="text-container">
-          <textarea ng-disabled="unsubmitted" id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
+          <textarea ng-disabled="unsubmitted || done" id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
         </div>
       </div>
 
