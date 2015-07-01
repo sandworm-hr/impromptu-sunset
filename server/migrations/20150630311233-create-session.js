@@ -8,6 +8,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      name: {
+        type: Sequelize.TEXT
+      },
+      type: {
+        type: Sequelize.TEXT
+      },
+      visibility: {
+        type: Sequelize.TEXT
+      },
       session_time: {
         type: Sequelize.INTEGER
       },
@@ -17,11 +26,11 @@ module.exports = {
       scores: {
         type: Sequelize.JSON
       },
-      text: {
-        type: Sequelize.TEXT
-      },
       char_count: {
         type: Sequelize.INTEGER
+      },
+      text: {
+        type: Sequelize.TEXT
       },
       UserId: {
         type: Sequelize.INTEGER,
@@ -35,18 +44,6 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      name: {
-        allowNull: false,
-        type: Sequelize.TEXT
-      },
-      type: {
-        allowNull: false,
-        type: Sequelize.TEXT
-      },
-      visibility: {
-        allowNull: false,
-        type: Sequelize.TEXT
       }
     });
   },

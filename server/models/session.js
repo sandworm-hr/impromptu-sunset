@@ -1,20 +1,18 @@
-// The Session model
-// This is auto generated using the sequelize-cli command 
-// 'sequelize model:create'
+'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Session = sequelize.define('Session', {
+    // name: DataTypes.TEXT,
+    // type: DataTypes.TEXT,
+    // visibility: DataTypes.TEXT,
     session_time: DataTypes.INTEGER,
     word_count: DataTypes.INTEGER,
     scores: DataTypes.JSON,
     char_count: DataTypes.INTEGER,
-    text: DataTypes.TEXT,
-    name: DataTypes.TEXT,
-    type: DataTypes.TEXT,
-    visibility: DataTypes.TEXT
+    text: DataTypes.TEXT
   }, {
     classMethods: {
       associate: function(models) {
-         Session.belongsTo(models.User);
+        // associations can be defined here
       }
     }
   });
