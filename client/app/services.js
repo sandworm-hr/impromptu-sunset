@@ -124,10 +124,23 @@ angular.module('app.services', [])
       });
     };
 
+    var list = function(callback) {
+      return $http({
+        method: 'GET',
+        url: 'api/users'
+      })
+      .success(function(response) {
+        callback(response.data);
+      }).error(function(response) {
+        console.log('error');
+      });
+    };
+
 
     return {
       login: login,
       signUp: signUp,
-      logout: logout
+      logout: logout,
+      list: list
     };
   });

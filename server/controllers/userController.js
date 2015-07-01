@@ -20,6 +20,12 @@ module.exports = {
     });
     
   },
+  
+  list: function(req, res, next) {
+    db.User.findAll().then(function(users){
+      res.status(201).send(users);
+    });
+  },
 
   signout: function(req, res, next){
     // destroy session and log user out
