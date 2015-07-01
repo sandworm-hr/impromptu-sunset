@@ -82,7 +82,7 @@ angular.module('app.services')
     funcs.postResults = function(valuesObj) {
       return $http({
         method: 'POST',
-        url: '/api/sessions',
+        url: '/api/sessions/username',
         data: valuesObj
       })
       .success(function(response) {

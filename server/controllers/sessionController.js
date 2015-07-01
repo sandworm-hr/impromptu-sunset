@@ -54,7 +54,7 @@ module.exports = {
     // retrieve the user id from the session
     var userid = req.session.passport.user.id;
     // use sequelize to retrieve the user from
-    // the user id    
+    // the user id
     db.User.findById(userid).then(function(user){
       // once retrieved, create a session
       var s = db.Session.build({
@@ -62,7 +62,10 @@ module.exports = {
         word_count: word_count,
         scores: scores,
         text: text,
-        char_count: char_count
+        char_count: char_count,
+        type: 'default',
+        visibility: 'public',
+        name: 'testing'+word_count
       });
       // add that session to the list of user sessions
       // since a user has many sessions (1 to many relationship)
