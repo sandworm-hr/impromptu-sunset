@@ -7,7 +7,10 @@ module.exports = function(sequelize, DataTypes) {
     word_count: DataTypes.INTEGER,
     scores: DataTypes.JSON,
     char_count: DataTypes.INTEGER,
-    text: DataTypes.TEXT
+    text: DataTypes.TEXT,
+    name: DataTypes.TEXT,
+    type: DataTypes.TEXT,
+    visibility: DataTypes.TEXT
   }, {
     classMethods: {
       associate: function(models) {
