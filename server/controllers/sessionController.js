@@ -7,17 +7,30 @@ module.exports = {
   allSessions: function(req, res, next){
     // the authenticated user id is retrieved from the
     // request session
-    var userid = req.session.passport.user.id;
-    // using sequelize retrieve that user from
-    // the userid
-    db.User.findById(userid).then(function(user){
-      user.getSessions().then(function(x){
-        // return all user sessions
-        res.status(201).send(x);
-      }).catch(function(err){
-        res.status(422).send(err);
+    var username = req.url.slice(2);
+    if (username) {
+      db.User.findOne({where : {username: username}}).then(function(user){
+        console.log(user);
+        user.getSessions().then(function(x){
+          // return all user sessions
+          res.status(201).send(x);
+        }).catch(function(err){
+          res.status(422).send(err);
+        });
       });
-    });
+    } else {
+      var userid = req.session.passport.user.id;
+      // using sequelize retrieve that user from
+      // the userid
+      db.User.findById(userid).then(function(user){
+        user.getSessions().then(function(x){
+          // return all user sessions
+          res.status(201).send(x);
+        }).catch(function(err){
+          res.status(422).send(err);
+        });
+      });
+    }
   },
 
   // newSession creates a new session for the 

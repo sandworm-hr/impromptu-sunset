@@ -54,10 +54,10 @@ angular.module('app.services', [])
   }])
   // The Sessions factory handles api requests to /sessions on the server
   .factory('Sessions', function($http){
-    var getSessions = function(callback){
+    var getSessions = function(callback, username){
       $http({
         method: 'GET',
-        url: '/api/sessions'
+        url: username === undefined ? '/api/sessions' : '/api/sessions?' + username
       })
       .then(function(response) {
         callback(response.data);

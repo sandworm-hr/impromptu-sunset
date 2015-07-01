@@ -68,7 +68,7 @@
                 <td ng-hide="user.username == myUser.username" class="user-circle-box" id="{{user.username}}-user-circle-box">
                 </td>
                 <td ng-hide="user.username == myUser.username" class="user-text-box" id="{{user.username}}-user-text-box">
-                  <span ng-hide="user.username == myUser.username" class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span>
+                  <a ng-hide="user.username == myUser.username" ui-sref="profile({username: '{{user.username}}'})"><span class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span></a> 
                 </td>
               </tr>
             </tbody>
