@@ -75,7 +75,7 @@
               <td ng-hide="user.username == myUser.username" class="user-text-box" id="{{user.username}}-user-text-box">
                 <a ng-hide="user.username == myUser.username" ui-sref="profile({username: '{{user.username}}'})"><span class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span></a> 
               </td>
-              <td ng-show="user.timer !== 00">In Session: {{user.timer}}</td>
+              <td ng-show="user.timer !== '00' && user.timer !== undefined">In Session: {{user.timer}}</td>
             </tr>
           </tbody>
         </table>
