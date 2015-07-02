@@ -1,5 +1,5 @@
 
-app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', '$stateParams', 'Sessions', function($scope, $interval, Results, ColorIndexService, Time, Score, $stateParams, Sessions) {
+app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', '$stateParams', 'Sessions', function($scope, $rootScope, $interval, Results, ColorIndexService, Time, Score, $stateParams, Sessions) {
 
 
   $scope.unsubmitted = true;
@@ -50,8 +50,8 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
       // Starts the timer and begins scoring immediately
       Score.getScore(Time.getTime(), Time.getLastKeyPress());
-      // $scope.timer = Time.getTimer(); //******Uncomment to use minutes!
-      $scope.timer = Time.getTimerSeconds();
+      // $rootScope.timer = Time.getTimer(); //******Uncomment to use minutes!
+      $rootScope.timer = Time.getTimerSeconds();
 
       // Generates one score and one color index every second until the session times out,
       // and then destroys the session and saves the data.
@@ -63,8 +63,8 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
           setResults(duration);
         } else {
           var currentScore = Score.getScore(Time.getTime(), Time.getLastKeyPress());
-          // $scope.timer = Time.getTimer(); //******Uncomment to use minutes!
-          $scope.timer = Time.getTimerSeconds();
+          // $rootScope.timer = Time.getTimer(); //******Uncomment to use minutes!
+          $rootScope.timer = Time.getTimerSeconds();
           var colorIndex = ColorIndexService.getRoundedIndex(currentScore, Score.getMaxScore());
           ColorIndexService.set(colorIndex);
         }
@@ -101,45 +101,45 @@ app.controller('HomeController', ['$scope', '$interval', 'Results', 'ColorIndexS
 
 
   // For debugging purposes only. Generates a set of results to pass to the results page and/or server.
-  $scope.makeDebugResults = function() {
+  // $scope.makeDebugResults = function() {
 
-    var getRandomInt = function (min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    }
+  //   var getRandomInt = function (min, max) {
+  //     return Math.floor(Math.random() * (max - min)) + min;
+  //   }
 
-    var valuesObj = {};
+  //   var valuesObj = {};
 
-    valuesObj.session_time = getRandomInt(1, 15);
-    valuesObj.scores = [];
-    valuesObj.text = "Hello I am the raw text";
-    valuesObj.minuteScores = [];
-    valuesObj.wpm = getRandomInt(30, 120);
-    valuesObj.cpm = getRandomInt(40, 200);
-    valuesObj.total = getRandomInt(1000, valuesObj.session_time*600000);
-    valuesObj.possible = valuesObj.session_time * 60 * 10000;
-    valuesObj.consistency = getRandomInt(0, 11) / 10;
-    valuesObj.word_count = valuesObj.wpm * valuesObj.session_time;
-    valuesObj.char_count = valuesObj.cpm * valuesObj.session_time;
+  //   valuesObj.session_time = getRandomInt(1, 15);
+  //   valuesObj.scores = [];
+  //   valuesObj.text = "Hello I am the raw text";
+  //   valuesObj.minuteScores = [];
+  //   valuesObj.wpm = getRandomInt(30, 120);
+  //   valuesObj.cpm = getRandomInt(40, 200);
+  //   valuesObj.total = getRandomInt(1000, valuesObj.session_time*600000);
+  //   valuesObj.possible = valuesObj.session_time * 60 * 10000;
+  //   valuesObj.consistency = getRandomInt(0, 11) / 10;
+  //   valuesObj.word_count = valuesObj.wpm * valuesObj.session_time;
+  //   valuesObj.char_count = valuesObj.cpm * valuesObj.session_time;
 
-    // generates random scores for each second
-    for (var i = 0; i < valuesObj.session_time*60; i++) {
-      var randomScore = getRandomInt(0, 10000);
-      valuesObj.scores.push(randomScore);
-    }
-    // generates random scores for each minute
-    for (var i = 0; i < valuesObj.session_time; i++) {
-      var randomScore = getRandomInt(0, 60*10000);
-      valuesObj.minuteScores.push(randomScore);
-    }
+  //   // generates random scores for each second
+  //   for (var i = 0; i < valuesObj.session_time*60; i++) {
+  //     var randomScore = getRandomInt(0, 10000);
+  //     valuesObj.scores.push(randomScore);
+  //   }
+  //   // generates random scores for each minute
+  //   for (var i = 0; i < valuesObj.session_time; i++) {
+  //     var randomScore = getRandomInt(0, 60*10000);
+  //     valuesObj.minuteScores.push(randomScore);
+  //   }
     
-    // Store generated results in the Results service for use on the Results page
-    Results.setDuration(valuesObj.session_time);
-    Results.setText(valuesObj.text);
-    Results.setScores(valuesObj.scores);
-    $scope.gameOver = true;
+  //   // Store generated results in the Results service for use on the Results page
+  //   Results.setDuration(valuesObj.session_time);
+  //   Results.setText(valuesObj.text);
+  //   Results.setScores(valuesObj.scores);
+  //   $scope.gameOver = true;
 
-    // Uncomment to send generated results directly to the server
-    // Results.postResults(valuesObj);
-  };
+  //   // Uncomment to send generated results directly to the server
+  //   // Results.postResults(valuesObj);
+  // };
 
 }]);
