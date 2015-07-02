@@ -76,9 +76,35 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
     } 
   };
 
+  $scope.timerDisplay = function(num) {
+
+    // stores length of session in Time service
+    // Time.setMinuteCount(duration);  //******Uncomment to use minutes!
+    Time.setSecondCount(num);
+
+    Time.setStartTime();
+    
+    $scope.unsubmitted = false;
+    // $rootScope.timer = Time.getTimer(); //******Uncomment to use minutes!
+    $scope.timeDisplay = Time.getTimerSeconds();
+
+    // Destroys the session on timeout.
+    start = $interval(function() {
+      // if (Time.checkForEnd()) { //******Uncomment to use minutes!
+      if (Time.checkForEndSeconds()) { // this is used for testing to countdown inseconds
+        $scope.timeDisplay = undefined;
+        $scope.done = true;
+        setResults(duration);
+      } else {
+        // $rootScope.timer = Time.getTimer(); //******Uncomment to use minutes!
+        $scope.timeDisplay = Time.getTimerSeconds();
+      }
+    }, 1000, 0);
+  };
+
   $scope.roundRobin = function(num) {
     $scope.currentPlayer = Session.getUser().username;
-    $scope.socket.emit('roundStart');
+    $scope.socket.emit('roundStart', $scope.currentPlayer);
     $scope.socket.emit('getNext', num);
     // prevents simultaneous sessions
     if (angular.isDefined(start)) return;
@@ -106,7 +132,7 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
       // if (Time.checkForEnd()) { //******Uncomment to use minutes!
       if (Time.checkForEndSeconds()) { // this is used for testing to countdown inseconds
         $scope.stopTimer();
-        $scope.timer = 0;
+        $scope.timer = undefined;
         $scope.done = true;
         setResults(30);
         $scope.socket.emit('endRound', $scope.count);
@@ -136,6 +162,12 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
     if ($scope.nextPlayer === Session.getUser().username) {
       $scope.roundRobin(num);
     }
+  });
+
+  $scope.socket.on('lockRoundRobin', function(name) {
+    $scope.currentPlayer = name;
+    $scope.timeDisplay();
+    
   });
 
   $scope.cancelSession = function() {

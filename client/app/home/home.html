@@ -32,8 +32,8 @@
 
         <div ng-show="socket.topic === 'Round Robin'" class="row" id="status-container">
           <h2>ROUND ROBIN!</h2>
-          <input ng-show="unsubmitted" ng-click="roundRobin(5)" type='submit'>
-          <div class="countdown-box set-timer-components timer-text" ng-hide="unsubmitted"> {{ timer }} </div>
+          <input ng-show="unsubmitted" ng-click="roundRobin(5)" type='submit' value="START!">
+          <div class="countdown-box set-timer-components timer-text" ng-hide="unsubmitted"> {{ timer || timeDisplay }} </div>
           <!-- Information for current user  -->
           <div>Current writer: {{currentPlayer}}</div>
           <div>Up Next: {{nextPlayer}}</div>
