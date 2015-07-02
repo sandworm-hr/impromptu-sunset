@@ -21,7 +21,6 @@ http.listen(port, function() {
 
 module.exports = http;
 
-
 /////////
 // socket.io logic
 /////////
@@ -38,13 +37,12 @@ var allSocketIDs = {};
 // stores all of the usernames as the key, and the socketId as the value
 // used to prevent more than one tab / socket connection affecting the user's color index
 var allUsernames = {};
-var anonCount = 0;
+var counter = 0;
 
 var topics = ['freewrite','Round Robin'];
 
 // establishes a new user's connection socket
 io.on('connection', function(socket) {
-  anonCount++;
   socket.topic = 'freewrite';
   socket.join('freewrite');
   socket.emit('updateTopic', topics, socket.topic);
@@ -61,21 +59,24 @@ io.on('connection', function(socket) {
     socket.emit('updateTopic', topics, socket.topic);
   });
 
-
   //Round Robin logic
-  socket.on('getNext', function (num) {
+  socket.on('getNext', function (name) {
     var RRUsers = [];
     for (var i in allSocketIDs) {
       if (allSocketIDs[i].topic === 'Round Robin') {
         RRUsers.push(allSocketIDs[i]);
       }
     }
-    var next = RRUsers[Math.floor(RRUsers.length*Math.random())];
+    while (RRUsers[counter].username === name && RRUsers.length !== 1) {
+      counter++;
+      counter = counter % RRUsers.length; 
+    }
+    var next = RRUsers[counter].username;
     // send the collection of all users to the client
-    io.emit('nextPlayer', next, num);
+    io.emit('nextPlayer', next);
   });
 
-  socket.on('gameInfo', function(text, timer) {
+  socket.on('gameInfo', function (text, timer) {
     io.emit('sharedText', text, timer);
   });
 
@@ -84,8 +85,12 @@ io.on('connection', function(socket) {
     io.emit('nextRound', num, text);
   });
 
-  socket.on('roundStart', function(name) {
-    io.emit('lockRoundRobin', name);
+  socket.on('roundStart', function (name, num) {
+    io.emit('lockRoundRobin', name, num);
+  });
+
+  socket.on('endGame', function (text) {
+    io.emit('gameEnd', text);
   });
 
   // when they disconnect
@@ -93,8 +98,8 @@ io.on('connection', function(socket) {
     if (allSocketIDs[socket.id]) {
       var username = allUsernames[allSocketIDs[socket.id]];
       // send the client the user object so they know to delete it
-      io.emit('userExit', allSocketIDs[socket.id]);
-      delete allUsernames[allSocketIDs[socket.id].username]
+      io.emit('userExit', allSocketIDs[socket.id], username);
+      delete allUsernames[allSocketIDs[socket.id].username];
       // remove the user from the server users collection
       delete allSocketIDs[socket.id];
     }
@@ -105,7 +110,7 @@ io.on('connection', function(socket) {
     // if there is no username (if they have not logged in)
     if (!data.username) {
       // eject
-      data.username = 'anon'+ anonCount;
+      return;
     }
     // if the user does not already exist in the active users collection
     if (!allUsernames[data.username]) {

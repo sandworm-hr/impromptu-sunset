@@ -15,7 +15,6 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
 
   $scope.getSession = function (id) {
     Sessions.getSessionById(function(data){
-      console.log(data);
       $scope.textInput = data.text;
     }, id);
   };
@@ -82,11 +81,13 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
 
     // stores length of session in Time service
     // Time.setMinuteCount(duration);  //******Uncomment to use minutes!
+    $scope.stopTimer();
     Time.setSecondCount(num);
 
     Time.setStartTime();
     
     $scope.unsubmitted = false;
+    $scope.done = true;
     // $rootScope.timer = Time.getTimer(); //******Uncomment to use minutes!
     $scope.timeDisplay = Time.getTimerSeconds();
 
@@ -94,9 +95,8 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
     start = $interval(function() {
       // if (Time.checkForEnd()) { //******Uncomment to use minutes!
       if (Time.checkForEndSeconds()) { // this is used for testing to countdown inseconds
+        $scope.stopTimer();
         $scope.timeDisplay = undefined;
-        $scope.done = true;
-        setResults(duration);
       } else {
         // $rootScope.timer = Time.getTimer(); //******Uncomment to use minutes!
         $scope.timeDisplay = Time.getTimerSeconds();
@@ -116,12 +116,12 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
   };
 
   $scope.roundRobin = function(num) {
+    num--;
     $scope.currentPlayer = Session.getUser().username;
-    $scope.socket.emit('roundStart', $scope.currentPlayer);
-    $scope.socket.emit('getNext', num);
+    $scope.socket.emit('roundStart', $scope.currentPlayer, num);
+    if (num !== 0) { $scope.socket.emit('getNext', $scope.currentPlayer);}
     // prevents simultaneous sessions
-    if (angular.isDefined(start)) return;
-
+    $scope.stopTimer();
     // Delete any scores currently stored in the Score service.
     Score.reset();
 
@@ -150,8 +150,11 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
         $scope.done = true;
 
         $scope.previousText = $scope.previousText || '';
-        setResults(30);
-        $scope.socket.emit('endRound', $scope.count, $scope.previousText + $scope.textInput + "\n");
+        if (num === 0) { 
+          $scope.socket.emit('endGame', $scope.previousText + $scope.textInput);
+        } else { 
+          $scope.socket.emit('endRound', num, $scope.previousText + $scope.textInput + "\n");  
+        }
         $scope.textInput = '';
       } else {
         var currentScore = Score.getScore(Time.getTime(), Time.getLastKeyPress());
@@ -164,10 +167,8 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
     }, 100, 0);
   };
 
-  $scope.socket.on('nextPlayer', function (player, num) {
-    $scope.nextPlayer = player.username;
-    num--;
-    $scope.count = num;
+  $scope.socket.on('nextPlayer', function (player) {
+    $scope.nextPlayer = player;
   });
 
   $scope.socket.on('sharedText', function (text, timer) {
@@ -176,17 +177,44 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
   });
 
   $scope.socket.on('nextRound', function(num, text) {
-    if ($scope.nextPlayer === Session.getUser().username) {
+    var name = $scope.nextPlayer;
+    $scope.nextPlayer = '';
+    if (name === Session.getUser().username) { 
       $scope.roundRobin(num);
     }
-    $scope.previousText = text;
+
+    $scope.previousText = text || '';
   });
 
-  $scope.socket.on('lockRoundRobin', function(name) {
+  $scope.socket.on('lockRoundRobin', function(name, num) {
+    if (num === 5) {
+      $scope.previousText = '';
+    }
     $scope.currentPlayer = name;
-
-    $scope.timerDisplay(30);
+    if (name !== Session.getUser().username) {
+      $scope.timerDisplay(30);
+    }
   });
+
+  $scope.socket.on('userExit', function (user, username) {
+    if ($scope.currentPlayer === username) {
+      $scope.gameEnd();
+    } else if ($scope.nextPlayer === username) {
+      $scope.socket.emit('getNext',username);
+    }
+  });
+
+  $scope.socket.on('gameEnd', function(text) {
+    $scope.previousText = text;
+    $scope.gameEnd();
+  });
+
+  $scope.gameEnd = function () {
+    $scope.stopTimer();
+    $scope.unsubmitted = true;
+    $scope.gameOver = false;
+    $scope.done = false;
+  };
 
   $scope.cancelSession = function() {
     var duration = parseInt($scope.timerInput);

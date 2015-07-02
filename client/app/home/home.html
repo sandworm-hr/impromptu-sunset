@@ -38,12 +38,17 @@
         </div>
 
         <div ng-show="socket.topic === 'Round Robin'" class="row" id="status-container">
-          <h2>ROUND ROBIN!</h2>
-          <input ng-show="unsubmitted" ng-click="roundRobin(5)" type='submit' value="START!">
-          <div class="countdown-box set-timer-components timer-text" ng-hide="unsubmitted"> {{ timer || timeDisplay }} </div>
-          <!-- Information for current user  -->
-          <div>Current writer: {{currentPlayer}}</div>
-          <div>Up Next: {{nextPlayer}}</div>
+          <div class="col-sm-5">
+            <h2>ROUND ROBIN!</h2>
+            <input ng-show="unsubmitted" ng-click="roundRobin(5)" type='submit' value="START!">
+            <!-- Information for current user  -->
+            <div>Current writer: {{currentPlayer}}</div>
+            <div>Up Next: {{nextPlayer}}</div>
+          </div>
+          <div class="col-sm-2 countdown-box set-timer-components timer-text" ng-hide="unsubmitted"> {{ timer || timeDisplay }} </div>
+          <div class="col-sm-2 go-button-box">
+            <button class="btn btn-default pull-right" ng-show="gameOver"type="button" ui-sref="results">See Results!</button>
+          </div>
         </div>
             
           
@@ -60,7 +65,7 @@
             <!-- <p class="debug-text">Color Index: {{ colorIndex }}</p> -->
           <!-- </div> -->
 
-        <div ng-show="socket.topic === 'Round Robin'" class="col-sm-12" id="shared-text">{{previousText}}{{sharedText}}</div>
+        <pre ng-show="socket.topic === 'Round Robin'" class="col-sm-12 row" id="shared-text">{{previousText}}{{sharedText}}</pre>
 
         <div class="col-sm-12" id="text-container">
           <textarea ng-disabled="unsubmitted || done" id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
