@@ -15,6 +15,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       templateUrl: '/app/home/home.html',
     })
 
+    .state('review', {
+      url: '/review/:id',
+      templateUrl: '/app/review/review.html'
+    })
+
     .state('signup', {
       url: '/signup',
       templateUrl: 'app/signup/signup.html'
