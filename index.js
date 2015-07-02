@@ -83,6 +83,10 @@ io.on('connection', function(socket) {
     io.emit('nextRound', num);
   });
 
+  socket.on('roundStart', function(name) {
+    io.emit('lockRoundRobin', name);
+  });
+
   // when they disconnect
   socket.on('disconnect', function() {
     if (allSocketIDs[socket.id]) {
