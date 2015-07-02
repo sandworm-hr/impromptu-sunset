@@ -62,7 +62,7 @@ angular.module('app.services')
 
     services.getTimerSeconds = function() {
       elapsed = this.getTime() - startTime;
-      var seconds = (totalSeconds - Math.floor(elapsed / 1000) - 1).toString();
+      var seconds = (totalSeconds - Math.floor(elapsed / 1000) ).toString();
       if (seconds.length === 1) seconds = '0' + seconds;
       return seconds;
     };
