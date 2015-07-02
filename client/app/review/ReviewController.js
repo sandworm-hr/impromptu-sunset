@@ -4,8 +4,7 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Sessions', functi
 
   $scope.getSession = function (id) {
     Sessions.getSessionById(function(data){
-      console.log(data);
-      $scope.textInput = data.text;
+      $scope.sessionInfo = data;
     }, id);
   };
 
