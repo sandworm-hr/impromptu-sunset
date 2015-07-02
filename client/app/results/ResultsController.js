@@ -16,6 +16,9 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
     $scope.possible = $scope.duration * 60 * 10000;
     $scope.consistency = Math.floor(($scope.total / $scope.possible) * 1000) / 10;
 
+    $scope.spinnerToggle = false;
+    $scope.isSaved = false;
+
     $scope.control = { loaded : function(){
       $scope.scores = Results.getScores();
       // redirect to index page if no scores!
@@ -29,33 +32,49 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
     // Retrieves session information from the Results service and sends it to the server
     // to be stored in the database.
     $scope.sendResultsToServer = function() {
-      var resultsObj = {};
-      resultsObj.session_time = Results.getDuration();
-      resultsObj.char_count = Results.getCharacterCount();
-      resultsObj.text = Results.getText();
-      resultsObj.scores = Results.getScoresPerMinute();
-      resultsObj.word_count = Results.getWordCount();
+      if(Session.isAuthenticated()){
+        $scope.startSpinner();
+        var resultsObj = {};
+        resultsObj.session_time = Results.getDuration();
+        resultsObj.char_count = Results.getCharacterCount();
+        resultsObj.text = Results.getText();
+        resultsObj.scores = Results.getScoresPerMinute();
+        resultsObj.word_count = Results.getWordCount();
 
-      Results.postResults(resultsObj)
-        .success(function(data, status) {
-           $scope.status = 'Saved Session Data';
-        })
-        .catch(function(data) {
-        // FOR TESTING:
-        // in testing there is no data object
-        // if there is a data object, we are not running a test
-        // therefore we need to set the scope message
-        if (data.data) {
-          $scope.message = data.data.message;
-        }
-        $scope.status = 'Save Failed';
-       });
+        Results.postResults(resultsObj)
+          .success(function(data, status) {
+             $scope.status = 'Saved Session Data';
+             $scope.stopSpinner();
+             $scope.isSaved = true;
+          })
+          .catch(function(data) {
+          // FOR TESTING:
+          // in testing there is no data object
+          // if there is a data object, we are not running a test
+          // therefore we need to set the scope message
+          if (data.data) {
+            $scope.message = data.data.message;
+          }
+          $scope.status = 'Save Failed';
+          $scope.stopSpinner();
+         });
+      } else {
+        $state.go('login');
+      }
+    };
+
+    $scope.startSpinner = function() {
+      $scope.spinnerToggle = true;
+    };
+
+    $scope.stopSpinner = function() {
+      $scope.spinnerToggle = false;
     };
 
     // if authenticated save to db right away.
-    if(Session.isAuthenticated()){
-      $scope.sendResultsToServer();
-    }
+    // if(Session.isAuthenticated()){
+    //   $scope.sendResultsToServer();
+    // }
     
     // Creates an array of tuple objects, where the x axis is the index and the y axis is the value of the input array at i.
     var parseData = function(array) {

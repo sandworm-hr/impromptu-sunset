@@ -68,6 +68,29 @@ input.set-timer-components {
   height: 80vh;
 }
 
+.save-spinner {
+  width: 25%;
+}
+
+.results_buttons {
+  margin-left: 306px;
+}
+
+ .btn-results {
+  margin: 5px;
+  margin-left: 2.5px;
+  margin-right: 2.5px;
+ }
+
+ .btn-upper {
+  width: 200px;
+  height: 50px;
+ }
+
+ .btn-lower {
+  width: 96px
+ }
+
 .go-button-box {
   margin-top: 30px;
   padding-right: 30px;

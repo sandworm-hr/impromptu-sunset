@@ -59,6 +59,7 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
         // if (Time.checkForEnd()) { //******Uncomment to use minutes!
         if (Time.checkForEndSeconds()) { // this is used for testing to countdown inseconds
           $scope.stopTimer();
+          $scope.timer = 0;
           $scope.done = true;
           setResults(duration);
         } else {
