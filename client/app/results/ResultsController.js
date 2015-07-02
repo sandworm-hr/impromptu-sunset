@@ -64,12 +64,10 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
     };
 
     $scope.startSpinner = function() {
-      console.log('spinning');
       $scope.spinnerToggle = true;
     };
 
     $scope.stopSpinner = function() {
-      console.log('stop spinning');
       $scope.spinnerToggle = false;
     };
 
