@@ -25,6 +25,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   $scope.getMyUserAndColor = function () {
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
+    var timer = $scope.timer;
     // if no username is provided (they haven't logged in)
     if (username === '' ||
         username === undefined) {
@@ -36,7 +37,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
       colorIndex = 10;
     }
 
-    return {topic: $scope.socket.topic, username: username, colorIndex: colorIndex};
+    return {timer: timer, topic: $scope.socket.topic, username: username, colorIndex: colorIndex};
   };
 
   // updates the new myUser data
@@ -128,7 +129,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   $scope.sendUserData = function() {
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
-    var data = {topic: $scope.socket.topic, username: username, colorIndex: colorIndex};
+    var data = {timer: $scope.timer, topic: $scope.socket.topic, username: username, colorIndex: colorIndex};
     $scope.socket.emit('postUserUpdate', data);
   };
 
@@ -179,6 +180,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
       return $scope.handleDeleteUser(user);
     }
     if ($scope.usersCollection[user.username]) {
+      $scope.usersCollection[user.username].timer = user.timer;
       return $scope.setColor(user);
     } else { // if the user does not already exist
       // add the user to the user collection
@@ -242,6 +244,10 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     }, 1);
 
   };
+
+  $scope.setTimer = function(user) {
+
+  }
 
   // DEBUG SECTION
 
