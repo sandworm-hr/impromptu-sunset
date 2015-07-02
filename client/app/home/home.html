@@ -2,33 +2,35 @@
   <div class="row" id="main-container" ng-controller="HomeController">
     <div class="col-sm-9" id="content-container">
       <!-- <div class="row"> -->
-        <div class="row" id="status-container">
-            <div class="col-sm-6 set-timer-box col-md-offset-3">
-              <div class="set-timer-box">
-                <!-- this text is hidden after submitting to maintain timer placement -->
-                <h2 class="set-timer-components" ng-show="unsubmitted">Write for  </h2>
-                <!-- TIMER, appears after submitting and replacing the input field -->
-                <h1 class="countdown-box set-timer-components timer-text" ng-show="!(unsubmitted)"> {{ timer }} </h1>
-                <!-- INPUT FIELD, disappears after submitting -->
-                <input ng-show="unsubmitted" class="set-timer-components text-center" classtype="text" ng-model="timerInput" ng-enter="startTimer()" autofocus maxlength="3">
-                <!-- this text is hidden after submitting to maintain timer placement -->
-                <h2 class="set-timer-components" ng-show="unsubmitted">  seconds</h2>
-              </div>
-              
+        <div class="row" id="status-container" ng-hide="socket.topic === 'Round Robin'">
+          <div class="col-sm-6 set-timer-box col-md-offset-3">
+            <div class="set-timer-box">
+              <!-- this text is hidden after submitting to maintain timer placement -->
+              <h2 class="set-timer-components" ng-show="unsubmitted">Write for  </h2>
+              <!-- TIMER, appears after submitting and replacing the input field -->
+              <h1 class="countdown-box set-timer-components timer-text" ng-show="!(unsubmitted)"> {{ timer }} </h1>
+              <!-- INPUT FIELD, disappears after submitting -->
+              <input ng-show="unsubmitted" class="set-timer-components text-center" classtype="text" ng-model="timerInput" ng-enter="startTimer()" autofocus maxlength="3">
+              <!-- this text is hidden after submitting to maintain timer placement -->
+              <h2 class="set-timer-components" ng-show="unsubmitted">  seconds</h2>
             </div>
-            <div class="col-sm-3 go-button-box">
-              <!-- if the user has not submited the form, make the go button visible -->
-              <button class="btn btn-default" ng-show="unsubmitted" type="button" ng-click="startTimer()">Go!</button>
-              <!-- cancel button in case the user wants to cancel their session -->
-              <button class="btn btn-default pull-right" ng-show="!(unsubmitted) && !(gameOver)" type="button" ng-click="cancelSession()">Cancel Session</button>
-              <!-- if the user has finished their timer, show the results button -->
-              <button class="btn btn-default pull-right" ng-show="gameOver"type="button" ui-sref="results">See Results!</button>
-              <!-- <button class="btn btn-default pull-right"  type="button pull-right" ng-click="makeDebugResults()">Debug</button> -->
-            </div>
-            <!-- <div class="col-sm-1 timer-box"> -->
-              <!-- <h3 ng-show="!(unsubmitted)"> {{ timer }} </h3> -->
-            <!-- </div> -->
+            
+          </div>
+          <div class="col-sm-3 go-button-box">
+            <!-- if the user has not submited the form, make the go button visible -->
+            <button class="btn btn-default" ng-show="unsubmitted" type="button" ng-click="startTimer()">Go!</button>
+            <!-- cancel button in case the user wants to cancel their session -->
+            <button class="btn btn-default pull-right" ng-show="!(unsubmitted) && !(gameOver)" type="button" ng-click="cancelSession()">Cancel Session</button>
+            <!-- if the user has finished their timer, show the results button -->
+            <button class="btn btn-default pull-right" ng-show="gameOver"type="button" ui-sref="results">See Results!</button>
+            <!-- <button class="btn btn-default pull-right"  type="button pull-right" ng-click="makeDebugResults()">Debug</button> -->
+          </div>
+          <!-- <div class="col-sm-1 timer-box"> -->
+            <!-- <h3 ng-show="!(unsubmitted)"> {{ timer }} </h3> -->
+          <!-- </div> -->
         </div>
+
+        <div class="row" id="status-container">
             
           
 
@@ -43,6 +45,8 @@
             <!-- <p class="debug-text">Score: {{ score }}</p> -->
             <!-- <p class="debug-text">Color Index: {{ colorIndex }}</p> -->
           <!-- </div> -->
+
+        <div ng-show="socket.topic === 'Round Robin'" class="col-sm-12" id="shared-text">{{text}}</div>
 
         <div class="col-sm-12" id="text-container">
           <textarea ng-disabled="unsubmitted || done" id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>

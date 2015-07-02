@@ -40,7 +40,7 @@ var allSocketIDs = {};
 var allUsernames = {};
 var anonCount = 0;
 
-var topics = ['freewrite'];
+var topics = ['freewrite','Round Robin'];
 
 // establishes a new user's connection socket
 io.on('connection', function(socket) {

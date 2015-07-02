@@ -1,7 +1,7 @@
 
-app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'ColorIndexService', '$interval', function($scope, $timeout, Session, ColorIndexService, $interval) {
+app.controller('MultiplayerController', ['$scope', '$rootScope', '$timeout', 'Session', 'ColorIndexService', '$interval', function($scope, $rootScope, $timeout, Session, ColorIndexService, $interval) {
 
-  $scope.socket = io();
+  $rootScope.socket = io();
 
 
   // stores the users currently logged in for sockets
@@ -12,8 +12,8 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // this variable is used to always display the client's username
   // and color at the top of the userlist
   $scope.myUser = {};
-  $scope.socket.topic = 'freewrite';
-  $scope.socket.topics = ['freewrite'];
+  $rootScope.socket.topic = 'freewrite';
+  $rootScope.socket.topics = ['freewrite', 'Round Robin'];
   $scope.topicselect = false;
   $scope.newTopic = '';
 
@@ -37,7 +37,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
       colorIndex = 10;
     }
 
-    return {timer: timer, topic: $scope.socket.topic, username: username, colorIndex: colorIndex};
+    return {timer: timer, topic: $rootScope.socket.topic, username: username, colorIndex: colorIndex};
   };
 
   // updates the new myUser data
@@ -77,36 +77,36 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   ////////////////
 
   // initiates update function when a user has sent their data to the server
-  $scope.socket.on('getUserUpdate', function(data) {
+  $rootScope.socket.on('getUserUpdate', function(data) {
     // NOTE: must use timeout because angular requires time to add the element to the DOM
     return $timeout(function() {
       $scope.handleUserUpdate(data);
     }, 1);
   });
 
-  $scope.socket.on('updateTopic', function (topics, newTopic) {
-    $scope.socket.topic = newTopic || $scope.socket.topic;
-    $scope.socket.topics = topics;
+  $rootScope.socket.on('updateTopic', function (topics, newTopic) {
+    $rootScope.socket.topic = newTopic || $rootScope.socket.topic;
+    $rootScope.socket.topics = topics;
   });
 
   $scope.createTopic = function(topic) {
 
-    $scope.socket.emit('newTopic', _.escape(topic));
+    $rootScope.socket.emit('newTopic', _.escape(topic));
   };
 
   $scope.changeTopic = function(topic) {
-    $scope.socket.emit('changeTopic', topic);
+    $rootScope.socket.emit('changeTopic', topic);
     $scope.topicselect = false;
   };
 
   // iniates removal of a user from the userlist, when a user sent their
   // disconnect signal to the server
-  $scope.socket.on('userExit', function(user) {
+  $rootScope.socket.on('userExit', function(user) {
     $scope.handleDeleteUser(user);
   });
 
   // gets the array of all users currently logged in
-  $scope.socket.on('allServerUsers', function(data) {
+  $rootScope.socket.on('allServerUsers', function(data) {
     for (var i = 0; i < data.length; i++) {
       $timeout(function() {
         $scope.handleUserUpdate(data[i]);
@@ -115,7 +115,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   });
 
   // on page load, goes and gets all of the users currently logged in
-  // $scope.socket.emit('getAllUsers');
+  // $rootScope.socket.emit('getAllUsers');
 
 
   // deletes passed in user from the users collection
@@ -129,8 +129,8 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   $scope.sendUserData = function() {
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
-    var data = {timer: $scope.timer, topic: $scope.socket.topic, username: username, colorIndex: colorIndex};
-    $scope.socket.emit('postUserUpdate', data);
+    var data = {timer: $scope.timer, topic: $rootScope.socket.topic, username: username, colorIndex: colorIndex};
+    $rootScope.socket.emit('postUserUpdate', data);
   };
 
   
@@ -176,7 +176,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // adds user to usersCollection array and creates their SVG circle
   $scope.handleUserUpdate = function(user) {
     // if the user already exists
-    if (user.topic !== $scope.socket.topic) {
+    if (user.topic !== $rootScope.socket.topic) {
       return $scope.handleDeleteUser(user);
     }
     if ($scope.usersCollection[user.username]) {
