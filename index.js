@@ -79,8 +79,9 @@ io.on('connection', function(socket) {
     io.emit('sharedText', text, timer);
   });
 
-  socket.on('endRound', function (num) {
-    io.emit('nextRound', num);
+
+  socket.on('endRound', function (num, text) {
+    io.emit('nextRound', num, text);
   });
 
   socket.on('roundStart', function(name) {

@@ -118,6 +118,7 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
     // only works if duration is a positive number
 
     $scope.unsubmitted = false;
+    $scope.done = false;
 
     Time.setStartTime();
 
@@ -134,8 +135,11 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
         $scope.stopTimer();
         $scope.timer = undefined;
         $scope.done = true;
+
+        $scope.previousText = $scope.previousText || '';
         setResults(30);
-        $scope.socket.emit('endRound', $scope.count);
+        $scope.socket.emit('endRound', $scope.count, $scope.previousText + $scope.textInput + "\n");
+        $scope.textInput = '';
       } else {
         var currentScore = Score.getScore(Time.getTime(), Time.getLastKeyPress());
         // $rootScope.timer = Time.getTimer(); //******Uncomment to use minutes!
@@ -158,16 +162,17 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
     $scope.timeDisplay = timer;
   });
 
-  $scope.socket.on('nextRound', function(num) {
+  $scope.socket.on('nextRound', function(num, text) {
     if ($scope.nextPlayer === Session.getUser().username) {
       $scope.roundRobin(num);
     }
+    $scope.previousText = text;
   });
 
   $scope.socket.on('lockRoundRobin', function(name) {
     $scope.currentPlayer = name;
-    $scope.timeDisplay();
-    
+
+    $scope.timerDisplay(30);
   });
 
   $scope.cancelSession = function() {
