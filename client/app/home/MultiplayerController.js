@@ -12,6 +12,10 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   // this variable is used to always display the client's username
   // and color at the top of the userlist
   $scope.myUser = {};
+  $scope.socket.topic = 'freewrite';
+  $scope.socket.topics = ['freewrite'];
+  $scope.topicselect = false;
+  $scope.newTopic = '';
 
   ////////////////
   // MY USER LOGIC (client user)
@@ -32,8 +36,8 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
       colorIndex = 10;
     }
 
-    return {username: username, colorIndex: colorIndex};
-  }
+    return {topic: $scope.socket.topic, username: username, colorIndex: colorIndex};
+  };
 
   // updates the new myUser data
   $scope.updateMyUserAndColor = function() {
@@ -54,7 +58,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
       // update the myUser value
       $scope.myUser = currentUser;
     }
-  }
+  };
 
 
   // every second, set the current user username and color
@@ -79,10 +83,25 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     }, 1);
   });
 
+  $scope.socket.on('updateTopic', function (topics, newTopic) {
+    $scope.socket.topic = newTopic || $scope.socket.topic;
+    $scope.socket.topics = topics;
+  });
+
+  $scope.createTopic = function(topic) {
+
+    $scope.socket.emit('newTopic', _.escape(topic));
+  };
+
+  $scope.changeTopic = function(topic) {
+    $scope.socket.emit('changeTopic', topic);
+    $scope.topicselect = false;
+  };
+
   // iniates removal of a user from the userlist, when a user sent their
   // disconnect signal to the server
   $scope.socket.on('userExit', function(user) {
-    $scope.handleDeleteUser(user)
+    $scope.handleDeleteUser(user);
   });
 
   // gets the array of all users currently logged in
@@ -90,7 +109,7 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
     for (var i = 0; i < data.length; i++) {
       $timeout(function() {
         $scope.handleUserUpdate(data[i]);
-      }, 1)
+      }, 1);
     }
   });
 
@@ -109,8 +128,8 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
   $scope.sendUserData = function() {
     var username = Session.getUser().username;
     var colorIndex = ColorIndexService.get();
-
-    $scope.socket.emit('postUserUpdate', {username: username, colorIndex: colorIndex});
+    var data = {topic: $scope.socket.topic, username: username, colorIndex: colorIndex};
+    $scope.socket.emit('postUserUpdate', data);
   };
 
   
@@ -155,43 +174,43 @@ app.controller('MultiplayerController', ['$scope', '$timeout', 'Session', 'Color
 
   // adds user to usersCollection array and creates their SVG circle
   $scope.handleUserUpdate = function(user) {
-
-
     // if the user already exists
+    if (user.topic !== $scope.socket.topic) {
+      return $scope.handleDeleteUser(user);
+    }
     if ($scope.usersCollection[user.username]) {
       return $scope.setColor(user);
     } else { // if the user does not already exist
       // add the user to the user collection
       $scope.usersCollection[user.username] = user;
+
+      // string to access the user's circle box directly
+      var elementId = '#' + user.username + '-user-circle-box';
+
+      // sets up new circle
+      // must be in timeout due to delay in angular for setting up
+      // new DOM elements
+      return $timeout(function() {
+        // sets up SVG based on the passed in user
+        d3.select(elementId).html("");
+        
+        var svgContainer = d3.select(elementId).append('svg')
+                              .attr('width', circleBoxWidth)
+                              .attr('height', circleBoxWidth)
+                              .attr('class', user.username + '-user-circle');
+
+
+        // adds circle to the new svg
+        var circle = svgContainer.append("circle")
+                       .attr("cx", circleBoxWidth/2)
+                       .attr("cy", circleBoxWidth/2)
+                       .attr("r", circleBoxWidth/2)
+                       .attr('fill', 'rgb(173,216,199)');
+                       
+
+        $scope.setColor(user);
+      }, 1);
     }
-
-
-    // string to access the user's circle box directly
-    var elementId = '#' + user.username + '-user-circle-box';
-
-    // sets up new circle
-    // must be in timeout due to delay in angular for setting up
-    // new DOM elements
-    return $timeout(function() {
-      // sets up SVG based on the passed in user
-      d3.select(elementId).html("");
-      
-      var svgContainer = d3.select(elementId).append('svg')
-                            .attr('width', circleBoxWidth)
-                            .attr('height', circleBoxWidth)
-                            .attr('class', user.username + '-user-circle');
-
-
-      // adds circle to the new svg
-      var circle = svgContainer.append("circle")
-                     .attr("cx", circleBoxWidth/2)
-                     .attr("cy", circleBoxWidth/2)
-                     .attr("r", circleBoxWidth/2)
-                     .attr('fill', 'rgb(173,216,199)');
-                     
-
-      $scope.setColor(user);
-    }, 1);
   };
 
   /////////////

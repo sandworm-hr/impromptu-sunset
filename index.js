@@ -38,9 +38,30 @@ var allSocketIDs = {};
 // stores all of the usernames as the key, and the socketId as the value
 // used to prevent more than one tab / socket connection affecting the user's color index
 var allUsernames = {};
+var anonCount = 0;
+
+var topics = ['freewrite'];
 
 // establishes a new user's connection socket
 io.on('connection', function(socket) {
+  anonCount++;
+  socket.topic = 'freewrite';
+  socket.join('freewrite');
+  socket.emit('updateTopic', topics, socket.topic);
+
+  socket.on('newTopic', function (topic) {
+    if (topics.indexOf(topic) === -1) { topics.push(topic); }
+    socket.emit('updateTopic', topics);
+  });
+
+  socket.on('changeTopic', function (topic) {
+    socket.leave(socket.topic);
+    socket.join(topic);
+    socket.topic = topic;
+    socket.emit('updateTopic', topics, socket.topic);
+  });
+
+
 
   // when they disconnect
   socket.on('disconnect', function() {
@@ -53,13 +74,13 @@ io.on('connection', function(socket) {
       delete allSocketIDs[socket.id];
     }
   });
- 
+  
   // when a user sends an update event
   socket.on('postUserUpdate', function(data) {
     // if there is no username (if they have not logged in)
     if (!data.username) {
       // eject
-      return;
+      data.username = 'anon'+ anonCount;
     }
     // if the user does not already exist in the active users collection
     if (!allUsernames[data.username]) {
@@ -80,11 +101,10 @@ io.on('connection', function(socket) {
   socket.on('getAllUsers', function() {
     // array to send to the user of all user data
     var allUsersData = [];
-
     // pushes all user data from sockets into allUsersData
     // we do this to hide the socketIDs from the clients
     for (var i = 0; i < allSocketIDs.length; i++) {
-      allUsersData.push(allSocketIDs[i]);
+        allUsersData.push(allSocketIDs[i]);
     }
 
     // send the collection of all users to the client
