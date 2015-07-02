@@ -65,7 +65,7 @@
         <button ng-click="topicselect=!topicselect">Topics</button>
         <input ng-show="topicselect" ng-model='newTopic'>
         <button ng-show="topicselect" ng-click="createTopic(newTopic);newTopic='';">NEW TOPIC</button>
-        <table ng-hide="topicselect"class="users-table">
+        <table ng-hide="topicselect" class="users-table">
           <!-- CURRENT USER TABLE BODY -->
           <tbody class="user-tbody" >
             <tr class="user-box my-user-box" id="{{myUser.username}}-user-box">
@@ -86,7 +86,7 @@
               <td ng-hide="user.username == myUser.username" class="user-text-box" id="{{user.username}}-user-text-box">
                 <a ng-hide="user.username == myUser.username" ui-sref="profile({username: '{{user.username}}'})"><span class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span></a> 
               </td>
-              <td ng-show="user.timer !== '00' && user.timer !== undefined">In Session: {{user.timer}}</td>
+              <td ng-hide="user.username === myUser.username || user.timer === '00' || user.timer === undefined">In Session: {{user.timer}}</td>
             </tr>
           </tbody>
         </table>
