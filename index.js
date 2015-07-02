@@ -40,7 +40,7 @@ var allSocketIDs = {};
 var allUsernames = {};
 var anonCount = 0;
 
-var topics = ['freewrite'];
+var topics = ['freewrite','Round Robin'];
 
 // establishes a new user's connection socket
 io.on('connection', function(socket) {
@@ -62,6 +62,26 @@ io.on('connection', function(socket) {
   });
 
 
+  //Round Robin logic
+  socket.on('getNext', function (num) {
+    var RRUsers = [];
+    for (var i in allSocketIDs) {
+      if (allSocketIDs[i].topic === 'Round Robin') {
+        RRUsers.push(allSocketIDs[i]);
+      }
+    }
+    var next = RRUsers[Math.floor(RRUsers.length*Math.random())];
+    // send the collection of all users to the client
+    io.emit('nextPlayer', next, num);
+  });
+
+  socket.on('gameInfo', function(text, timer) {
+    io.emit('sharedText', text, timer);
+  });
+
+  socket.on('endRound', function (num) {
+    io.emit('nextRound', num);
+  });
 
   // when they disconnect
   socket.on('disconnect', function() {
