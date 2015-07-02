@@ -47,39 +47,51 @@
         <div class="col-sm-12" id="text-container">
           <textarea ng-disabled="unsubmitted || done" id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
         </div>
+    </div>
+
+
+      <div class="col-sm-3 well" id="sidebar-container" ng-controller="MultiplayerController">
+        <button ng-click="topicselect=!topicselect">Topics</button>
+        <input ng-show="topicselect" ng-model='newTopic'>
+        <button ng-show="topicselect" ng-click="createTopic(newTopic);newTopic='';">NEW TOPIC</button>
+        <table ng-hide="topicselect"class="users-table">
+          <!-- CURRENT USER TABLE BODY -->
+          <tbody class="user-tbody" >
+            <tr class="user-box my-user-box" id="{{myUser.username}}-user-box">
+              <td class="user-circle-box" id="{{myUser.username}}-user-circle-box">
+              </td>
+              <td class="user-text-box" id="{{myUser.username}}-user-text-box">
+                <span class="user-text-span my-user-text-span" id="{{myUser.username}}-user-text-span">{{myUser.username}}</span>
+              </td>
+            </tr>
+          </tbody>
+          <!-- OTHER USERS TABLE BODY -->
+          <tbody class="multiplayer-users-tbody">
+            <tr class="user-box"
+              id="{{user.username}}-user-box" 
+              ng-repeat="user in usersCollection" >
+              <td ng-hide="user.username == myUser.username" class="user-circle-box" id="{{user.username}}-user-circle-box">
+              </td>
+              <td ng-hide="user.username == myUser.username" class="user-text-box" id="{{user.username}}-user-text-box">
+                <a ng-hide="user.username == myUser.username" ui-sref="profile({username: '{{user.username}}'})"><span class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span></a> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table ng-show="topicselect" class="topics-table">
+          <tbody class="multiplayer-users-tbody">
+            <tr class="user-box"
+              id="{{topic}}-user-box" 
+              ng-repeat="topic in socket.topics" ng-click="changeTopic(topic)">
+              <td>{{topic}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- DEBUG SOCKETS FUNCTIONS -->
+        <!-- <button ng-click="sendUserData()">send user data</button> -->
+        <!-- <input ng-model="testUsername" placeholder="username"> -->
+        <!-- <input ng-model="testColorIndex" placeholder="color index"> -->
+        <!-- <button ng-click="debugSendCurrentUser()">debug send current user</button> -->
       </div>
-
-
-        <div class="col-sm-3 well" id="sidebar-container" ng-controller="MultiplayerController">
-          <table class="users-table">
-            <!-- CURRENT USER TABLE BODY -->
-            <tbody class="user-tbody" >
-              <tr class="user-box my-user-box" id="{{myUser.username}}-user-box">
-                <td class="user-circle-box" id="{{myUser.username}}-user-circle-box">
-                </td>
-                <td class="user-text-box" id="{{myUser.username}}-user-text-box">
-                  <span class="user-text-span my-user-text-span" id="{{myUser.username}}-user-text-span">{{myUser.username}}</span>
-                </td>
-              </tr>
-            </tbody>
-            <!-- OTHER USERS TABLE BODY -->
-            <tbody class="multiplayer-users-tbody">
-              <tr class="user-box"
-                id="{{user.username}}-user-box" 
-                ng-repeat="user in usersCollection" >
-                <td ng-hide="user.username == myUser.username" class="user-circle-box" id="{{user.username}}-user-circle-box">
-                </td>
-                <td ng-hide="user.username == myUser.username" class="user-text-box" id="{{user.username}}-user-text-box">
-                  <a ng-hide="user.username == myUser.username" ui-sref="profile({username: '{{user.username}}'})"><span class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span></a> 
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <!-- DEBUG SOCKETS FUNCTIONS -->
-          <!-- <button ng-click="sendUserData()">send user data</button> -->
-          <!-- <input ng-model="testUsername" placeholder="username"> -->
-          <!-- <input ng-model="testColorIndex" placeholder="color index"> -->
-          <!-- <button ng-click="debugSendCurrentUser()">debug send current user</button> -->
-        </div>
   </div>
 </div>
