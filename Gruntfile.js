@@ -55,7 +55,7 @@ module.exports = function(grunt) {
       },
       // run migrations on heroku
       "heroku-migrate": {
-        command: 'heroku run sequelize db:migrate --env production -m --app impromptu-sunset',
+        command: 'heroku run sequelize db:migrate --env production -m --app pacific-mountain-3396',
         options: {
           stdout: true,
           stderr: true,

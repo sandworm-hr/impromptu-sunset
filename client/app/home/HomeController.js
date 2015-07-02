@@ -1,7 +1,7 @@
 
-app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', '$stateParams', 'Sessions', function($scope, $rootScope, $interval, Results, ColorIndexService, Time, Score, $stateParams, Sessions) {
+app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', '$stateParams', 'Session', 'Sessions', function($scope, $rootScope, $interval, Results, ColorIndexService, Time, Score, $stateParams, Session, Sessions) {
 
-
+  $rootScope.socket = io();
   $scope.unsubmitted = true;
   $scope.gameOver = false;
   $scope.done = false;
@@ -28,7 +28,7 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
   };
 
   // initializes and runs the timer and score calculator
-  $scope.startTimer = function() {
+  $scope.startTimer = function(num) {
     
     // prevents simultaneous sessions
     if (angular.isDefined(start)) return;
@@ -37,7 +37,7 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
     Score.reset();
 
     // stores length of session in Time service
-    var duration = parseInt($scope.timerInput);
+    var duration = num || parseInt($scope.timerInput);
     // Time.setMinuteCount(duration);  //******Uncomment to use minutes!
     Time.setSecondCount(duration);
 
@@ -75,6 +75,68 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
       $scope.timerInput = '';
     } 
   };
+
+  $scope.roundRobin = function(num) {
+    $scope.currentPlayer = Session.getUser().username;
+    $scope.socket.emit('roundStart');
+    $scope.socket.emit('getNext', num);
+    // prevents simultaneous sessions
+    if (angular.isDefined(start)) return;
+
+    // Delete any scores currently stored in the Score service.
+    Score.reset();
+
+    // stores length of session in Time service
+    Time.setSecondCount(30);
+
+    // only works if duration is a positive number
+
+    $scope.unsubmitted = false;
+
+    Time.setStartTime();
+
+    // Starts the timer and begins scoring immediately
+    Score.getScore(Time.getTime(), Time.getLastKeyPress());
+    // $rootScope.timer = Time.getTimer(); //******Uncomment to use minutes!
+    $rootScope.timer = Time.getTimerSeconds();
+
+    // Generates one score and one color index every second until the session times out,
+    // and then destroys the session and saves the data.
+    start = $interval(function() {
+      // if (Time.checkForEnd()) { //******Uncomment to use minutes!
+      if (Time.checkForEndSeconds()) { // this is used for testing to countdown inseconds
+        $scope.stopTimer();
+        $scope.timer = 0;
+        $scope.done = true;
+        setResults(30);
+        $scope.socket.emit('endRound', $scope.count);
+      } else {
+        var currentScore = Score.getScore(Time.getTime(), Time.getLastKeyPress());
+        // $rootScope.timer = Time.getTimer(); //******Uncomment to use minutes!
+        $rootScope.timer = Time.getTimerSeconds();
+        var colorIndex = ColorIndexService.getRoundedIndex(currentScore, Score.getMaxScore());
+        ColorIndexService.set(colorIndex);
+        $scope.socket.emit('gameInfo', $scope.textInput, $rootScope.timer);
+      }
+    }, 100, 0);
+  };
+
+  $scope.socket.on('nextPlayer', function (player, num) {
+    $scope.nextPlayer = player.username;
+    num--;
+    $scope.count = num;
+  });
+
+  $scope.socket.on('sharedText', function (text, timer) {
+    $scope.sharedText = text;
+    $scope.timeDisplay = timer;
+  });
+
+  $scope.socket.on('nextRound', function(num) {
+    if ($scope.nextPlayer === Session.getUser().username) {
+      $scope.roundRobin(num);
+    }
+  });
 
   $scope.cancelSession = function() {
     var duration = parseInt($scope.timerInput);

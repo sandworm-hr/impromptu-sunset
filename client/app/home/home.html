@@ -30,7 +30,14 @@
           <!-- </div> -->
         </div>
 
-        <div class="row" id="status-container">
+        <div ng-show="socket.topic === 'Round Robin'" class="row" id="status-container">
+          <h2>ROUND ROBIN!</h2>
+          <input ng-show="unsubmitted" ng-click="roundRobin(5)" type='submit'>
+          <div class="countdown-box set-timer-components timer-text" ng-hide="unsubmitted"> {{ timer }} </div>
+          <!-- Information for current user  -->
+          <div>Current writer: {{currentPlayer}}</div>
+          <div>Up Next: {{nextPlayer}}</div>
+        </div>
             
           
 
@@ -46,7 +53,7 @@
             <!-- <p class="debug-text">Color Index: {{ colorIndex }}</p> -->
           <!-- </div> -->
 
-        <div ng-show="socket.topic === 'Round Robin'" class="col-sm-12" id="shared-text">{{text}}</div>
+        <div ng-show="socket.topic === 'Round Robin'" class="col-sm-12" id="shared-text">{{previousText}}{{sharedText}}</div>
 
         <div class="col-sm-12" id="text-container">
           <textarea ng-disabled="unsubmitted || done" id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
