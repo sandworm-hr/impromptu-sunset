@@ -43,6 +43,11 @@ module.exports = {
 
   },
 
+  editSession: function(req, res, next) {
+    console.log('Calling edit session with ', req.body);
+    res.status(201).send('Successful function call');
+  },
+
   // newSession creates a new session for the 
   // currently signed in user
   newSession: function(req, res, next){

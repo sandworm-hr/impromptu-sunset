@@ -5,6 +5,7 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
   $scope.getSession = function (id) {
     Sessions.getSessionById(function(data){
       $scope.sessionInfo = data;
+      $scope.editText = data.text;
     }, id);
   };
 
@@ -21,19 +22,43 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
            $scope.commentInput = '';
            // TO DO: display some sort of success message
         })
-        .catch(function(data) {
-          $scope.status = 'Save Failed';
+        .catch(function() {
+          console.log('save failed');
        });
     }
   };
 
-  $scope.editMode = function() {
-    if ($scope.mode === 'view') {
-      $scope.mode = 'edit';
+  $scope.getComments = function() {
+
+  };
+
+  $scope.changeVisibility = function() {
+
+  };
+
+  $scope.saveEdits = function() {
+    if ($scope.editText !== $scope.sessionInfo.text) {
+      // var toSave = $scope.editText;
+      // console.log('Saving these edits: ' + toSave);
+      // console.log('Previous text: ' + $scope.sessionInfo.text);
+      var edits = {};
+      edits.text = $scope.editText;
+      edits.id = $scope.sessionInfo.id;
+      Sessions.editSession(edits)
+        .success(function(data, status) {
+          console.log('Success! Edits saved: ', data);
+        })
+        .catch(function() {
+          console.log('Save failed');
+        });
     }
   };
 
-  $scope.mode = "view";
+  $scope.editModeToggle = function() {
+    $scope.editMode = !$scope.editMode;
+  };
+
+  $scope.editMode = false;
 
 
   if ($stateParams.id) {

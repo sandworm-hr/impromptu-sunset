@@ -8,7 +8,8 @@ module.exports = function (app) {
   // user must be logged in to access these methods.
   // if not will get a 401 response (check the helper method)
   app.route('/id')
-    .get(sessionController.sessionById);
+    .get(sessionController.sessionById)
+    .post(sessionController.editSession)
   app.route('/username')
     .get(helpers.ensureAuthenticated, sessionController.allSessions)
     .post(helpers.ensureAuthenticated,sessionController.newSession);
