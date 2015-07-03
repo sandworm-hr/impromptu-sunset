@@ -102,7 +102,6 @@ app.controller('MultiplayerController', ['$scope', '$rootScope', '$timeout', 'Se
   // iniates removal of a user from the userlist, when a user sent their
   // disconnect signal to the server
   $rootScope.socket.on('userExit', function (user, username) {
-    console.log(username);
     $scope.handleDeleteUser(user);
   });
 
