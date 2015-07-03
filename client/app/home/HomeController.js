@@ -140,6 +140,7 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
         $scope.done = true;
 
         $scope.previousText = $scope.previousText || '';
+        $scope.textInput = $scope.textInput || '';
         if (num === 0) { 
           $scope.socket.emit('endGame', $scope.previousText + $scope.textInput);
         } else { 
