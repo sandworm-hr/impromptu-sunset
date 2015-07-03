@@ -8,15 +8,21 @@ app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$statePar
   $scope.getSessions = function (callback) {
     if ($stateParams.username) {
       Sessions.getSessions(function(data){
-        $scope.sessions = data;
+        $scope.sessions = $scope.filterSessions(data);
         callback(data);
       }, $stateParams.username);
     } else {
       Sessions.getSessions(function(data){
-        $scope.sessions = data;
+        $scope.sessions = $scope.filterSessions(data);
         callback(data);
       });
     }
+  };
+
+  $scope.filterSessions = function(sessionData) {
+    return _.filter(sessionData, function(currentSession) {
+      return Session.getUser().userId === currentSession.UserId || currentSession.visibility === 'public';
+    });
   };
 
   $scope.getUser = function() {
