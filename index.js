@@ -57,6 +57,7 @@ io.on('connection', function(socket) {
     socket.join(topic);
     socket.topic = topic;
     socket.emit('updateTopic', topics, socket.topic);
+    io.emit('userExit', allSocketIDs[socket.id], allSocketIDs[socket.id].username);
   });
 
   //Round Robin logic
@@ -95,10 +96,10 @@ io.on('connection', function(socket) {
 
   // when they disconnect
   socket.on('disconnect', function() {
+    console.log('user disconnected');
     if (allSocketIDs[socket.id]) {
-      var username = allUsernames[allSocketIDs[socket.id]];
       // send the client the user object so they know to delete it
-      io.emit('userExit', allSocketIDs[socket.id], username);
+      io.emit('userExit', allSocketIDs[socket.id], allSocketIDs[socket.id].username);
       delete allUsernames[allSocketIDs[socket.id].username];
       // remove the user from the server users collection
       delete allSocketIDs[socket.id];
