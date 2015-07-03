@@ -21,6 +21,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
 
     $scope.control = { loaded : function(){
       $scope.scores = Results.getScores();
+      $scope.onScores = true;
       // redirect to index page if no scores!
       if(!$scope.scores)
         $state.go('index');
@@ -94,6 +95,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
     }
 
     $scope.graphScores = function() {
+      $scope.onScores = true;
       $scope.control.removeGraph();
       $timeout(function(){
         $scope.plot(Results.getScores(), "Score");
@@ -102,6 +104,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
 
 
     $scope.graphConsistency = function() {
+      $scope.onScores = false;
       var potential, data = [];
       _.reduce(Results.getScores(), function (memo, score, index) {
         memo += score;
