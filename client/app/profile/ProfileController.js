@@ -20,8 +20,9 @@ app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$statePar
   };
 
   $scope.getUser = function() {
-    // $scope.username = Session.getUser().username;
+    //check whether requested profile belongs to session user or non-session (friend) user
     var sessionUsername = Session.getUser().username;
+    //if $stateParams.username does not exist, session user is requesting own profile
     if(!$stateParams.username){
       $scope.username = sessionUsername;
     } else {
