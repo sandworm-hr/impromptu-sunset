@@ -75,9 +75,18 @@ angular.module('app.services', [])
       });
     };
 
+    var editSession = function(edits) {
+      return $http({
+        method: 'POST',
+        url: '/api/sessions/id?' + edits.id,
+        data: edits
+      });
+    };
+
     return{
       getSessions: getSessions,
-      getSessionById: getSessionById
+      getSessionById: getSessionById,
+      editSession: editSession
     };
   })
   // The Users factory handles api requests to /users on the server

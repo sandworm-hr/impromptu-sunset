@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row" id="main-container" ng-model="sessionInfo" ng-controller="ReviewController">
+        <h1 class="row text-center review-title">{{sessionInfo.name}}</h1>
+        <div class="row">
+          <h4 class="row text-center">Topic: {{sessionInfo.type === 'default' ? 'freewrite' : sessionInfo.type}}</h4>
+          <div class="row text-center"><button type="button" class="btn" ng-class="{'public': sessionInfo.visibility == 'public'}">{{sessionInfo.visibility === 'public' ? 'Make Private' : 'Make Public'}}</button></div>
+        </div>
+        <div class="row text-body">
+          <div class="col-sm-8" id="text-container">
+            <div id="text-area" class="row" ng-show="!editMode">{{sessionInfo.text}}</div>
+            <textarea id="edit-area" class="row form-control" ng-show="editMode" ng-model="editText">{{editText}}</textarea>
+            <div class="row text-right" ng-show="editMode"><button type="button" class="btn" ng-click="saveEdits()">Save Edits</button></div>
+          </div>
+          <div class="col-sm-4" id="comments-container">
+            <div class="row review-buttons-container text-center">
+              <button type="button" class="btn edit-toggle" ng-click="editModeToggle()">{{editMode ? 'View' : 'Edit'}} Mode</button>
+              <button type="button" class="btn">share</button>
+            </div>
+            <h4 class="row text-center">Comments</h4>
+            <textarea ng-disabled="unsubmitted || done" id="comments-area" class="form-control" ng-model="commentInput"></textarea>
+            <div class="row text-right">
+              <button type="button" class="btn btn-info" ng-click="saveComment()">Save Comment</button>
+            </div>
+          </div>
+       </div>
+      </div>
+  </div>
+</div>
