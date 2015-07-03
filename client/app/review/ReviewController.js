@@ -6,6 +6,7 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
     Sessions.getSessionById(function(data){
       $scope.sessionInfo = data;
       $scope.editText = data.text;
+      $scope.visibility = data.visibility;
       $scope.getComments(id);
     }, id);
   };
@@ -39,7 +40,15 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
   };
 
   $scope.changeVisibility = function() {
-
+   var newVisibility = $scope.visibility === 'public' ? 'private' : 'public';
+   Sessions.editSession({id: $scope.sessionInfo.id, visibility: newVisibility})
+     .success(function(data, status) {
+       console.log('Success! visibility changed: ', data);
+       $scope.visibility = newVisibility;
+     })
+     .catch(function() {
+      console.log('Failed to change visibility');
+     })
   };
 
   $scope.saveEdits = function() {

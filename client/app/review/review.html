@@ -3,7 +3,7 @@
         <h1 class="row text-center review-title">{{sessionInfo.name}}</h1>
         <div class="row">
           <h4 class="row text-center">Topic: {{sessionInfo.type === 'default' ? 'freewrite' : sessionInfo.type}}</h4>
-          <div class="row text-center"><button type="button" class="btn" ng-class="{'public': sessionInfo.visibility == 'public'}">{{sessionInfo.visibility === 'public' ? 'Make Private' : 'Make Public'}}</button></div>
+          <div class="row text-center"><button type="button" class="btn" ng-class="{'public': sessionInfo.visibility == 'public'}" ng-click="changeVisibility()">{{visibility === 'public' ? 'Make Private' : 'Make Public'}}</button></div>
         </div>
 
         <div class="row text-body">
