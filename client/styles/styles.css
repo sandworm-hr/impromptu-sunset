@@ -299,3 +299,33 @@ input.set-timer-components {
   margin-right: 14px;
   margin-top: 8px;
 }
+
+#edit-area {
+  height: 150px;
+  font-size: 16px;
+  margin-top: 40px;
+}
+
+.save-edits-button {
+  margin-right: 29px;
+  margin-top: 8px;
+}
+
+.topic-subtitle {
+  font-style: italic;
+  color: gray;
+}
+
+.btn-custom-neutral {
+  background-color: rgb(2, 93, 140);
+  color: white;
+}
+
+.btn-custom-neutral:hover {
+  background-color: rgba(2, 93, 140, .75);
+  color: white;
+};
+
+.comment-box-title {
+  margin-top: 40px;
+}

@@ -8,6 +8,7 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
       $scope.editText = data.text;
       $scope.visibility = data.visibility;
       $scope.getComments(id);
+      $scope.isCurrentUser = Session.getUser().userId === $scope.sessionInfo.UserId;
     }, id);
   };
 
@@ -29,6 +30,10 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
     }
   };
 
+  $scope.isCurrentUser = function() {
+   return $scope.sessionInfo && (Session.getUser().userId === $scope.sessionInfo.id);
+  };
+
   $scope.getComments = function(id) {
     Review.getComments(id)
       .success(function(data, status) {
@@ -43,7 +48,6 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
    var newVisibility = $scope.visibility === 'public' ? 'private' : 'public';
    Sessions.editSession({id: $scope.sessionInfo.id, visibility: newVisibility})
      .success(function(data, status) {
-       console.log('Success! visibility changed: ', data);
        $scope.visibility = newVisibility;
      })
      .catch(function() {
@@ -58,7 +62,8 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
       edits.id = $scope.sessionInfo.id;
       Sessions.editSession(edits)
         .success(function(data, status) {
-          console.log('Success! Edits saved: ', data);
+          $scope.editMode = false;
+          $scope.getSession($stateParams.id);
         })
         .catch(function() {
           console.log('Save failed');
@@ -72,6 +77,7 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
 
   $scope.editMode = false;
   $scope.comments = [];
+  $scope.isCurrentUser = false;
 
   if ($stateParams.id) {
     $scope.getSession($stateParams.id);
