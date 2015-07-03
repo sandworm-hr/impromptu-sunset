@@ -99,7 +99,7 @@
               <td ng-hide="user.username == myUser.username" class="user-text-box" id="{{user.username}}-user-text-box">
                 <a ng-hide="user.username == myUser.username" ui-sref="profile({username: '{{user.username}}'})"><span class="user-text-span" id="{{user.username}}-user-text-span">{{user.username}}</span></a> 
               </td>
-              <td ng-hide="user.username === myUser.username || user.timer === '0:00' || user.timer === '0:01' || user.timer === '00' || user.timer === '01' || user.timer === '0' || user.timer === undefined">In Session: {{user.timer}}</td>
+              <td ng-hide="user.username === myUser.username || user.timer === '0:00' || user.timer === '0:01' || user.timer === '00' || user.timer === '01' || user.timer === 0 || user.timer === undefined">In Session: {{user.timer}}</td>
             </tr>
           </tbody>
         </table>
