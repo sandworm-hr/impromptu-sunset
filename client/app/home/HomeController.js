@@ -1,5 +1,5 @@
 
-app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', '$stateParams', 'Session', 'Sessions', function($scope, $rootScope, $interval, Results, ColorIndexService, Time, Score, $stateParams, Session, Sessions) {
+app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results', 'ColorIndexService', 'Time', 'Score', '$stateParams', 'Session', 'Sessions', 'RandomPrompt', function($scope, $rootScope, $interval, Results, ColorIndexService, Time, Score, $stateParams, Session, Sessions, RandomPrompt) {
 
   $rootScope.socket = io();
   $scope.unsubmitted = true;
@@ -100,6 +100,17 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
         $scope.timeDisplay = Time.getTimerSeconds();
       }
     }, 1000, 0);
+  };
+
+  $scope.randomPrompt = function() {
+    $scope.promptHide = false;
+    RandomPrompt.getPrompt(function(prompt) {
+      $scope.prompt = prompt;
+    });
+  };
+
+  $scope.hidePrompt = function() {
+    $scope.promptHide = true;
   };
 
   $scope.roundRobin = function(num) {
