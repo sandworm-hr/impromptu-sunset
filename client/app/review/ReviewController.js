@@ -17,7 +17,6 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
       comment.from = Session.getUser().userId;
       comment.UserId = $scope.sessionInfo.UserId;
       comment.SessionId = $scope.sessionInfo.id;
-      console.log(comment);
       Review.postComment(comment)
         .success(function(data, status) {
            $scope.commentInput = '';
@@ -32,7 +31,6 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
   $scope.getComments = function(id) {
     Review.getComments(id)
       .success(function(data, status) {
-        console.log('got data from server: ', data);
         $scope.comments = data;
       })
       .catch(function() {
