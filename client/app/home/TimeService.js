@@ -67,7 +67,7 @@ angular.module('app.services')
       return seconds;
     };
 
-    // Checks whether the session is over.
+    // // Checks whether the session is over.
     services.checkForEndSeconds = function() {
       elapsed = this.getTime() - startTime;
       return elapsed >= totalSeconds * 1000;
