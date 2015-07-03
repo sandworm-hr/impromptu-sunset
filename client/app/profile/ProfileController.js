@@ -20,8 +20,12 @@ app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$statePar
   };
 
   $scope.getUser = function() {
-    if (!$scope.user) {
-      $scope.user = Session.getUser();
+    // $scope.username = Session.getUser().username;
+    var sessionUsername = Session.getUser().username;
+    if(!$stateParams.username){
+      $scope.username = sessionUsername;
+    } else {
+      $scope.username = $stateParams.username;
     }
   };
 

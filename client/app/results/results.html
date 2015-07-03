@@ -25,8 +25,8 @@
           <button ng-disabled="isSaved" ng-hide="spinnerToggle" ng-click="sendResultsToServer()" class="btn btn-default btn-results btn-upper">{{!isSaved ? 'Save Results' : 'Saved!'}}</button>
           <img ng-show="spinnerToggle" class="save-spinner" src="spinner.gif">
         </div>
-        <button ng-click="graphScores();" class="btn btn-default btn-results btn-lower">Scores</button>
-        <button ng-click="graphConsistency();"  class="btn btn-default btn-results btn-lower">Consistency</button>
+        <button ng-disabled="onScores" ng-click="graphScores();" class="btn btn-default btn-results btn-lower">Scores</button>
+        <button ng-disabled="!onScores" ng-click="graphConsistency();"  class="btn btn-default btn-results btn-lower">Consistency</button>
     </div>
   </div>
   
