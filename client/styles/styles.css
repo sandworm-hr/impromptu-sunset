@@ -285,3 +285,17 @@ input.set-timer-components {
 .stats-button-wrapper {
   margin-top:10px;
 }
+
+#text-area.text-view-area {
+  height:auto;
+  margin-top: 40px;
+  background-color: rgba(247, 247, 172, 0.23);
+  border-radius: 6px;
+  padding: 10px 10px 10px 30px;
+  border: 2px solid gray;
+}
+
+.save-comment-button {
+  margin-right: 14px;
+  margin-top: 8px;
+}

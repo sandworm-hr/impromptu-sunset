@@ -8,7 +8,7 @@
 
         <div class="row text-body">
           <div class="col-sm-8" id="text-container">
-            <div id="text-area" class="row" ng-show="!editMode">{{sessionInfo.text}}</div>
+            <div id="text-area" class="row text-view-area" ng-show="!editMode">{{sessionInfo.text}}</div>
             <textarea id="edit-area" class="row form-control" ng-show="editMode" ng-model="editText">{{editText}}</textarea>
             <div class="row text-right" ng-show="editMode"><button type="button" class="btn" ng-click="saveEdits()">Save Edits</button></div>
             <div class="row comments-container">
@@ -28,7 +28,7 @@
             <h4 class="row text-center">Add a Comment</h4>
             <textarea ng-disabled="unsubmitted || done" id="comments-area" class="form-control" ng-model="commentInput"></textarea>
             <div class="row text-right">
-              <button type="button" class="btn btn-info" ng-click="saveComment()">Save Comment</button>
+              <button type="button" class="btn btn-info save-comment-button" ng-click="saveComment()">Save Comment</button>
             </div>
           </div>
        </div>
