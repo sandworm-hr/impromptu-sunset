@@ -68,11 +68,16 @@ io.on('connection', function(socket) {
         RRUsers.push(allSocketIDs[i]);
       }
     }
+    var next;
     while (RRUsers[counter].username === name && RRUsers.length !== 1) {
       counter++;
       counter = counter % RRUsers.length; 
     }
-    var next = RRUsers[counter].username;
+    if (RRUsers.length === 1) {
+      next = RRusers[0];
+    } else {
+      next = RRUsers[counter].username;
+    }
     // send the collection of all users to the client
     io.emit('nextPlayer', next);
   });
