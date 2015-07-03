@@ -45,7 +45,17 @@ module.exports = {
 
   editSession: function(req, res, next) {
     console.log('Calling edit session with ', req.body);
-    res.status(201).send('Successful function call');
+    var attributes = {};
+    if (req.body.hasOwnProperty('text')) {
+      attributes.text = req.body.text;
+    } else {
+      attributes.visibility = req.body.visibility;
+    }
+    db.Session.findOne({where: {id: req.body.id}}).then(function(session) {
+      session.updateAttributes(attributes).then(function() {
+        res.status(201).send("Session Updated!");
+      });
+    });
   },
 
   // newSession creates a new session for the 

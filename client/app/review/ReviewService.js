@@ -15,5 +15,15 @@ angular.module('app.services')
       });
     };
 
+    functions.getComments = function() {
+      return $http({
+        method: 'GET',
+        url: '/api/comments'
+      })
+      .success(function(response) {
+        console.log(response);
+      });
+    };
+
     return functions;
   }]);

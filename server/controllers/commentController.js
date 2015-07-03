@@ -3,7 +3,7 @@ var db = require('../models/index.js');
 
 module.exports = {
 
-  newComment: function(req, res, next){
+  newComment: function(req, res, next) {
 
     console.log('saving new comment to db: ', req.body);
 
