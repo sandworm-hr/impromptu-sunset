@@ -5,6 +5,8 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
   $scope.unsubmitted = true;
   $scope.gameOver = false;
   $scope.done = false;
+  $scope.prompt = null;
+  $scope.promptHide = true;
 
   // start the app with a perfect colorIndex
   ColorIndexService.set(10);
