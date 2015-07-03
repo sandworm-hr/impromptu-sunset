@@ -36,6 +36,12 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       authenticate: true
     })
 
+    .state('myProfile', {
+      url: '/profile',
+      templateUrl: 'app/profile/profile.html',
+      authenticate: true
+    })
+
     .state('stats', {
       url: '/stats',
       templateUrl: 'app/stats/stats.html',
