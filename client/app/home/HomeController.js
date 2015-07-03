@@ -128,6 +128,7 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
     Time.setStartTime();
 
     // Starts the timer and begins scoring immediately
+    Score.getScore(Time.getTime(), Time.getLastKeyPress());
     $rootScope.timer = Time.getTimerSeconds();
 
     // Generates one score and one color index every second until the session times out,
