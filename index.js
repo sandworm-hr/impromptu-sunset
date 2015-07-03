@@ -39,12 +39,12 @@ var allSocketIDs = {};
 var allUsernames = {};
 var counter = 0;
 
-var topics = ['freewrite','Round Robin'];
+var topics = ['FREEWRITE','Round Robin'];
 
 // establishes a new user's connection socket
 io.on('connection', function(socket) {
-  socket.topic = 'freewrite';
-  socket.join('freewrite');
+  socket.topic = 'FREEWRITE';
+  socket.join('FREEWRITE');
   socket.emit('updateTopic', topics, socket.topic);
 
   socket.on('newTopic', function (topic) {
