@@ -68,6 +68,11 @@ input.set-timer-components {
   height: 80vh;
 }
 
+.stats-message {
+  outline: 1px solid #d3d3d3;
+  padding: 2px;
+}
+
 .random-prompt-section .btn {
   margin: 5px;
 }

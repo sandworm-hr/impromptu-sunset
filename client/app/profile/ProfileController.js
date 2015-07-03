@@ -4,6 +4,7 @@ app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$statePar
   // $scope.width = 960 - $scope.margin.left - $scope.margin.right;
   // $scope.height = 500 - $scope.margin.top - $scope.margin.bottom;
 
+
   // Calls the Session factory to get the sessions of that user.
   $scope.getSessions = function (callback) {
     if ($stateParams.username) {
