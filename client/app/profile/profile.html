@@ -31,8 +31,9 @@
       <div class="col-md-2 profile-info">
         <div class="username-sidebar">{{user.username}}</div>
         <span class="session-count-wrapper"><span class="session-count">{{sessions.length}}</span> sessions so far!</span>
+        <div ng-show="sessions.length<=1" class="stats-message text-center">Create at least two sessions to view stats.</div>
         <div class="stats-button-wrapper">
-          <button type="button" class="btn btn-info" ui-sref="stats">My Stats</button>
+          <button ng-show="sessions.length>1" type="button" class="btn btn-info" ui-sref="stats">My Stats</button>
         </div>
       </div>
   </div>
