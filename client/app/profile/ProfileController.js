@@ -1,8 +1,5 @@
 app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$stateParams', function ($scope, Session, Sessions, $stateParams) {
 
-  // $scope.margin = {top: 10, right: 50, bottom: 0, left: 70};
-  // $scope.width = 960 - $scope.margin.left - $scope.margin.right;
-  // $scope.height = 500 - $scope.margin.top - $scope.margin.bottom;
 
   // Calls the Session factory to get the sessions of that user.
   $scope.getSessions = function (callback) {
@@ -21,7 +18,7 @@ app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$statePar
 
   $scope.filterSessions = function(sessionData) {
     return _.filter(sessionData, function(currentSession) {
-      return Session.getUser().userId === currentSession.UserId || currentSession.visibility === 'public';
+      return $scope.isCurrentUser() || currentSession.visibility === 'public';
     });
   };
 
@@ -34,6 +31,10 @@ app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$statePar
     } else {
       $scope.username = $stateParams.username;
     }
+  };
+
+  $scope.isCurrentUser = function() {
+   return Session.getUser().username === $stateParams.username;
   };
 
   // parse data before plotting it on d3
