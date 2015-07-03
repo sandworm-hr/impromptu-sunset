@@ -68,6 +68,19 @@ input.set-timer-components {
   height: 80vh;
 }
 
+.random-prompt-section .btn {
+  margin: 5px;
+}
+
+.random-prompt-section .btn-random {
+  margin-left: 13px;
+}
+
+.prompt-text .random-prompt-box{
+  width: 100%;
+  margin-left: 13px;
+}
+
 .save-spinner {
   width: 25%;
 }

@@ -3,6 +3,13 @@
     <div class="col-sm-9" id="content-container">
       <!-- <div class="row"> -->
         <div class="row" id="status-container" ng-hide="socket.topic === 'Round Robin'">
+          <div class="col-sm-12 random-prompt-section">
+            <button class="btn btn-default pull-left btn-random" ng-show="unsubmitted && !(gameOver)" type="button" ng-click="randomPrompt()">Random Prompt</button>
+            <button class="btn btn-default pull-left btn-hide-random" ng-show="unsubmitted && !(gameOver) && !promptHide" type="button" ng-click="hidePrompt()">Hide Prompt</button>
+            <div class="row col-sm-12 prompt-text">
+              <textarea ng-show="prompt && !promptHide" ng-disabled="true" class="random-prompt-box form-control">{{ prompt }}</textarea>
+            </div>
+          </div>
           <div class="col-sm-6 set-timer-box col-md-offset-3">
             <div class="set-timer-box">
               <!-- this text is hidden after submitting to maintain timer placement -->
