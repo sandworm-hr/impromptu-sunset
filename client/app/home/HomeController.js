@@ -83,7 +83,7 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
     
     $scope.unsubmitted = false;
     $scope.done = true;
-    $scope.timeDisplay = Time.getTimer();
+    $scope.timeDisplay = Time.getTimerSeconds();
 
     // Destroys the session on timeout.
     start = $interval(function() {
@@ -91,7 +91,7 @@ app.controller('HomeController', ['$scope', '$rootScope', '$interval', 'Results'
         $scope.stopTimer();
         $scope.timeDisplay = undefined;
       } else {
-        $scope.timeDisplay = Time.getTimer();
+        $scope.timeDisplay = Time.getTimerSeconds();
       }
     }, 1000, 0);
   };

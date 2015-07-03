@@ -64,8 +64,9 @@
             <!-- <p class="debug-text">Score: {{ score }}</p> -->
             <!-- <p class="debug-text">Color Index: {{ colorIndex }}</p> -->
           <!-- </div> -->
-
-        <pre ng-show="socket.topic === 'Round Robin'" class="col-xs-12 row" id="shared-text">{{previousText}}{{sharedText}}</pre>
+        <div class="col-xs-12">
+        <pre ng-show="socket.topic === 'Round Robin'" id="shared-text">{{previousText}}{{sharedText}}</pre>
+        </div>
 
         <div class="col-xs-12" id="text-container">
           <textarea ng-disabled="unsubmitted || done" id="text-area" class="col-xs-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
