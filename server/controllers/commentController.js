@@ -18,6 +18,20 @@ module.exports = {
     }).catch(function(err) {
       console.log('Error: ', err);
     })
+  },
+
+  allComments: function(req, res, next) {
+    var sessionId = req.url.split('=')[1];
+    console.log(sessionId);
+    if (sessionId) {
+      db.Comment.findAll({where: {SessionId: sessionId}}).then(function(comments) {
+        var commentData = comments.map(function(comment) {
+          return comment.dataValues;
+        });
+        console.log(commentData);
+        res.status(201).send(commentData);
+      });
+    }
   }
 
 };
