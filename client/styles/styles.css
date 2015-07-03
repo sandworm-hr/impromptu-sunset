@@ -61,6 +61,35 @@ input.set-timer-components {
   visibility: hidden;
 }
 /* refers to the users sidebar */
+.user-circle-box {
+  height: 60px;
+}
+
+.topics-button {
+  height: 50px;
+}
+
+.topics-button:hover {
+  background: #666;
+  color: #fff;
+}
+
+.choose-topic {
+  margin-top: 10px;
+  padding: 10px;
+  height: 25px;
+}
+
+.topics-box {
+  font-size: 1.5em;
+  border: 1px solid #000;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.topics-box:hover {
+  color: #fff;
+  background: #000;
+}
 
 #sidebar-container {
   /*height: 500px;*/
@@ -118,11 +147,12 @@ input.set-timer-components {
   padding-right: 30px;
 }
 .users-table {
+  margin: 10px;
   border-collapse: collapse;
 }
 
 .user-tbody {
-   border-bottom: 20px solid transparent;
+   margin: 10px;
 }
 .main-input {
   height: 400px;

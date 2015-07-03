@@ -1,16 +1,16 @@
 <div class="container-fluid">
   <div class="row" id="main-container" ng-controller="HomeController">
-    <div class="col-sm-9" id="content-container">
+    <div class="col-xs-9" id="content-container">
       <!-- <div class="row"> -->
         <div class="row" id="status-container" ng-hide="socket.topic === 'Round Robin'">
-          <div class="col-sm-12 random-prompt-section">
+          <div class="col-xs-12 random-prompt-section">
             <button class="btn btn-default pull-left btn-random" ng-show="unsubmitted && !(gameOver)" type="button" ng-click="randomPrompt()">Random Prompt</button>
             <button class="btn btn-default pull-left btn-hide-random" ng-show="unsubmitted && !(gameOver) && !promptHide" type="button" ng-click="hidePrompt()">Hide Prompt</button>
-            <div class="row col-sm-12 prompt-text">
+            <div class="row col-xs-12 prompt-text">
               <textarea ng-show="prompt && !promptHide" ng-disabled="true" class="random-prompt-box form-control">{{ prompt }}</textarea>
             </div>
           </div>
-          <div class="col-sm-6 set-timer-box col-md-offset-3">
+          <div class="col-xs-6 set-timer-box col-md-offset-3">
             <div class="set-timer-box">
               <!-- this text is hidden after submitting to maintain timer placement -->
               <h2 class="set-timer-components" ng-show="unsubmitted">Write for  </h2>
@@ -23,7 +23,7 @@
             </div>
             
           </div>
-          <div class="col-sm-3 go-button-box">
+          <div class="col-xs-3 go-button-box">
             <!-- if the user has not submited the form, make the go button visible -->
             <button class="btn btn-default" ng-show="unsubmitted" type="button" ng-click="startTimer()">Go!</button>
             <!-- cancel button in case the user wants to cancel their session -->
@@ -32,21 +32,21 @@
             <button class="btn btn-default pull-right" ng-show="gameOver"type="button" ui-sref="results">See Results!</button>
             <!-- <button class="btn btn-default pull-right"  type="button pull-right" ng-click="makeDebugResults()">Debug</button> -->
           </div>
-          <!-- <div class="col-sm-1 timer-box"> -->
+          <!-- <div class="col-xs-1 timer-box"> -->
             <!-- <h3 ng-show="!(unsubmitted)"> {{ timer }} </h3> -->
           <!-- </div> -->
         </div>
 
         <div ng-show="socket.topic === 'Round Robin'" class="row" id="status-container">
-          <div class="col-sm-5">
+          <div class="col-xs-5">
             <h2>ROUND ROBIN!</h2>
             <input ng-show="unsubmitted" ng-click="roundRobin(5)" type='submit' value="START!">
             <!-- Information for current user  -->
             <div>Current writer: {{currentPlayer}}</div>
             <div>Up Next: {{nextPlayer}}</div>
           </div>
-          <div class="col-sm-2 countdown-box set-timer-components timer-text" ng-hide="unsubmitted"> {{ timer || timeDisplay }} </div>
-          <div class="col-sm-2 go-button-box">
+          <div class="col-xs-2 countdown-box set-timer-components timer-text" ng-hide="unsubmitted"> {{ timer || timeDisplay }} </div>
+          <div class="col-xs-2 go-button-box">
             <button class="btn btn-default pull-right" ng-show="gameOver"type="button" ui-sref="results">See Results!</button>
           </div>
         </div>
@@ -54,7 +54,7 @@
           
 
           <!-- DEBUG AREA -->
-          <!-- <div class="col-sm-5"> -->
+          <!-- <div class="col-xs-5"> -->
             <!-- <p class="debug-text">Start Time: {{ startTime | date:'shortTime' }}</p> -->
             <!-- <p class="debug-text">Scores: {{ scores }}</p> -->
             <!-- <p class="debug-text">Current Minute: {{ minute }}</p> -->
@@ -65,18 +65,19 @@
             <!-- <p class="debug-text">Color Index: {{ colorIndex }}</p> -->
           <!-- </div> -->
 
-        <pre ng-show="socket.topic === 'Round Robin'" class="col-sm-12 row" id="shared-text">{{previousText}}{{sharedText}}</pre>
+        <pre ng-show="socket.topic === 'Round Robin'" class="col-xs-12 row" id="shared-text">{{previousText}}{{sharedText}}</pre>
 
-        <div class="col-sm-12" id="text-container">
-          <textarea ng-disabled="unsubmitted || done" id="text-area" class="col-sm-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
+        <div class="col-xs-12" id="text-container">
+          <textarea ng-disabled="unsubmitted || done" id="text-area" class="col-xs-12 form-control" ng-model="textInput" ng-keyup="setTime($event)"></textarea>
         </div>
     </div>
 
 
-      <div class="col-sm-3 well" id="sidebar-container" ng-controller="MultiplayerController">
-        <button ng-click="topicselect=!topicselect">Topics</button>
-        <input ng-show="topicselect" ng-model='newTopic'>
-        <button ng-show="topicselect" ng-click="createTopic(newTopic);newTopic='';">NEW TOPIC</button>
+      <div class="col-xs-3 well" id="sidebar-container" ng-controller="MultiplayerController">
+        <button class="topics-button col-xs-5" ng-click="topicselect=!topicselect">TOPICS</button>
+        <button class="topics-button col-xs-offset-1 col-xs-6" ng-hide="topicselect" ng-click="changeTopic('Round Robin')">ROUND ROBIN</button>
+        <button class="col-xs-offset-1 col-xs-6 topics-button" ng-show="topicselect" ng-click="createTopic(newTopic);newTopic='';">New</button>
+        <input class="col-xs-offset-1 col-xs-10 choose-topic" ng-show="topicselect" ng-model='newTopic'>
         <table ng-hide="topicselect" class="users-table">
           <!-- CURRENT USER TABLE BODY -->
           <tbody class="user-tbody" >
@@ -102,11 +103,11 @@
             </tr>
           </tbody>
         </table>
-        <table ng-show="topicselect" class="topics-table">
+        <table class="col-xs-12" ng-show="topicselect" class="topics-table">
           <tbody class="multiplayer-users-tbody">
-            <tr class="user-box"
+            <tr class="col-xs-offset-1 col-xs-10 topics-box"
               id="{{topic}}-user-box" 
-              ng-repeat="topic in socket.topics" ng-click="changeTopic(topic)">
+              ng-repeat="topic in socket.topics" ng-show="topic !== 'Round Robin'" ng-click="changeTopic(topic)">
               <td>{{topic}}</td>
             </tr>
           </tbody>

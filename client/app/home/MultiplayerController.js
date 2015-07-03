@@ -11,8 +11,8 @@ app.controller('MultiplayerController', ['$scope', '$rootScope', '$timeout', 'Se
   // this variable is used to always display the client's username
   // and color at the top of the userlist
   $scope.myUser = {};
-  $rootScope.socket.topic = 'freewrite';
-  $rootScope.socket.topics = ['freewrite', 'Round Robin'];
+  $rootScope.socket.topic = 'FREEWRITE';
+  $rootScope.socket.topics = ['FREEWRITE', 'Round Robin'];
   $scope.topicselect = false;
   $scope.newTopic = '';
 
@@ -89,8 +89,9 @@ app.controller('MultiplayerController', ['$scope', '$rootScope', '$timeout', 'Se
   });
 
   $scope.createTopic = function(topic) {
-
-    $rootScope.socket.emit('newTopic', _.escape(topic));
+    if (topic !== '') {
+      $rootScope.socket.emit('newTopic', _.escape(topic));
+    }
   };
 
   $scope.changeTopic = function(topic) {
