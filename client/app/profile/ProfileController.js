@@ -6,19 +6,14 @@ app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$statePar
 
   // Calls the Session factory to get the sessions of that user.
   $scope.getSessions = function (callback) {
-
     if ($stateParams.username) {
       Sessions.getSessions(function(data){
-        console.log('all sessions: ', data);
         $scope.sessions = $scope.filterSessions(data);
-        console.log('visibile sessions: ', $scope.sessions);
         callback(data);
       }, $stateParams.username);
     } else {
       Sessions.getSessions(function(data){
-        console.log('all sessions: ', data);
         $scope.sessions = $scope.filterSessions(data);
-        console.log('visible sessions: ', $scope.sessions);
         callback(data);
       });
     }
