@@ -15,10 +15,10 @@ angular.module('app.services')
       });
     };
 
-    functions.getComments = function() {
+    functions.getComments = function(id) {
       return $http({
         method: 'GET',
-        url: '/api/comments'
+        url: '/api/comments/?id=' + id
       })
       .success(function(response) {
         console.log(response);

@@ -6,6 +6,7 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
     Sessions.getSessionById(function(data){
       $scope.sessionInfo = data;
       $scope.editText = data.text;
+      $scope.getComments(id);
     }, id);
   };
 
@@ -28,8 +29,15 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
     }
   };
 
-  $scope.getComments = function() {
-
+  $scope.getComments = function(id) {
+    Review.getComments(id)
+      .success(function(data, status) {
+        console.log('got data from server: ', data);
+        $scope.comments = data;
+      })
+      .catch(function() {
+        console.log('failed to get comments');
+      });
   };
 
   $scope.changeVisibility = function() {
@@ -38,9 +46,6 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
 
   $scope.saveEdits = function() {
     if ($scope.editText !== $scope.sessionInfo.text) {
-      // var toSave = $scope.editText;
-      // console.log('Saving these edits: ' + toSave);
-      // console.log('Previous text: ' + $scope.sessionInfo.text);
       var edits = {};
       edits.text = $scope.editText;
       edits.id = $scope.sessionInfo.id;
@@ -59,7 +64,7 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
   };
 
   $scope.editMode = false;
-
+  $scope.comments = [];
 
   if ($stateParams.id) {
     $scope.getSession($stateParams.id);
