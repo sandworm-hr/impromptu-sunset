@@ -23,7 +23,7 @@
         <li><a ng-hide="isAuthenticated()" ui-sref="login">Login</a></li>
         <li><a ng-show="isAuthenticated()" href="#" ng-click="logout()">Logout</a></li>
         <li><a ng-show="isAuthenticated()" ui-sref="myProfile">Profile</a></li>
-        <li><a ng-show="isAuthenticated()">Welcome {{user().username}}</a></li>
+        <li><a ng-show="isAuthenticated()">Welcome, {{user().username}}!</a></li>
       </ul>
     </div>
     </nav>
