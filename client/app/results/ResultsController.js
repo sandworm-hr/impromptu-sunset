@@ -18,6 +18,7 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
 
     $scope.spinnerToggle = false;
     $scope.isSaved = false;
+    $scope.saveRequested = false;
 
     $scope.control = { loaded : function(){
       $scope.scores = Results.getScores();
@@ -30,6 +31,10 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
       }
     }};
 
+    $scope.initializeSave = function() {
+      $scope.saveRequested = true;
+    };
+
     // Retrieves session information from the Results service and sends it to the server
     // to be stored in the database.
     $scope.sendResultsToServer = function() {
@@ -41,23 +46,26 @@ app.controller('ResultsController', ['$scope', '$timeout', 'Results','$state','S
         resultsObj.text = Results.getText();
         resultsObj.scores = Results.getScoresPerMinute();
         resultsObj.word_count = Results.getWordCount();
+        resultsObj.title = $scope.sessionTitle;
 
         Results.postResults(resultsObj)
           .success(function(data, status) {
-             $scope.status = 'Saved Session Data';
-             $scope.stopSpinner();
-             $scope.isSaved = true;
+            // $scope.status = 'Saved Session Data';
+            $scope.stopSpinner();
+            $scope.saveRequested = false;
+            $scope.isSaved = true;
           })
           .catch(function(data) {
-          // FOR TESTING:
-          // in testing there is no data object
-          // if there is a data object, we are not running a test
-          // therefore we need to set the scope message
-          if (data.data) {
-            $scope.message = data.data.message;
-          }
-          $scope.status = 'Save Failed';
-          $scope.stopSpinner();
+            // FOR TESTING:
+            // in testing there is no data object
+            // if there is a data object, we are not running a test
+            // therefore we need to set the scope message
+            if (data.data) {
+              $scope.message = data.data.message;
+            }
+            $scope.saveRequested = false;
+            // $scope.status = 'Save Failed';
+            $scope.stopSpinner();
          });
       } else {
         $state.go('login');

@@ -1,6 +1,4 @@
 
-
-
 <div class="container" id='profile' ng-controller="ProfileController">
 
     <div class="row">
@@ -10,17 +8,21 @@
         </div>
         <div class="row">
           <div class="summary-header col-md-2">Title</div>
-          <div class="summary-header col-md-5">Text</div>
+          <div class="summary-header col-md-3">Text</div>
           <div class="summary-header col-md-1 col-md-offset-1">Topic</div>
           <div class="summary-header col-md-1">Privacy</div>
           <div class="summary-header col-md-2">Date</div>
+          <div class="summary-header col-md-2">Time</div>
         </div>
-        <div ng-repeat="session in sessions" ui-sref="review({id:'{{session.id}}'})" class="session-summary row">
+        <div ng-repeat="session in sessions" ui-sref="review({id:'{{session.id}}'})" class="session-summary row {{$index % 2 ? 'odd' : 'even'}}">
+          <!-- <div class="session-summary-{{$index % 2 ? 'odd' : 'even'}}"> -->
           <div class="text-name col-md-2">{{session.name}}</div>
-          <div class="text-head col-md-5">{{session.text.slice(0,100) + '...'}}</div>
+          <div class="text-head col-md-3">{{session.text.slice(0,100) + '...'}}</div>
           <div class="text-type col-md-1 col-md-offset-1">{{session.type}}</div>
           <div class="text-visibility col-md-1">{{session.visibility}}</div>
-          <div class="created-at col-md-2">{{session.createdAt.slice(0,10)}}</div>
+          <div class="created-at-time col-md-2">{{session.createdAt.slice(0,10)}}</div>
+          <div class="created-at-date col-md-2">{{session.localTimeString}}</div>
+          <!-- </div> -->
         </div>
       </div>
       <div class="col-md-2 profile-info">

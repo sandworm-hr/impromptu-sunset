@@ -18,6 +18,8 @@ app.controller('ProfileController', ['$scope', 'Session', 'Sessions', '$statePar
 
   $scope.filterSessions = function(sessionData) {
     return _.filter(sessionData, function(currentSession) {
+      var d = new Date(currentSession.createdAt);
+      currentSession.localTimeString = d.toLocaleTimeString();
       return $scope.isCurrentUser() || currentSession.visibility === 'public';
     });
   };

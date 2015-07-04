@@ -66,6 +66,7 @@ module.exports = {
     var session_time = req.body.session_time;
     var char_count = req.body.char_count;
     var text = req.body.text;
+    var title = req.body.title;
     // retrieve the user id from the session
     var userid = req.session.passport.user.id;
     // use sequelize to retrieve the user from
@@ -80,7 +81,7 @@ module.exports = {
         char_count: char_count,
         type: 'default',
         visibility: 'public',
-        name: 'testing'+word_count
+        name: title
       });
       // add that session to the list of user sessions
       // since a user has many sessions (1 to many relationship)

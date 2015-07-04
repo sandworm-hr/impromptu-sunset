@@ -19,10 +19,20 @@
       </div>
     </div>
 
-    <div class="col-md-4 col-md-offset-4 results_buttons container">
+    <div ng-show="saveRequested" class="col-md-4 col-md-offset-4 save-session-container container">
+      <form class="save-session-form">
+        <div class="well save-session-box">
+          <p3>What do you want to name your session?</p3>
+          <div><input ng-model="sessionTitle" class="row session-title-input" placeholder="Session title..."></input></div>
+          <div><button ng-click="sendResultsToServer()" class="btn btn-default row save-session-button">Save</button></div>
+        </div>
+      </form>
+    </div>
+
+    <div ng-show="!saveRequested" class="col-md-4 col-md-offset-4 results_buttons container">  
       <h3>Results</h3>
         <div class="row">
-          <button ng-disabled="isSaved" ng-hide="spinnerToggle" ng-click="sendResultsToServer()" class="btn btn-default btn-results btn-upper">{{!isSaved ? 'Save Results' : 'Saved!'}}</button>
+          <button ng-disabled="isSaved" ng-hide="spinnerToggle" ng-click="initializeSave()" class="btn btn-default btn-results btn-upper">{{!isSaved ? 'Save Results' : 'Saved!'}}</button>
           <img ng-show="spinnerToggle" class="save-spinner" src="spinner.gif">
         </div>
         <button ng-disabled="onScores" ng-click="graphScores();" class="btn btn-default btn-results btn-lower">Scores</button>
