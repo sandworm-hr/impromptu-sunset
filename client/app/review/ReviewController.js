@@ -22,6 +22,7 @@ app.controller('ReviewController', ['$scope', '$stateParams', 'Review', 'Session
       Review.postComment(comment)
         .success(function(data, status) {
            $scope.commentInput = '';
+           $scope.getComments($stateParams.id);
            // TO DO: display some sort of success message
         })
         .catch(function() {
