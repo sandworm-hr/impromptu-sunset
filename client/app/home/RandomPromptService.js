@@ -5,7 +5,7 @@ angular.module('app.services')
     services.getPrompt = function(callback) {
       $http({
         method: 'GET',
-        url: 'http://www.reddit.com/r/writingprompts/.json'
+        url: 'https://www.reddit.com/r/writingprompts/.json'
       })
       .success(function(response) {
         var check = false;
